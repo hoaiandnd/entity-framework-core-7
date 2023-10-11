@@ -130,8 +130,8 @@ Lệnh `Scaffold-DbContext` có nhiều tham số dùng để chỉ định các
 
 | Tham số | Mô tả |
 | --- | --- |
-| `-Connection <string>` | Chuỗi kết nối đến CSDL cần kết nối. Đây là tham số bắt buộc và là tham số vị trí |
-| `-Provider <string>` | Tên gói Database Provider đang dùng. Đây là tham số bắt buộc và là tham số vị trí |
+| `-Connection <string>` | Chuỗi kết nối đến CSDL cần kết nối. **Đây là tham số bắt buộc và là tham số vị trí** |
+| `-Provider <string>` | Tên gói Database Provider đang dùng. **Đây là tham số bắt buộc và là tham số vị trí** |
 | `-OutputDir <string>` | Thư mục / đường dẫn chứa các lớp thực thể khi tạo ra từ CSDL. Mặc định là đường dẫn gốc của Project |
 | `-ContextDir <string>` | Thư mục / đường dẫn chứa lớp Context. Mặc định dùng chung với `-OutputDir` (nếu có) hoặc đường dẫn gốc của Project |
 
