@@ -137,8 +137,10 @@ Lệnh `Scaffold-DbContext` có nhiều tham số dùng để chỉ định các
 
 > Xem thêm các tham số khác tại [Scaffold-DbContext](https://learn.microsoft.com/en-us/ef/core/cli/powershell#scaffold-dbcontext).
 
+---
 #### Chuỗi kết nối (Connection string) trong Visual Studio 2022
-   
+---
+
 * Chọn **Views > Server Explorer** hoặc sử dụng tổ hợp phím `Ctrl` + `Alt` + ``` ` ```.
    
 * Right-click **Data Connection > Add Connection ...**.
@@ -159,7 +161,9 @@ Với chuỗi kết nối nhận được, ta đã có thể dùng lệnh `Scaff
    Scaffold-DbContext 'Data Source=.\sqlexpress;Initial Catalog=QLNhanSu;Integrated Security=True;' Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -ContextDir Data
 ```
 
+---
 #### Vấn đề với Entity Framework Core 7.0
+---
 
 Nếu sử dụng lệnh `Scaffold-DbContext` [phần trên](#chuỗi-kết-nối-connection-string-trong-visual-studio-2022), với EF Core 7.0 ta sẽ nhận về thông báo lỗi sau khi gọi lệnh `Scaffold-DbContext`.
 
@@ -174,6 +178,100 @@ Nếu sử dụng lệnh `Scaffold-DbContext` [phần trên](#chuỗi-kết-nố
 
 **Lưu ý:** Cách 2 và 3 chỉ nên thực hiện khi đang trong môi trường phát triển.
 
-Xem chi tiết về vấn đề trên tại [Certificate Issue](https://learn.microsoft.com/en-us/troubleshoot/sql/database-engine/connect/certificate-chain-not-trusted?tabs=odbc-driver-18x).
+Để xem thêm các vấn đề liên quan, hãy xem [Certificate Issue](https://learn.microsoft.com/en-us/troubleshoot/sql/database-engine/connect/certificate-chain-not-trusted?tabs=odbc-driver-18x).
 
+## Hướng tiếp cận Code First
+
+### Relationship
+
+Với hướng tiếp cận Code-First trong EF Core, thao tác đầu tiên sẽ là khai báo các lớp thực thể (Entity Classes) 
+dùng để tạo cơ sở dữ liệu tương ứng.
+
+Lớp thực thể thực chất là các lớp đối tượng C# chứa các thuộc tính tương ứng với cột (trường dữ liệu - Field) trong SQL Server. Việc khai báo lớp đối tượng trong C# đã là một thao tác quá quen thuộc, vì vậy sẽ không được đề cập chi tiết ở đây. Thay vào đó, tài liệu này sẽ cung cấp các nội dung về Relationship – cách biểu diễn mối quan hệ giữa 2 thực thể.
+
+Giữa 2 thực thể thường sẽ xảy ra 1 trong 3 loại mối quan hệ sau:
+
+* Quan hệ 1 – 1.
+* Quan hệ 1 – N.
+* Quan hệ N – N.
+
+Với các RDBMS, các quan hệ được biểu diễn bằng cách sử dụng khóa ngoại (Foreign Key) tham chiếu đến khóa chính (Primary Key) trong đa phần các trường hợp. Tuy nhiên, trong các ngôn ngữ hướng đối tượng như C#, ta sử dụng các Navigation Property để biểu diễn mối quan hệ giữa 2 lớp.
+
+**Navigation Property** (Thuộc tính điều hướng) là các thuộc tính không chứa giá trị mà chỉ chứa một tham chiếu đến (các) thực thể liên quan ở vế còn lại của quan hệ.
+
+Trong các tài liệu của Microsoft, Navigation Property thường được chia thành 2 loại:
+
+* **Reference Navigation**: dùng để chỉ những Navigation Property tham chiếu đến 1 thực thể liên quan (trong mối quan hệ 1 - 1 và 1 - N).
+* **Collection Navigation**: dành cho các Navigation Property dạng tập hợp, danh sách các thực thể liên quan (trong mối quan hệ 1 - N và N - N).
+
+Các Navigation Property sẽ thể hiện rõ ràng mối quan hệ giữa 2 thực thể, cung cấp phương thức truy cập dữ liệu của thực thể liên quan một cách nhanh nhất, không cần thông qua truy vấn.
+
+---
+#### Mối quan hệ 1 - 1
+---
+Mối quan hệ 1 – 1 được sử dụng để mô tả rằng với một thực thể này chỉ liên kết với tối đa một thực thể khác. Với quan hệ 1 – 1, thuộc tính điều hướng chỉ là một thuộc tính đơn tham chiếu đến một thực thể
+khác. Với thiết kế thuần hướng đối tượng, ta có thể không cần phải định nghĩa thuộc tính đại diện cho khó ngoại, chỉ cần Navigation Property.
+
+Mối quan hệ 1 - 1 trong OOP thường được thiết kế như sau:
+```csharp
+    public class A
+    {
+        // properties ...
+        public B B_obj { get; set; }
+    }
+    public class B
+    {
+        // properties ...
+        public A A_obj { get; set; }
+    }
+```
+
+**Ví dụ:**
+```csharp
+    public class Person
+    {
+        public int Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+
+        public Contact? Contact { get; set; } // reference navigation
+    }
+    public class Contact {
+        public int Id { get; set; }
+        public string Address { get; set; }
+        public string Phone { get; set; }
+        public string Email { get; set; }
+
+        public Person Person { get; set; } // reference navigation
+    }
+```
+
+Bên cạnh đó ta cũng có thể khai báo thêm thuộc tính khóa ngoại cho lớp thực thể con (tương ứng với bảng sẽ chứa khóa ngoại). Không chỉ mối quan hệ 1 - 1 mà mối quan hệ 1 - N cũng có thể khai báo thêm thuộc tính khóa ngoại, gọi là **Foreign Key Property**.
+
+**Ví dụ:**
+```csharp
+    public class Contact
+    {
+        // other properties ...
+        public int PersonId { get; set; } // foreign key property
+        public Person Person { get; set; } // reference navigation
+    }
+```
+
+Để bắt buộc Navigation Property của thực thể con phải tham chiếu đến thực thể cha và không thể để rỗng (NULL), ta có thể sử dụng giá trị `null!`.
+
+**Ví dụ:**
+```csharp
+    public Person Person { get; set; } = null!;
+```
+
+> Xem thêm các trường hợp khác trong thiết kế quan hệ 1 – 1 trong EF Core tại [One-to-One](https://learn.microsoft.com/en-us/ef/core/modeling/relationships/one-to-one).
+
+---
+#### Mối quan hệ N - N
+---
+
+Mối quan hệ 1 – N được dùng để khi một thực thể này liên kết với nhiều (hoặc không) thực thể khác. Trong thiết kế lớp thực thể, Navigation Property của thực thể cha sẽ chứa một tập hợp các thực thể con liên quan (còn được gọi là Collection Navigation). Một số kiểu dữ liệu thường dùng cho Collection Navigation như ICollection<T> (thường thấy ở các lớp thực thể được tạo theo hướng tiếp cận Database First), IEnumerable<T>, List<T>, ...
+
+Mối quan hệ 1 - 1 trong OOP thường được thiết kế như sau:
 
