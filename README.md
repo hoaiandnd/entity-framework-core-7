@@ -40,14 +40,14 @@ Tùy vào cơ sở dữ liệu muốn sử dụng mà gói Database Provider c�
 
 * Chọn **Tools > NuGet Package Manager > Package Manager Console** để mở PMC.
 * Sử dụng lệnh `Install-Package` để cài đặt các gói NuGet mới nhất tìm thấy ở [NuGet Gallery](https://www.nuget.org/):
-```
+```console
     Install-Package Microsoft.EntityFrameworkCore.SqlServer
     Install-Package Microsoft.EntityFrameworkCore.Tools
 ```
 * Nếu muốn tải các gói ở phiên bản cụ thể, hãy sử dụng tham số `-Version <version>`.
 
 **Ví dụ:**
-```
+```console
     Install-Package Microsoft.EntityFrameworkCore.SqlServer -Version 6.0.10
 ```
 
@@ -130,11 +130,50 @@ Lệnh `Scaffold-DbContext` có nhiều tham số dùng để chỉ định các
 
 | Tham số | Mô tả |
 | --- | --- |
-| `-Connection <string>` | Chuỗi kết nối đến CSDL cần kết nối |
-| `-Provider <string>` | Tên gói Database Provider đang dùng |
-| `-OutputDir <string>` | Thư mục / đường dẫn chứa các lớp thực thể khi tạo ra từ CSDL. |
-| `-ContextDir <string>` | Thư mục / đường dẫn chứa lớp Context |
+| `-Connection <string>` | Chuỗi kết nối đến CSDL cần kết nối. Đây là tham số bắt buộc và là tham số vị trí |
+| `-Provider <string>` | Tên gói Database Provider đang dùng. Đây là tham số bắt buộc và là tham số vị trí |
+| `-OutputDir <string>` | Thư mục / đường dẫn chứa các lớp thực thể khi tạo ra từ CSDL. Mặc định là đường dẫn gốc của Project |
+| `-ContextDir <string>` | Thư mục / đường dẫn chứa lớp Context. Mặc định dùng chung với `-OutputDir` (nếu có) hoặc đường dẫn gốc của Project |
 
 > Xem thêm các tham số khác tại [Scaffold-DbContext](https://learn.microsoft.com/en-us/ef/core/cli/powershell#scaffold-dbcontext).
+
+#### Chuỗi kết nối (Connection string) trong Visual Studio 2022
+   
+* Chọn **Views > Server Explorer** hoặc sử dụng tổ hợp phím `Ctrl` + `Alt` + ``` ` ```.
+   
+* Right-click **Data Connection > Add Connection ...**.
+     
+* Chỉ định tên Server (Server name) và chọn Database. Có thể dùng lệnh `PRINT @@SERVERNAME` trong SQL Server để xem tên Server.
+     
+* Chọn **Advanced ...**, chuỗi kết nối được hiển thị phía cuối hộp thoại. Sao chép chuỗi nhận được và hủy các thao tác vừa thực hiện.
+
+Với chuỗi kết nối nhận được, ta đã có thể dùng lệnh `Scaffold-DbContext` để kết nối với CSDL.
+
+**Ví dụ:**
+* Không chỉ định đường dẫn cho các lớp thực thể và lớp Context:
+```console
+   Scaffold-DbContext 'Data Source=.\sqlexpress;Initial Catalog=QLNhanSu;Integrated Security=True' Microsoft.EntityFrameworkCore.SqlServer
+```
+* Chỉ định đường dẫn cho các lớp thực thể và lớp Context
+```console
+   Scaffold-DbContext 'Data Source=.\sqlexpress;Initial Catalog=QLNhanSu;Integrated Security=True;' Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -ContextDir Data
+```
+
+#### Vấn đề với Entity Framework Core 7.0
+
+Nếu sử dụng lệnh `Scaffold-DbContext` [phần trên](#chuỗi-kết-nối-connection-string-trong-visual-studio-2022), với EF Core 7.0 ta sẽ nhận về thông báo lỗi sau khi gọi lệnh `Scaffold-DbContext`.
+
+> *A connection was successfully established with the server, but then an error occurred during the login process. (provider: SSL Provider, error: 0 - The certificate chain was issued by an authority that is not trusted.)*
+
+Để giải quyết lỗi trên, ta có thể thực hiện 1 trong 3 cách sau đây:
+* Cài đặt một chứng chỉ hợp lệ trên máy chủ. Cách làm này rất phức tạp vì cần một nhà cung cấp dịch vụ có thẩm quyền.
+
+* Thêm `TrustServerCertificate=True` vào chuỗi kết nối.
+
+* Thêm `Encrypt=False` vào chuỗi kết nối.
+
+**Lưu ý:** Cách 2 và 3 chỉ nên thực hiện khi đang trong môi trường phát triển.
+
+Xem chi tiết về vấn đề trên tại https://learn.microsoft.com/en-us/troubleshoot/sql/database-engine/connect/certificate-chain-not-trusted?tabs=odbc-driver-18x
 
 
