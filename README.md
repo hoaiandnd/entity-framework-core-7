@@ -210,15 +210,18 @@ Các Navigation Property sẽ thể hiện rõ ràng mối quan hệ giữa 2 th
 #### Mối quan hệ 1 - 1
 ---
 Mối quan hệ 1 – 1 được sử dụng để mô tả rằng với một thực thể này chỉ liên kết với tối đa một thực thể khác. Với quan hệ 1 – 1, thuộc tính điều hướng chỉ là một thuộc tính đơn tham chiếu đến một thực thể
-khác. Với thiết kế thuần hướng đối tượng, ta có thể không cần phải định nghĩa thuộc tính đại diện cho khó ngoại, chỉ cần Navigation Property.
+khác. Với thiết kế thuần hướng đối tượng, ta có thể không cần phải định nghĩa thuộc tính đại diện cho khóa ngoại, chỉ cần Navigation Property.
 
 Mối quan hệ 1 - 1 trong OOP thường được thiết kế như sau:
 ```csharp
+    // principal (parent)
     public class A
     {
         // properties ...
         public B B_obj { get; set; }
     }
+
+    // dependent (child)
     public class B
     {
         // properties ...
@@ -258,6 +261,34 @@ Bên cạnh đó ta cũng có thể khai báo thêm thuộc tính khóa ngoại 
     }
 ```
 
+* Nếu Reference Navigation **của thực thể con** có kiểu `Nullable<T>` (hay `T?`) thì được gọi là **Optional Reference Navigation** (điều hướng tùy chọn). Điều này đồng nghĩa với việc khóa ngoại khi được tạo ra hoặc xóa thực thể cha được phép gán giá trị `NULL`.
+```csharp
+    // principal (parent)
+    public class A
+    {
+        public B? B_obj { get; set; }
+    }
+
+    // dependent (child)
+    public class B
+    {
+        public A? A_obj { get; set; } // optional reference navigation
+    }
+```
+* Ngược lại thì được gọi là **Required Reference Navigation** (điều hướng bắt buộc). Khi tạo mới thực thể con phải chỉ ra thực thể cha.
+```csharp
+    // principal (parent)
+    public class A
+    {
+        public B? B_obj { get; set; }
+    }
+
+    // dependent (child)
+    public class B
+    {
+        public A A_obj { get; set; } // required reference navigation
+    }
+``
 Để bắt buộc Navigation Property của thực thể con phải tham chiếu đến thực thể cha và không thể để rỗng (NULL), ta có thể sử dụng giá trị `null!`.
 
 **Ví dụ:**
@@ -268,10 +299,61 @@ Bên cạnh đó ta cũng có thể khai báo thêm thuộc tính khóa ngoại 
 > Xem thêm các trường hợp khác trong thiết kế quan hệ 1 – 1 trong EF Core tại [One-to-One](https://learn.microsoft.com/en-us/ef/core/modeling/relationships/one-to-one).
 
 ---
-#### Mối quan hệ N - N
+#### Mối quan hệ 1 - N
 ---
 
-Mối quan hệ 1 – N được dùng để khi một thực thể này liên kết với nhiều (hoặc không) thực thể khác. Trong thiết kế lớp thực thể, Navigation Property của thực thể cha sẽ chứa một tập hợp các thực thể con liên quan (còn được gọi là Collection Navigation). Một số kiểu dữ liệu thường dùng cho Collection Navigation như ICollection<T> (thường thấy ở các lớp thực thể được tạo theo hướng tiếp cận Database First), IEnumerable<T>, List<T>, ...
+Mối quan hệ 1 – N được dùng để khi một thực thể này liên kết với nhiều (hoặc không) thực thể khác. Trong thiết kế lớp thực thể, Navigation Property của thực thể cha sẽ chứa một tập hợp các thực thể con liên quan (còn được gọi là Collection Navigation). Một số kiểu dữ liệu thường dùng cho Collection Navigation như `ICollection<T>` (thường thấy ở các lớp thực thể được tạo theo hướng tiếp cận Database First), `IEnumerable<T>`, `List<T>`, ...
 
-Mối quan hệ 1 - 1 trong OOP thường được thiết kế như sau:
+Mối quan hệ 1 - N trong OOP thường được thiết kế như sau:
+
+```csharp
+    // dependent (child)
+    public class A
+    {
+        // properties ...
+        public B B_obj { get; set; }
+    }
+
+    // principal (parent)
+    public class B
+    {
+        // properties ...
+        public List<A> A_list { get; set; }
+    }
+```
+
+**Ví dụ:**
+
+```csharp
+    public class Student
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public Teacher? Teacher { get; set; } // optional reference navigation
+    }
+    public class Teacher
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public decimal Salary { get; set; }
+
+        // contain 'Student' entities
+        public ICollection<Student> Students { get; set; } = new List<Student>(); // collection navigation
+    }
+```
+
+Đôi khi ta cũng có thể khai báo thêm thuộc tính khóa ngoại.
+
+**Ví dụ:**
+```csharp
+    public class Student
+    {
+        // other propreties ...
+        public int TeacherId { get; set; }
+        public Teacher? Teacher { get; set; }
+    }
+```
+
+Mối quan hệ 1 - N cũng có các khái niệm về **Required Reference Navigation** và **Optional Reference Navigation** tương tự [mối quan hệ 1 - 1](#mối-quan-hệ-1---1).
+
 
