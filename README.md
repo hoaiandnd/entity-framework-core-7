@@ -174,6 +174,6 @@ Nếu sử dụng lệnh `Scaffold-DbContext` [phần trên](#chuỗi-kết-nố
 
 **Lưu ý:** Cách 2 và 3 chỉ nên thực hiện khi đang trong môi trường phát triển.
 
-Xem chi tiết về vấn đề trên tại https://learn.microsoft.com/en-us/troubleshoot/sql/database-engine/connect/certificate-chain-not-trusted?tabs=odbc-driver-18x
+Xem chi tiết về vấn đề trên tại [Certificate Issue](https://learn.microsoft.com/en-us/troubleshoot/sql/database-engine/connect/certificate-chain-not-trusted?tabs=odbc-driver-18x).
 
 
