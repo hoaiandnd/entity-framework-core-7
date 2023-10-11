@@ -195,7 +195,9 @@ Giữa 2 thực thể thường sẽ xảy ra 1 trong 3 loại mối quan hệ s
 * Quan hệ 1 – N.
 * Quan hệ N – N.
 
-Với các RDBMS, các quan hệ được biểu diễn bằng cách sử dụng khóa ngoại (Foreign Key) tham chiếu đến khóa chính (Primary Key) trong đa phần các trường hợp. Tuy nhiên, trong các ngôn ngữ hướng đối tượng như C#, ta sử dụng các Navigation Property để biểu diễn mối quan hệ giữa 2 lớp.
+Với các RDBMS[^2], các quan hệ được biểu diễn bằng cách sử dụng khóa ngoại (Foreign Key) tham chiếu đến khóa chính (Primary Key) trong đa phần các trường hợp. Tuy nhiên, trong các ngôn ngữ hướng đối tượng như C#, ta sử dụng các Navigation Property để biểu diễn mối quan hệ giữa 2 lớp.
+
+[^2]: Relational Database Management System (Hệ quản trị cơ sở dữ liệu quan hệ)
 
 **Navigation Property** (Thuộc tính điều hướng) là các thuộc tính không chứa giá trị mà chỉ chứa một tham chiếu đến (các) thực thể liên quan ở vế còn lại của quan hệ.
 
