@@ -70,12 +70,12 @@ Với hướng tiếp cận Database First, ta cần có sẵn cơ sở dữ li�
 
 Ở đây, ta sử dụng cơ sở dữ liệu đơn giản như sau:
 
-| NhanVien | | PhongBan |
-| :---: | --- | :---: |
-| ***manv*** | | ***mapb*** |
-| tennv | | tenpb |
-| luong | | |
-| mapb | | |
+| NhanVien | PhongBan |
+| :---: | :---: |
+| **manv** |  **mapb** |
+| tennv | tenpb |
+| luong | |
+| mapb | |
 
 Đoạn mã sau sẽ tạo và cung cấp các dữ liệu giả lập:
 ```SQL
