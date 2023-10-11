@@ -288,7 +288,7 @@ Bên cạnh đó ta cũng có thể khai báo thêm thuộc tính khóa ngoại 
     {
         public A A_obj { get; set; } // required reference navigation
     }
-``
+```
 Để bắt buộc Navigation Property của thực thể con phải tham chiếu đến thực thể cha và không thể để rỗng (NULL), ta có thể sử dụng giá trị `null!`.
 
 **Ví dụ:**
@@ -349,7 +349,7 @@ Mối quan hệ 1 - N trong OOP thường được thiết kế như sau:
     public class Student
     {
         // other propreties ...
-        public int TeacherId { get; set; }
+        public int? TeacherId { get; set; }
         public Teacher? Teacher { get; set; }
     }
 ```
