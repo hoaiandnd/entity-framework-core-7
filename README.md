@@ -345,18 +345,87 @@ Mối quan hệ 1 - N trong OOP thường được thiết kế như sau:
     }
 ```
 
-Đôi khi ta cũng có thể khai báo thêm thuộc tính khóa ngoại.
+Thiết kế mối quan hệ 1 - N có thể khai báo thêm thuộc tính khóa ngoại.
 
 **Ví dụ:**
 ```csharp
     public class Student
     {
         // other propreties ...
-        public int? TeacherId { get; set; }
-        public Teacher? Teacher { get; set; }
+        public int? TeacherId { get; set; } // foreign key property
+        public Teacher? Teacher { get; set; } // reference navigation
     }
 ```
 
 Mối quan hệ 1 - N cũng có các khái niệm về **Required Reference Navigation** và **Optional Reference Navigation** tương tự [mối quan hệ 1 - 1](#mối-quan-hệ-1---1).
 
+
+> Xem thêm các trường hợp khác trong thiết kế quan hệ 1 – N tại: [One-to-Many](https://learn.microsoft.com/en-us/ef/core/modeling/relationships/one-to-many).
+
+---
+#### Mối quan hệ N - N
+---
+
+Mối quan hệ N – N được dùng mô tả rằng nhiều thực thể này có thể liên kết với nhiều (hoặc không) thực thể khác. Có thể hiểu là một thực thể A có thể liên kết với nhiều thực thể B và ngược lại.
+
+Mối quan hệ N – N khác biệt so với 2 loại quan hệ trước. Trong cơ sở dữ liệu, mối quan hệ này không thể biểu diễn chỉ bằng khóa ngoại và thường phải có thêm bảng trung gian (Join Table). 
+Ta cũng có thể khai báo một lớp trung gian (Join Entity Type) để hiện thực mối quan hệ N – N.
+
+**Ví dụ:**
+```cs
+    public class Orders
+    {
+        // other properties ...
+        public ICollection<OrderDetail> Details { get; set; }
+    }
+    public class Product
+    {
+        // other properties ...
+        public ICollection<OrderDetail> Details { get; set; }
+    }
+
+    // join entity type
+    public class OrderDetail 
+    { 
+        // other properties ...
+        public Order? Order { get; set; }
+        public Product? Product { get; set; }
+    }
+```
+
+Khi sử dụng kiểu trung gian, mối quan hệ N – N sẽ trở thành 2 quan hệ 1 – N giữa kiểu trung gian và 2 kiểu chính.
+
+Tuy nhiên, EF Core có thể giấu đi kiểu trung gian và có thể kiểm soát ngầm định. Vì vậy ta không cần định nghĩa thêm kiểu trung gian và dùng các quan hệ 1 – N.
+
+**Ví dụ:**
+```cs
+    public class Orders
+    {
+        // other properties ...
+        public ICollection<Product> Products { get; set; }
+    }
+    public class Product
+    {
+        // other properties ...
+        public ICollection<Orders> Orders { get; set; }
+    }
+```
+
+Việc thiết kế lớp thực thể và quan hệ như trên là một trong các thiết kế cơ bản nhất trong mối quan hệ N – N.
+
+> Xem thêm các trường hợp khác trong thiết kế quan hệ N – N tại: [Many-to-Many](https://learn.microsoft.com/en-us/ef/core/modeling/relationships/many-to-many).
+
+### Map Attributes
+
+Lớp thực thể trong C# không thể mô tả được hết hoặc chính xác những gì mà bảng dữ liệu trong CSDL có 
+thể mô tả được. Hay nói cách khác, lớp thực thể trong ngôn ngữ hướng đối tượng như C# không thể mô 
+tả các đặc điểm và ràng buộc ta muốn với bảng dữ liệu cần tạo.
+
+Trong nội dung này, ta sẽ sử dụng các attribute để cấu hình lại lớp thực thể có thể ánh xạ thành bảng dữ
+liệu trong CSDL.
+
+Các attribute sử dụng trong tài liệu này đến từ 3 namespace sau:
+* `System.ComponentModel.DataAnnotations`
+* `System.ComponentModel.DataAnnotations.Schema`
+* `Microsoft.EntityFrameworkCore`
 
