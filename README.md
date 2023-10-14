@@ -263,7 +263,7 @@ Bên cạnh đó ta cũng có thể khai báo thêm thuộc tính khóa ngoại 
     }
 ```
 
-* Nếu Reference Navigation **của thực thể con** có kiểu `Nullable<T>` (hay `T?`) thì được gọi là **Optional Reference Navigation** (điều hướng tùy chọn). Điều này đồng nghĩa với việc khóa ngoại khi được tạo ra hoặc xóa thực thể cha được phép gán giá trị `NULL`.
+* Nếu Reference Navigation **của thực thể con** có kiểu `Nullable<T>` (hay `T?`) thì được gọi là **Optional Reference Navigation** (điều hướng tùy chọn). Điều này đồng nghĩa với việc khóa ngoại khi được tạo ra hoặc xóa thực thể cha được phép gán giá trị `NULL`. Chú ý rằng điều hướng tùy chọn chỉ có thể chỉ định cùng với thuộc tính khóa ngoại nullable (nếu có).
 ```csharp
     // principal (parent)
     public class A
@@ -274,6 +274,7 @@ Bên cạnh đó ta cũng có thể khai báo thêm thuộc tính khóa ngoại 
     // dependent (child)
     public class B
     {
+        public type? A_Id { get; set; } // optional foreign key property
         public A? A_obj { get; set; } // optional reference navigation
     }
 ```
