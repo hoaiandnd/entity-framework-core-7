@@ -429,3 +429,26 @@ Các attribute sử dụng trong tài liệu này đến từ 3 namespace sau:
 * `System.ComponentModel.DataAnnotations.Schema`
 * `Microsoft.EntityFrameworkCore`
 
+---
+#### Cấu hình trên lớp
+---
+
+Cấu hình trên lớp dùng để cấu hình lại các thông tin về bảng dữ liệu sẽ tạo ra. Để cấu hình trên lớp, ta thường dùng attribute `[Table]`.
+
+Với attribute `[Table]`, ta có thể chỉ định thuộc tính `Name` để quy định lại tên bảng (mặc định tên bảng sẽ trùng với tên thuộc tính `DbSet<TEntity>`) và thuộc tính `Schema` để xác định schema chứa bảng (mặc định là `dbo` với SQL Server).
+
+**Ví dụ:**
+```cs
+    [Table(Name = "Orders")]
+    public class Order
+    {
+        // properties ...
+    }
+```
+
+---
+#### Cấu hình trên thuộc tính
+---
+Bảng bên dưới sẽ liệt kê một số attribute thường dùng để cấu hình cho thuộc tính:
+
+
