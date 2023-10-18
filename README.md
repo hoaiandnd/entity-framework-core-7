@@ -14,3 +14,5 @@
 * [3. Entity Framework Core 7.0 - Code First Approach - Map Attributes](/3_efcore7_code_first_approach_map_attributes.md)
 
 * [4. Entity Framework Core 7.0 - Code First Approach - Context class](/4_efcore7_code_first_approach_context_class.md)
+
+* [5. Entity Framework Core 7.0 - Code First Approach - Migration](/4_efcore7_code_first_approach_migration.md)
