@@ -205,7 +205,9 @@ Các phương thức thường dùng của lớp `EntityTypeBuilder<TEntity>`:
 
 ```cs
     modelBuilder.Entity<MyEntity>().HasKey("Key1", "Key2");
+
     // hoặc
+
     modelBuilder.Entity<MyEntity>().HasKey(e => new { e.Key1, e.Key2 });
 
     // nếu sử dụng tham số Action<EntityTypeBuilder<TEntity>>
