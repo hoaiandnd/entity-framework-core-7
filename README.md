@@ -9,4 +9,4 @@
 # Nội dung
 * [1. Entity Framework Core 7.0 - Database First Approach](/1_efcore7_database_first_approach.md)
 
-* [2. Entity Framework Core 7.0 - Code First Approach - Relationship](/1_efcore7_code_first_approach_relationship.md)
+* [2. Entity Framework Core 7.0 - Code First Approach - Relationship](/2_efcore7_code_first_approach_relationship.md)
