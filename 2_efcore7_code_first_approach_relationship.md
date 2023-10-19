@@ -114,7 +114,7 @@ Bên cạnh đó ta cũng có thể khai báo thêm thuộc tính khóa ngoại 
     public Person Person { get; set; } = null!;
 ```
 
-> Xem thêm các trường hợp khác trong thiết kế quan hệ 1 – 1 trong EF Core tại [One-to-One](https://learn.microsoft.com/en-us/ef/core/modeling/relationships/one-to-one).
+> Xem thêm các trường hợp khác trong thiết kế quan hệ 1 – 1 trong EF Core tại [**One-to-One**](https://learn.microsoft.com/en-us/ef/core/modeling/relationships/one-to-one).
 
 
 ## Mối quan hệ 1 - N
@@ -174,7 +174,7 @@ Thiết kế mối quan hệ 1 - N có thể khai báo thêm thuộc tính khóa
 Mối quan hệ 1 - N cũng có các khái niệm về **Required Reference Navigation** và **Optional Reference Navigation** tương tự [mối quan hệ 1 - 1](#mối-quan-hệ-1---1).
 
 
-> Xem thêm các trường hợp khác trong thiết kế quan hệ 1 – N tại: [One-to-Many](https://learn.microsoft.com/en-us/ef/core/modeling/relationships/one-to-many).
+> Xem thêm các trường hợp khác trong thiết kế quan hệ 1 – N tại: [**One-to-Many**](https://learn.microsoft.com/en-us/ef/core/modeling/relationships/one-to-many).
 
 ## Mối quan hệ N - N
 
@@ -225,4 +225,4 @@ Tuy nhiên, EF Core có thể giấu đi kiểu trung gian và có thể kiểm 
 
 Việc thiết kế lớp thực thể và quan hệ như trên là một trong các thiết kế cơ bản nhất trong mối quan hệ N – N.
 
-> Xem thêm các trường hợp khác trong thiết kế quan hệ N – N tại: [Many-to-Many](https://learn.microsoft.com/en-us/ef/core/modeling/relationships/many-to-many).
+> Xem thêm các trường hợp khác trong thiết kế quan hệ N – N tại: [**Many-to-Many**](https://learn.microsoft.com/en-us/ef/core/modeling/relationships/many-to-many).
