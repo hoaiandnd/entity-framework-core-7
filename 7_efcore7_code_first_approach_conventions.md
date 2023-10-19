@@ -34,7 +34,7 @@ Các khóa chính được cấu hình bằng Conventions mà có kiểu dữ li
 
 EF Core hỗ trợ thuộc tính khóa chính sử dụng kiểu dữ liệu nguyên thủy (Primitive type), bao gồm cả kiểu 
 `string`, `Guid`, `byte[]` và các kiểu khác tương tự. Tuy nhiên, không phải các CSDL đều hỗ trợ tất cả kiểu cho 
-khóa chính, nên đôi khi sẽ phải thực hiện cấu hình tường minh (bằng Map Attributes hoặc Fluent API).
+khóa chính, nên đôi khi sẽ phải thực hiện cấu hình tường minh (bằng [**Map Attributes**](/3_efcore7_code_first_approach_map_attributes.md) hoặc [**Fluent API**](/6_efcore7_code_first_approach_fluent_api.md)).
 
 ### Khóa ngoại
 
@@ -102,7 +102,7 @@ Bảng bên dưới là danh sách các kiểu dữ liệu C# và kiểu tương
 | `long` | `BIGINT` |
 | `double` | `FLOAT` |
 
-> Tham khảo thêm tại [SQL Server Data Type Mappings - ADO.NET | Microsoft Learn](https://learn.microsoft.com/en-us/dotnet/framework/data/adonet/sql-server-data-type-mappings).
+> Tham khảo thêm tại [**SQL Server Data Type Mappings - ADO.NET | Microsoft Learn**](https://learn.microsoft.com/en-us/dotnet/framework/data/adonet/sql-server-data-type-mappings).
 
 Với các thuộc tính có kiểu dữ liệu tham chiếu hoặc kiểu nullable (`int?`, `string?`, ...), cột tương ứng sẽ có 
 thể chứa giá trị `NULL`. Ngược lại các kiểu dữ liệu nguyên thủy sẽ tạo ra cột `NOT NULL`.
