@@ -1,6 +1,6 @@
 # Entity Framework Core - Code First Approach - Fluent API
 
-Ở phần [Map Attributes](/3_efcore7_code_first_approach_map_attributes.md), ta đã tìm hiểu về cách cấu hình các lớp thực thể bằng các attribute.
+Ở phần [**Map Attributes**](/3_efcore7_code_first_approach_map_attributes.md), ta đã tìm hiểu về cách cấu hình các lớp thực thể bằng các attribute.
 
 Trong EF Core, ngoài sử dụng Map Attributes, ta có thể sử dụng Fluent API để cấu hình các lớp thực thể. Và nội dung của phần này sẽ trình bày cách cấu hình bằng Fluent API. Các cấu hình bằng Fluent API sẽ ghi đè các cấu hình từ nguồn khác (ưu tiên cao nhất).
 
@@ -122,7 +122,7 @@ Các phương thức thường dùng của lớp `PropertyBuilder`:
 | `UseIdentityColumn(int seed, int increment = 1)` | Xác định thuộc tính sử dụng tính năng `IDENTITY` trong SQL Server. | `[DatabaseGenerated]` |
 
 
-> Xem thêm các phương thức cấu hình khác tại [PropertyBuilder](https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.metadata.builders.propertybuilder?view=efcore-7.0).
+> Xem thêm các phương thức cấu hình khác tại [**PropertyBuilder**](https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.metadata.builders.propertybuilder?view=efcore-7.0).
 
 Các phương thức của lớp `PropertyBuilder` đều trả về chính kiểu `PropertyBuilder`, do đó ta có thể gọi liên tiếp, nối chuỗi các phương thức cấu hình.
 
@@ -196,7 +196,7 @@ Các phương thức thường dùng của lớp `EntityTypeBuilder<TEntity>`:
     </tr>
 </table>
 
-> Xem thêm các phương thức khác tại [EntityTypeBuilder](https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.metadata.builders.entitytypebuilder?view=efcore-7.0).
+> Xem thêm các phương thức khác tại [**EntityTypeBuilder**](https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.metadata.builders.entitytypebuilder?view=efcore-7.0).
 
 
 Để xác định nhiều khóa chính với tham số *`keyExpression`*, ta có thể trả về đối tượng ẩn danh gồm nhiều thuộc tính làm khóa chính.
@@ -219,11 +219,11 @@ Các phương thức thường dùng của lớp `EntityTypeBuilder<TEntity>`:
 
 ## Cấu hình mối quan hệ
 
-Xem lại nội dung về [Relationship](/2_efcore7_code_first_approach_relationship.md) để xem cách triển khai các mối quan hệ cho lớp 
+Xem lại nội dung về [**Relationship**](/2_efcore7_code_first_approach_relationship.md) để xem cách triển khai các mối quan hệ cho lớp 
 thực thể.
 
 Thông thường, các mối quan hệ sẽ được cấu hình tự động bởi EF Core đối với các trường hợp tuân thủ theo 
-các quy tắc định sẵn (hay còn gọi là Convention). Xem chi tiết ở nội dung về [Convention]().
+các quy tắc định sẵn (hay còn gọi là Convention). Xem chi tiết ở nội dung về [**Convention**](/7_efcore7_code_first_approach_conventions.md).
 
 Nội dung bên dưới sẽ trình bày cách cấu hình các mối quan hệ không áp dụng Convention.
 
@@ -462,7 +462,7 @@ Phương thức trên trả về kiểu `CollectionNavigationBuilder<TEntity,TRe
 
 Ở nội dung này, ta sẽ sử dụng cách triển khai mối quan hệ N – N cơ bản nhất trong EF Core mà không sử
 dụng lớp thực thể trung gian (hay **Join Entity Type**). Vì nếu sử dụng lớp thực thể trung gian, ta sẽ chỉ cấu 
-hình 2 mối quan hệ 1 – N (Xem lại phần [Cấu hình quan hệ 1 – N](#cấu-hình-quan-hệ-1---N)).
+hình 2 mối quan hệ 1 – N (Xem lại phần [**Cấu hình quan hệ 1 – N**](#cấu-hình-quan-hệ-1---N)).
 
 Khi không sử dụng lớp trung gian, một bảng trung gian sẽ được tạo bởi EF Core đến CSDL gồm 2 trường 
 là khóa của 2 bảng liên quan. Nếu như bảng trung gian cần lưu trữ một số thông tin khác ngoài 2 khóa, ta 
@@ -501,5 +501,5 @@ Khai báo 2 lớp thực thể `Orders` và `Product` để thực hành mối q
 Để cấu hình đầy đủ và tường minh cho bảng trung gian sẽ được tạo ra, ta có thể tiếp tục sử dụng phương 
 thức `UseEntity()`.
 
-Xem cách sử dụng phương thức `UseEntity()` tại [UseEntity](https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.metadata.builders.collectioncollectionbuilder.usingentity?view=efcore-7.0).
+Xem cách sử dụng phương thức `UseEntity()` tại [**UseEntity**](https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.metadata.builders.collectioncollectionbuilder.usingentity?view=efcore-7.0).
 
