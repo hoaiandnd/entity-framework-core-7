@@ -350,7 +350,7 @@ Sau khi cài đặt gói, hãy sử dụng phương thức `UseLazyLoadingProxie
 > [!Warning]
 > Các Reference Navigation và Collection Navigation phải là các thuộc tính có thể ghi đè, tức là được khai báo với từ khóa `virtual`. Nếu không khi tạo và cập nhật Migration, ta sẽ nhận thông báo lỗi tương tự như sau:
 >
-> *Property '<property name>' is not virtual. 'UseChangeTrackingProxies' requires all entity types to be public, unsealed, have virtual properties, and have a public or protected constructor. 'UseLazyLoadingProxies' requires only the navigation properties be virtual.*
+> *Property '...' is not virtual. 'UseChangeTrackingProxies' requires all entity types to be public, unsealed, have virtual properties, and have a public or protected constructor. 'UseLazyLoadingProxies' requires only the navigation properties be virtual.*
 
 **Ví dụ:**
 
