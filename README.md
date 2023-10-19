@@ -18,3 +18,5 @@
 * [5. Entity Framework Core 7.0 - Code First Approach - Migration](/4_efcore7_code_first_approach_migration.md)
 
 * [6. Entity Framework Core 7.0 - Code First Approach - Fluent API](/6_efcore7_code_first_approach_fluent_api.md)
+
+* [7. Entity Framework Core 7.0 - Code First Approach - Conventions](/7_efcore7_code_first_approach_conventions.md)
