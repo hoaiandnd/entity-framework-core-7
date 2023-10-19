@@ -129,7 +129,7 @@ Một số phương thức thường dùng để cấu hình với kiểu `DbCon
 | `ConfigureWarnings()` | Bỏ qua hoặc ném lỗi |
 | `UseLazyLoadingProxies()` | Sử dụng các proxy động để lazy-load |
 
->  Xem thêm các phương thức khác tại [DbContextOptionsBuilder Class](https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.dbcontextoptionsbuilder?view=efcore-7.0).
+>  Xem thêm các phương thức khác tại [**DbContextOptionsBuilder Class**](https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.dbcontextoptionsbuilder?view=efcore-7.0).
 
 Các phương thức trên sẽ được đề cập chi tiết lần lượt trong các tài liệu sau, ở những nội dung liên quan.
 
@@ -138,6 +138,6 @@ Các phương thức trên sẽ được đề cập chi tiết lần lượt tr
 Phương thức `OnModelCreating()` được dùng để cấu hình các bảng dữ liệu sinh ra từ lớp thực thể về các 
 ràng buộc, khóa chính, khóa ngoại, mối quan hệ, ...
 
-Nội dung về phương thức `OnModelCreating()` sẽ được trình bày trong nội dung về [Fluent API]().
+Nội dung về phương thức `OnModelCreating()` sẽ được trình bày trong nội dung về [**Fluent API**](/6_efcore7_code_first_approach_fluent_api.md).
 
 
