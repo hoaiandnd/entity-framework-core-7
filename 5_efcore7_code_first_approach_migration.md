@@ -66,10 +66,12 @@ khi xác nhận, ta có thể sử dụng lệnh sau:
     Remove-Migration
 ```
 
-**Lưu ý:** Ta chỉ có thể xóa Migration gần nhất nếu như Migration đó chưa được xác nhận, chưa được ghi 
+> [!WARNING]
+> Ta chỉ có thể xóa Migration gần nhất nếu như Migration đó chưa được xác nhận, chưa được ghi 
 nhận trong CSDL (chưa gọi lệnh `Update-Database`). Nếu không, ta sẽ nhận được thông báo lỗi tương tự như
 sau:
-> The migration '...' has already been applied to the database. Revert it and try again. If the migration has been applied to other databases, consider reverting its changes using a new migration instead.
+> 
+> *The migration '...' has already been applied to the database. Revert it and try again. If the migration has been applied to other databases, consider reverting its changes using a new migration instead.*
 
 ## Cập nhật CSDL theo Migration chỉ định - Revert migration
 
@@ -83,11 +85,11 @@ Lệnh `Update-Database` được dùng để cập nhật vào CSDL theo Migrat
 
 Trong đó, `[Migration name]` là phần tên của Migration (không bao gồm phần timestamp phía trước).
 
-**Lưu ý:**
-
-* Sau khi cập nhật, Migration được chỉ định không trở thành Migration gần nhất.
-
-* Toàn bộ các phương thức `Down()` từ Migration hiện tại đến Migration được chỉ định sẽ được gọi và thực thi (Rollback).
+> [!NOTE]
+>
+> * Sau khi cập nhật, Migration được chỉ định không trở thành Migration gần nhất.
+>
+> * Toàn bộ các phương thức `Down()` từ Migration hiện tại đến Migration được chỉ định sẽ được gọi và thực thi (Rollback).
 
 
 
