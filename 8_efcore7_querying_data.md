@@ -224,5 +224,153 @@ Ta có thể tải nhiều dữ liệu liên quan cho từng mối quan hệ b�
 
 Mỗi phương thức thức `Include()` sẽ tải các dữ liệu từ các mối quan hệ khác mà thực thể chính có.
 
-<img src="https://github.com/toabaobutchi/entity-framework-core-7/assets/147165208/cf161b9a-93f3-40ca-a9e8-cd86c7e29323" width="600px"/>
+**Ví dụ:**
+
+```
+      OrderDetail
+    |             |
+    |             |
+Include()      Include()
+    |             |
+    |             |
+  Orders       Product
+```
+
+Ta có thể sử dụng phương thức `Include()` như sau:
+
+```cs
+    db.OrderDetail.Single(od => od.Id == 1)
+                  .Include(od => od.Orders)
+                  .Include(od => od.Product);
+```
+
+#### Multiple levels including 
+
+Ta có thể dùng (nhiều) phương thức `ThenInclude()` sau khi gọi phương thức `Include()` để tải các dữ liệu đi sâu vào mối quan hệ.
+
+**Ví dụ:**
+
+```
+    OrderDetail
+        |--- Include() ---> Orders
+                            |--- ThenInclude() ---> Customer
+```
+Ta có thể sử dụng phương thức `ThenInclude()` như sau:
+
+```cs
+    db.OrderDetail.Single(od => od.Id == 1)
+                  .Include(od => od.Orders)
+                  .ThenInclude(od => od.Customer);
+```
+
+### Explicit Loading
+
+Để thực hiện tải dữ liệu liên quan theo cơ chế **Explicit Loading** (*tạm dịch*: Tải tường minh), ta sử dụng phương thức `Entry()` của lớp Context với cú pháp:
+
+```cs
+    Entry(object entity)
+    Entry<TEntity>(TEntity entity)
+```
+
+Trong đó, *`entity`* là thực thể có Reference Navigation hoặc Collection Navigation để tải dữ liệu.
+
+Phương thức `Entry()` trả về kiểu `EntityEntry<TEntity>` cung cấp 2 phương thức cần cho Explicit Loading:
+
+* `Reference<TProperty>()` dùng để tải dữ liệu cho **Reference Navigation**:
+
+```cs
+    Reference<TEntity>(string propertyName)
+    Reference<TProperty>(Expression<Func<TEntity,TProperty?>> propertyExpression)
+```
+
+* `Collection<TProperty>()` dùng để tải dữ liệu cho **Collection Navigation**:
+
+```cs
+    Collection<TEntity>(string propertyName)
+    Collection<TProperty>(Expression<Func<TEntity, IEnumerable<TProperty>>> propertyExpression)
+```
+
+Sau khi gọi một trong 2 phương thức trên, ta sử dụng phương thức `Load()` để tải dữ liệu chỉ định.
+
+**Ví dụ:**
+
+```cs
+    var db = new HumanResourceContext(); // DbContext instance
+
+    var emp = db.Employees.Single(e => e.Id == 1);
+    db.Entry<Employee>(emp).Reference(e => e.Department).Load();
+
+    var dep = db.Departments.Single(d => d.Id == 1);
+    db.Entry<Department>(dep).Collection(d => d.Employees).Load();
+```
+
+Sau khi gọi phương thức `Reference<TProperty>()` hay `Collection<TProperty>()`, ta có thể gọi phương thức `Query()` để tiếp tục thực hiện các truy vấn LINQ trên dữ liệu tải được.
+
+**Ví dụ:**
+
+```cs
+    var db = new HumanResourceContext(); // DbContext instance
+
+    var dep = db.Departments.Single(d => d.Id == 1);
+    db.Entry<Department>(dep)
+        .Collection(d => d.Employees)
+        .Query() // start using LINQ
+        .Where(e => e.Salary >= 1500) // filter employees have salary greater than 1500
+        .ToList();
+```
+
+### Lazy loading
+
+**Lazy Loading** (*tạm dịch*: Tải lười biếng) là cơ chế tải các dữ liệu liên quan chỉ khi dữ liệu đó được yêu cầu dùng đến. EF Core sử dụng cơ chế tương tự trên câu truy vấn LINQ, tuy nhiên việc sử dụng dữ liệu sau truy vấn sẽ không được tự động tải.
+
+Có 2 cách để triển khai Lazy Loading trong EF Core:
+
+* Sử dụng Proxy (cách đơn giản nhất).
+
+* Không sử dụng Proxy.
+
+Nội dung phần này sẽ trình bày nội dung **Lazy Loading sử dụng Proxy**.
+
+> Nội dung còn lại xem tại [**Lazy Loading without Proxies**](https://learn.microsoft.com/en-us/ef/core/querying/related-data/lazy#lazy-loading-without-proxies).
+
+Để sử dụng Proxy cho Lazy Loading, ta sẽ cài đặt gói NuGet `Microsoft.EntityFrameworkCore.Proxies`. Ở đây ta cài đặt bằng PMC (Package Manager Console) với lệnh sau:
+
+```console
+    Install-Package Microsoft.EntityFrameworkCore.Proxies
+```
+Sau khi cài đặt gói, hãy sử dụng phương thức `UseLazyLoadingProxies()` trong phương thức `OnConfiguring()` thuộc lớp Context.
+
+```cs
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseLazyLoadingProxies().UseSqlServer("<ConnectionString>");
+    }
+```
+
+> [!Warning]
+> Các Reference Navigation và Collection Navigation phải là các thuộc tính có thể ghi đè, tức là được khai báo với từ khóa `virtual`. Nếu không khi tạo và cập nhật Migration, ta sẽ nhận thông báo lỗi tương tự như sau:
+>
+> *Property '<property name>' is not virtual. 'UseChangeTrackingProxies' requires all entity types to be public, unsealed, have virtual properties, and have a public or protected constructor. 'UseLazyLoadingProxies' requires only the navigation properties be virtual.*
+
+**Ví dụ:**
+
+```cs
+    public class Employee
+    {
+        // other properties ...
+        public virtual Department Department { get; set; }
+    }
+
+    public class Department
+    {
+        // other properties ...
+        public virtual ICollection<Employee> Employees { get; set; }
+    }
+```
+
+Các Reference Navigation và Collection Navigation đã được cấu hình để khi thực hiện gọi thì mới tải dữ liệu.
+
+> [!Warning]
+>
+>  Hiện tại, tính năng từ gói `Microsoft.EntityFrameworkCore.Proxies` đang không hoạt động đúng và không ổn định (dữ liệu liên quan được tải đầy đủ ngay cả khi không gọi đến Reference Navigation hay Collection Navigation). Vui lòng cân nhắc quản lý dữ liệu bằng Eager và Explicit Loading.
 
