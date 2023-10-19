@@ -1,8 +1,8 @@
 # Entity Framework Core 7.0 - Database First Approach
 
 
-* Tài liệu gốc: https://learn.microsoft.com/en-us/ef/core/
-* Tải và cài đặt Visual Studio 2022 tại: https://visualstudio.microsoft.com/vs/
+* Tài liệu gốc: **https://learn.microsoft.com/en-us/ef/core/**
+* Tải và cài đặt Visual Studio 2022 tại: **https://visualstudio.microsoft.com/vs/**
 * Kiến thức yêu cầu:
     * LINQ To Objects
     * LINQ To Entities (LINQ To SQL) - *Không bắt buộc*
@@ -21,11 +21,11 @@ Gần như những gì cơ bản nhất của EF6 được giữ lại ở EF Co
 
 [^1]: ORM (Object/Relational Mapping) là một nền tảng ánh xạ cơ sở dữ liệu với các lớp đối tượng, cho phép lập trình viên chỉ cần thao tác với đối tượng mà không cần yêu cầu nhiều kỹ năng về SQL.
 
-Tuy nhiên, vẫn có một số sự khác nhau giữa EF6 và EF Core. Xem chi tiết tại: https://learn.microsoft.com/vi-vn/ef/efcore-and-ef6/
+Tuy nhiên, vẫn có một số sự khác nhau giữa EF6 và EF Core. Xem chi tiết tại: **https://learn.microsoft.com/vi-vn/ef/efcore-and-ef6/**
 
 Phiên bản EF Core được giới thiệu mới nhất là EF Core 7.0 vào tháng 11/2022 dành cho .NET 6.
 
-EF Core hoạt động trên nhiều loại cơ sở dữ liệu như SQL Server, MySQL, PostgreSQL, ... dựa vào các [Database Providers](https://learn.microsoft.com/vi-vn/ef/core/providers/?tabs=dotnet-core-cli) (nhà cung cấp cơ sở dữ liệu).
+EF Core hoạt động trên nhiều loại cơ sở dữ liệu như SQL Server, MySQL, PostgreSQL, ... dựa vào các [**Database Providers**](https://learn.microsoft.com/vi-vn/ef/core/providers/?tabs=dotnet-core-cli) (nhà cung cấp cơ sở dữ liệu).
 
 EF Core hỗ trợ 2 hướng tiếp cận: *Code-first* và *Database-First*. Trong nội dung này, ta sẽ tìm hiểu cả 2 hướng tiếp cận này.
 
@@ -35,12 +35,12 @@ EF Core hỗ trợ 2 hướng tiếp cận: *Code-first* và *Database-First*. T
 * Gói EF Core Database Provider tương ứng. Với SQL Server là `Microsoft.EntityFrameworkCore.SqlServer`.
 * EF Core Tools: `Microsoft.EntityFrameworkCore.Tools`.
 
-Tùy vào cơ sở dữ liệu muốn sử dụng mà gói Database Provider cần cài đặt sẽ khác nhau, vì vậy hãy tìm kiếm các [gói Database Provider](https://learn.microsoft.com/vi-vn/ef/core/providers/?tabs=dotnet-core-cli) tương ứng.
+Tùy vào cơ sở dữ liệu muốn sử dụng mà gói Database Provider cần cài đặt sẽ khác nhau, vì vậy hãy tìm kiếm các [**gói Database Provider**](https://learn.microsoft.com/vi-vn/ef/core/providers/?tabs=dotnet-core-cli) tương ứng.
 
 ### Cài đặt bằng Package Manager Console - PMC
 
 * Chọn **Tools > NuGet Package Manager > Package Manager Console** để mở PMC.
-* Sử dụng lệnh `Install-Package` để cài đặt các gói NuGet mới nhất tìm thấy ở [NuGet Gallery](https://www.nuget.org/):
+* Sử dụng lệnh `Install-Package` để cài đặt các gói NuGet mới nhất tìm thấy ở [**NuGet Gallery**](https://www.nuget.org/):
 ```console
     Install-Package Microsoft.EntityFrameworkCore.SqlServer
     Install-Package Microsoft.EntityFrameworkCore.Tools
@@ -135,7 +135,7 @@ Lệnh `Scaffold-DbContext` có nhiều tham số dùng để chỉ định các
 | `-OutputDir <string>` | Thư mục / đường dẫn chứa các lớp thực thể khi tạo ra từ CSDL. Mặc định là đường dẫn gốc của Project |
 | `-ContextDir <string>` | Thư mục / đường dẫn chứa lớp Context. Mặc định dùng chung với `-OutputDir` (nếu có) hoặc đường dẫn gốc của Project |
 
-> Xem thêm các tham số khác tại [Scaffold-DbContext](https://learn.microsoft.com/en-us/ef/core/cli/powershell#scaffold-dbcontext).
+> Xem thêm các tham số khác tại [**Scaffold-DbContext**](https://learn.microsoft.com/en-us/ef/core/cli/powershell#scaffold-dbcontext).
 
 
 ### Chuỗi kết nối (Connection string) trong Visual Studio 2022
@@ -164,7 +164,7 @@ Với chuỗi kết nối nhận được, ta đã có thể dùng lệnh `Scaff
 > [!WARNING]
 > ***Vấn đề với Entity Framework Core 7.0***
 > 
-> Nếu sử dụng lệnh `Scaffold-DbContext` ở [phần trên](#chuỗi-kết-nối-connection-string-trong-visual-studio-2022), từ EF Core 7.0 ta sẽ nhận về thông báo lỗi sau khi gọi lệnh `Scaffold-DbContext`.
+> Nếu sử dụng lệnh `Scaffold-DbContext` ở [**phần trên**](#chuỗi-kết-nối-connection-string-trong-visual-studio-2022), từ EF Core 7.0 ta sẽ nhận về thông báo lỗi sau khi gọi lệnh `Scaffold-DbContext`.
 >
 > *A connection was successfully established with the server, but then an error occurred during the login process. (provider: SSL Provider, error: 0 - The certificate chain was issued by an authority that is not trusted.)*
 >
@@ -175,4 +175,4 @@ Với chuỗi kết nối nhận được, ta đã có thể dùng lệnh `Scaff
 >
 > * Thêm `Encrypt=False` vào chuỗi kết nối.
 >
-> Để xem thêm các vấn đề liên quan, hãy xem [Certificate Issue](https://learn.microsoft.com/en-us/troubleshoot/sql/database-engine/connect/certificate-chain-not-trusted?tabs=odbc-driver-18x).
+> Để xem thêm các vấn đề liên quan, hãy xem [**Certificate Issue**](https://learn.microsoft.com/en-us/troubleshoot/sql/database-engine/connect/certificate-chain-not-trusted?tabs=odbc-driver-18x).
