@@ -61,7 +61,8 @@ Có 3 cách để mở Manage NuGet Packages:
 
 Chọn tab **Browse** và tìm kiếm và tải 2 gói được nêu ở trên.
 
-**Gợi ý:** Nếu đã tải các gói từ NuGet về máy, hãy đưa (Copy hoặc Cut - Move) chúng vào thư mục `NuGet Packages` theo đường dẫn `C:\Program Files (x86)\Microsoft SDKs\NuGetPackages`.
+> [!Note]
+>  Nếu đã tải các gói từ NuGet về máy, hãy đưa chúng vào thư mục `NuGet Packages` theo đường dẫn `C:\Program Files (x86)\Microsoft SDKs\NuGetPackages`.
 
 ## Chuẩn bị cơ sở dữ liệu
 
