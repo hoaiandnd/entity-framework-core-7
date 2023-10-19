@@ -224,3 +224,4 @@ Ta có thể tải nhiều dữ liệu liên quan cho từng mối quan hệ b�
 
 Mỗi phương thức thức `Include()` sẽ tải các dữ liệu từ các mối quan hệ khác mà thực thể chính có.
 
+![Include Image](https://user-images.githubusercontent.com/147165208/276622656-8b989724-bb24-44a8-9966-1d2877fb77a3.png)
