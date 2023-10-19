@@ -122,7 +122,7 @@ Các phương thức thường dùng của lớp `PropertyBuilder`:
 | `UseIdentityColumn(int seed, int increment = 1)` | Xác định thuộc tính sử dụng tính năng `IDENTITY` trong SQL Server. | `[DatabaseGenerated]` |
 
 
-> Xem thêm các phương thức cấu hình khác tại [PropertyBuilder](https://learn.microsoft.com/enus/dotnet/api/microsoft.entityframeworkcore.metadata.builders.propertybuilder?view=efcore-7.0).
+> Xem thêm các phương thức cấu hình khác tại [PropertyBuilder](https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.metadata.builders.propertybuilder?view=efcore-7.0).
 
 Các phương thức của lớp `PropertyBuilder` đều trả về chính kiểu `PropertyBuilder`, do đó ta có thể gọi liên tiếp, nối chuỗi các phương thức cấu hình.
 
@@ -196,7 +196,7 @@ Các phương thức thường dùng của lớp `EntityTypeBuilder<TEntity>`:
     </tr>
 </table>
 
-> Xem thêm các phương thức khác tại [EntityTypeBuilder](https://learn.microsoft.com/enus/dotnet/api/microsoft.entityframeworkcore.metadata.builders.entitytypebuilder?view=efcore-7.0).
+> Xem thêm các phương thức khác tại [EntityTypeBuilder](https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.metadata.builders.entitytypebuilder?view=efcore-7.0).
 
 
 Để xác định nhiều khóa chính với tham số *`keyExpression`*, ta có thể trả về đối tượng ẩn danh gồm nhiều thuộc tính làm khóa chính.
