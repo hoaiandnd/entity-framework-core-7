@@ -377,4 +377,95 @@ Ta khai báo lớp `Teacher` và `Student` như sau để thực hành nội dun
 
 Trong đó, phương thức `HasOne<TRelatedEntity>()` được dùng bắt đầu với lớp thực thể con – lớp chứa khóa ngoại.
 
+**Ví dụ:**
+```cs
+    modelBuilder.Entity<Student>
+        .HasOne<Teacher>(student => student.Teacher) ... // reference navigation của lớp 'Student'
+```
+
+Theo sau phương thức `HasOne<TRelatedEntity>()` là `WithMany()` để chỉ ra tập hợp các thực thể con từ lớp 
+thực thể cha với cú pháp:
+
+```cs
+    WithMany(Expression<Func<TRelatedEntity, IEnumerable<TEntity>?>>? navigationExpression)
+```
+
+**Ví dụ:**
+
+```cs
+    modelBuilder.Entity<Student>
+        .HasOne<Teacher>(student => student.Teacher)
+        .WithMany(teacher => teacher.Students) ...
+```
+
+Phương thức trên trả về kiểu dữ liệu `ReferenceCollectionBuilder<TPrincipalEntity,TDependentEntity>`.
+
+Cuối cùng gọi phương thức `HasForeignKey()` để chỉ ra thuộc tính khóa ngoại từ lớp thực thể con với cú 
+pháp:
+
+```cs
+    HasForeignKey(Expression<Func<TDependentEntity, object?>> foreignKeyExpression)
+    HasForeignKey (params string[] foreignKeyPropertyNames)
+```
+
+**Ví dụ:**
+
+```cs
+    modelBuilder.Entity<Student>
+        .HasOne<Teacher>(student => student.Teacher)
+        .WithMany(teacher => teacher.Students)
+        .HasForeignKey(student => student.TeacherId);
+```
+
+Nếu có nhiều thuộc tính khóa ngoại, biểu thức Lambda có thể trả về đối tượng ẩn danh gồm nhiều thuộc 
+tính làm khóa ngoại, ví dụ `x => new { x.FK1, x.FK2 }`.
+
+Trong trường hợp lớp thực thể không chứa thuộc tính khóa ngoại, ta cũng có thể tạo ra thuộc tính khóa 
+ngoại mới bằng cú pháp thứ 2 `HasForeignKey(params string[])`. Khi chỉ định tên thuộc tính khóa ngoại 
+không tồn tại, EF Core sẽ tự tạo ra thuộc tính khóa ngoại mới với tên được cung cấp.
+
+**Ví dụ:**
+
+```cs
+    // giả sử lớp 'Student' chưa có thuộc tính khóa ngoại 'TeacherId'
+    modelBuilder.Entity<Student>
+        .HasOne<Teacher>(student => student.Teacher)
+        .WithMany(teacher => teacher.Students)
+        .HasForeignKey("TeacherId");
+```
+
+Ta cũng có thể cấu hình bắt đầu từ lớp thực thể cha (lớp chứa tập hợp) bằng phương thức 
+`HasMany<TRelatedEntity>()` và `WithOne()` thay cho phương thức `HasOne<TRelatedEntity>()` và `WithMany()`.
+
+```cs
+    HasMany<TRelatedEntity>(Expression<Func<TEntity,IEnumerable<TRelatedEntity>?>>? navigationExp)
+    HasMany<TRelatedEntity> (string? navigationName)
+```
+
+Phương thức trên trả về kiểu `CollectionNavigationBuilder<TEntity,TRelatedEntity>`. Phương thức 
+`WithOne()` dùng để chỉ định Reference Navigation cho lớp thực thể con với cú pháp:
+
+```cs
+    WithOne(Expression<Func<TRelatedEntity,TEntity?>>? navigationExpression)
+```
+
+**Ví dụ:**
+
+```cs
+    modelBuilder.Entity<Teacher>
+        .HasMany<Student>(teacher => teacher.Students)
+        .WithOne(student => student.Teacher)
+        .HasForeignKey(student => student.TeacherId);
+```
+
+### Cấu hình quan hệ N - N
+
+Ở nội dung này, ta sẽ sử dụng cách triển khai mối quan hệ N – N cơ bản nhất trong EF Core mà không sử
+dụng lớp thực thể trung gian (hay **Join Entity Type**). Vì nếu sử dụng lớp thực thể trung gian, ta sẽ chỉ cấu 
+hình 2 mối quan hệ 1 – N (Xem lại phần [Cấu hình quan hệ 1 – N](#cấu-hình-quan-hệ-1---N)).
+
+Khi không sử dụng lớp trung gian, một bảng trung gian sẽ được tạo bởi EF Core đến CSDL gồm 2 trường 
+là khóa của 2 bảng liên quan. Nếu như bảng trung gian cần lưu trữ một số thông tin khác ngoài 2 khóa, ta 
+nên khai báo lớp trung gian.
+
 
