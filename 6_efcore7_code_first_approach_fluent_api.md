@@ -487,3 +487,19 @@ Khai báo 2 lớp thực thể `Orders` và `Product` để thực hành mối q
         public ICollection<Order> Orders { get; set; } // collection navigation
 ```
 
+Để cấu hình mối quan hệ N – N không có lớp trung gian, ta sử dụng phương thức 
+`HasMany<TRelatedEntity>()` và theo sau là phương thức `WithMany()`.
+
+**Ví dụ:**
+
+```cs
+    modelBuilder.Entity<Orders>
+        .HasMany<Product>(order => order.Products)
+        .WithMany(product => product.Orders);
+```
+
+Để cấu hình đầy đủ và tường minh cho bảng trung gian sẽ được tạo ra, ta có thể tiếp tục sử dụng phương 
+thức `UseEntity()`.
+
+Xem cách sử dụng phương thức `UseEntity()` tại [UseEntity](https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.metadata.builders.collectioncollectionbuilder.usingentity?view=efcore-7.0).
+
