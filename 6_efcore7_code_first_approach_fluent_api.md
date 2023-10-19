@@ -468,4 +468,22 @@ Khi không sử dụng lớp trung gian, một bảng trung gian sẽ được t
 là khóa của 2 bảng liên quan. Nếu như bảng trung gian cần lưu trữ một số thông tin khác ngoài 2 khóa, ta 
 nên khai báo lớp trung gian.
 
+Khai báo 2 lớp thực thể `Orders` và `Product` để thực hành mối quan hệ N – N như sau:
+
+```cs
+    public class Orders
+    {
+        public int Id { get; set; }
+        public DateTime? DateOfOrder { get; set; }
+
+        public ICollection<Product> Products { get; set; } // collection navigation
+    }
+
+    public class Product {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public double Price { get; set; }
+
+        public ICollection<Order> Orders { get; set; } // collection navigation
+```
 
