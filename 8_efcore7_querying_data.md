@@ -252,7 +252,9 @@ Ta có thể dùng (nhiều) phương thức `ThenInclude()` sau khi gọi phư�
 
 ```
     OrderDetail
+        |
         |--- Include() ---> Orders
+                            |
                             |--- ThenInclude() ---> Customer
 ```
 Ta có thể sử dụng phương thức `ThenInclude()` như sau:
