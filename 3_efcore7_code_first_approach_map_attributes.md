@@ -145,8 +145,8 @@ Ta có các attribute sau thường dùng để ràng buộc thuộc tính
 </table>
 
 > Xem thêm các attribute khác tại:
-> * [Microsoft.EntityFrameworkCore Namespace](https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore?view=efcore-7.0)
-> * [System.ComponentModel.DataAnnotations Namespace](https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.dataannotations?view=net-7.0)
+> * [**Microsoft.EntityFrameworkCore Namespace**](https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore?view=efcore-7.0)
+> * [**System.ComponentModel.DataAnnotations Namespace**](https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.dataannotations?view=net-7.0)
 
 Một thuộc tính có thể chỉ định nhiều attribute.
 * Tách thành nhiều attribute:
@@ -295,7 +295,7 @@ Với tham số *`name`* là:
 }
 ```
 
-> Với quan hệ N – N, hãy xem ở tài liệu về [Fluent API]().
+> Với quan hệ N – N, hãy xem ở tài liệu về [**Fluent API**](/6_efcore7_code_first_approach_fluent_api.md).
 
 ### Giá trị tự động tạo
 
