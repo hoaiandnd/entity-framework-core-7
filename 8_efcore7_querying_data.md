@@ -239,9 +239,9 @@ Include()      Include()
 Ta có thể sử dụng phương thức `Include()` như sau:
 
 ```cs
-    db.OrderDetail.Single(od => od.Id == 1)
-                  .Include(od => od.Orders)
-                  .Include(od => od.Product);
+    db.OrderDetail.Single(detail => detail.Id == 1)
+                  .Include(detail => detail.Orders)
+                  .Include(detail => detail.Product);
 ```
 
 #### Multiple levels including 
@@ -260,9 +260,9 @@ Ta có thể dùng (nhiều) phương thức `ThenInclude()` sau khi gọi phư�
 Ta có thể sử dụng phương thức `ThenInclude()` như sau:
 
 ```cs
-    db.OrderDetail.Single(od => od.Id == 1)
-                  .Include(od => od.Orders)
-                  .ThenInclude(od => od.Customer);
+    db.OrderDetail.Single(detail => detail.Id == 1)
+                  .Include(detail => detail.Orders)
+                  .ThenInclude(orders => orders.Customer);
 ```
 
 ### Explicit Loading
