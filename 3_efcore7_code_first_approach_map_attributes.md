@@ -238,8 +238,8 @@ Trong đó:
         // other properties ...
     }
 ```
-
-Nếu sử dụng cả `[Key]` và `[PrimaryKey]` được chỉ định cùng nhau, attribute `[PrimaryKey]` sẽ được ưu tiên.
+> [!Note]
+> Nếu sử dụng cả `[Key]` và `[PrimaryKey]` được chỉ định cùng nhau, attribute `[PrimaryKey]` sẽ được ưu tiên.
 
 ### Khóa ngoại
 
