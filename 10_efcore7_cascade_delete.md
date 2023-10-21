@@ -56,7 +56,7 @@ hoặc **Explicit Loading** với phương thức `Entry<TEntity>()`. Nếu khô
 
 ## Configure Cascade Behaviors
 
-Hành vi Cascade có thể được cấu hình bằng cách sử dụng [**Fluent API**]() với phương thức `OnDelete()`.
+Hành vi Cascade có thể được cấu hình bằng cách sử dụng [**Fluent API**](https://github.com/toabaobutchi/entity-framework-core-7/blob/main/6_efcore7_code_first_approach_fluent_api.md) với phương thức `OnDelete()`.
 
 **Ví dụ:**
 
