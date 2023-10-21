@@ -39,7 +39,7 @@ Trong đó:
 ```
 
 > [!Important]
-> **Cascade Delete** được cấu hình mặc định bởi [**Conventions**](/7_efcore7_code_first_approach_conventions.md). Nếu khai báo thuộc tính khóa ngoại 
+> **Cascade Delete** được cấu hình mặc định bởi [**Conventions**](./7_efcore7_code_first_approach_conventions.md). Nếu khai báo thuộc tính khóa ngoại 
 với kiểu nullable (mối quan hệ tùy chọn) thì hành vi Cascade mặc định không còn hiệu lực nữa. Muốn sử
 dụng **Cascading nulls**, ta phải tải (các) thực thể con bằng cơ chế **Eager Loading** với phương thức `Include()`
 hoặc **Explicit Loading** với phương thức `Entry<TEntity>()`. Nếu không, một ngoại lệ sẽ được ném ra.
