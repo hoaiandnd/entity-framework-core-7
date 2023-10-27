@@ -166,7 +166,7 @@ Với chuỗi kết nối nhận được, ta đã có thể dùng lệnh `Scaff
 > 
 > Nếu sử dụng lệnh `Scaffold-DbContext` ở [**phần trên**](#chuỗi-kết-nối-connection-string-trong-visual-studio-2022), từ EF Core 7.0 ta sẽ nhận về thông báo lỗi sau khi gọi lệnh `Scaffold-DbContext`.
 >
-> *A connection was successfully established with the server, but then an error occurred during the login process. (provider: SSL Provider, error: 0 - The certificate chain was issued by an authority that is not trusted.)*
+> ***A connection was successfully established with the server, but then an error occurred during the login process. (provider: SSL Provider, error: 0 - The certificate chain was issued by an authority that is not trusted.)***
 >
 > Để giải quyết lỗi trên, ta có thể thực hiện 1 trong 3 cách sau đây:
 > * Cài đặt một chứng chỉ hợp lệ trên máy chủ. Cách làm này rất phức tạp vì cần một nhà cung cấp dịch vụ có thẩm quyền.
