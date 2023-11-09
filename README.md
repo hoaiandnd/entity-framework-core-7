@@ -21,6 +21,6 @@
 
 * [7. Entity Framework Core 7.0 - Code First Approach - Conventions](/7_efcore7_code_first_approach_conventions.md)
 
-* [8. Entity Framework Core 7.0 - Querying Data](/7_efcore7_code_first_approach_querying_data.md)
+* [8. Entity Framework Core 7.0 - Querying Data](/8_efcore7_code_first_approach_querying_data.md)
 
-* [9. Entity Framework Core 7.0 - Save Data](/7_efcore7_code_first_approach_save_data.md)
+* [9. Entity Framework Core 7.0 - Save Data](/9_efcore7_code_first_approach_save_data.md)
