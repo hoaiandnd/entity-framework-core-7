@@ -4,7 +4,7 @@
 Schema) để giữ nó được đồng bộ với dữ liệu của ứng dụng trong khi vẫn bảo quản các dữ liệu sẵn có từ
 CSDL.
 
-EF Core Migration là tập các lệnh có thể thực thi **Package Manager Console** trong Visual Studio. Các nội 
+EF Core Migration là tập các lệnh có thể thực thi trong **Package Manager Console** trong Visual Studio. Các nội 
 dung bên dưới sẽ lần lượt những lệnh có thể dùng trong EF Core Migration.
 
 ## Tạo Migration đầu tiên và Database
