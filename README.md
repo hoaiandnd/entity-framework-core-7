@@ -24,3 +24,5 @@
 * [8. Entity Framework Core 7.0 - Querying Data](/8_efcore7_code_first_approach_querying_data.md)
 
 * [9. Entity Framework Core 7.0 - Save Data](/9_efcore7_code_first_approach_save_data.md)
+
+* [10. Entity Framework Core 7.0 - Cascade Delete](/10_efcore7_code_first_approach_cascade_delete.md)
