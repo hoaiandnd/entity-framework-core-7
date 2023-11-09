@@ -1,7 +1,7 @@
 # Entity Framework Core 7.0
 
 * Tài liệu gốc: **https://learn.microsoft.com/en-us/ef/core/**
-* Tải và cài đặt Visual Studio 2022 tại: **https://visualstudio.microsoft.com/vs/**
+* Tải và cài đặt **Visual Studio 2022** tại: **https://visualstudio.microsoft.com/vs/**
 * Kiến thức yêu cầu:
     * [**LINQ To Objects**](https://github.com/toabaobutchi/language-intergrated-query)
     * **LINQ To Entities (LINQ To SQL)** - *Không bắt buộc*
