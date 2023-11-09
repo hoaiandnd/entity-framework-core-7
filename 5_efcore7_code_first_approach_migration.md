@@ -29,8 +29,10 @@ EF Core sẽ tự động tạo ra thư mục tên `Migrations` trong dự án h
 Trong đó, các file sẽ được tạo trong thư mục `Migration`:
 
 * `<timestamp>_<migration name>.cs`: là file Migration chính chứa 2 phương thức `Up()` và `Down()`.
-Phương thức `Up()` dùng để tạo hoặc cập nhật CSDL với lệnh `Update-Database`. Phương thức `Down()` được 
-dùng để hoàn tác lại thao tác của `Up()` bằng các sử dụng lệnh `Update-Database [Migration name]`.
+
+    * Phương thức `Up()` dùng để tạo hoặc cập nhật CSDL với lệnh `Update-Database`.
+
+    * Phương thức `Down()` được dùng để hoàn tác lại thao tác của `Up()` bằng các sử dụng lệnh `Update-Database [Migration name]`.
 
 * `<timestamp>_<migration name>.Design.cs`: Chứa các thông tin được sử dụng bởi EF Core.
 
