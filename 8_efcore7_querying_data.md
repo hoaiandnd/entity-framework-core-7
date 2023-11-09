@@ -222,7 +222,7 @@ Tuy nhiên, không có từ khóa nào thay thế cho phương thức `Include()
 
 Ta có thể tải nhiều dữ liệu liên quan cho từng mối quan hệ bằng cách gọi nhiều phương thức `Include()`.
 
-Mỗi phương thức thức `Include()` sẽ tải các dữ liệu từ các mối quan hệ khác mà thực thể chính có.
+Mỗi phương thức `Include()` sẽ tải các dữ liệu từ các mối quan hệ khác mà thực thể chính có.
 
 **Ví dụ:**
 
