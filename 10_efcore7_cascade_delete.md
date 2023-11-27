@@ -79,3 +79,4 @@ Trong đó, [`DeleteBehavior`](https://learn.microsoft.com/en-us/dotnet/api/micr
 >[!Note]
 > Phương thức `OnDelete()` có thể gọi ra từ phương thức `WithOne()` hoặc `WithMany()`.
 
+Một khi đã cấu hình lại hành vi xoá, ta phải thực hiện tải theo các bản ghi con khi thực hiện xoá bản ghi cha.
