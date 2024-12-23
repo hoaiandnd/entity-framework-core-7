@@ -118,45 +118,45 @@ Với hướng tiếp cận Database First, ta cần có sẵn cơ sở dữ li�
 
 Đoạn mã sau sẽ tạo và cung cấp các dữ liệu giả lập:
 ```SQL
-    CREATE DATABASE QLNhanSu
-    GO
-    USE QLNhanSu
-    GO
-    CREATE TABLE NhanVien (
-        manv VARCHAR(10) PRIMARY KEY,
-        tennv NVARCHAR(50),
-        luong DECIMAL,
-        mapb VARCHAR(10)
-    )
-    GO
-    CREATE TABLE PhongBan (
-        mapb VARCHAR(10) PRIMARY KEY,
-        tenpb NVARCHAR(50)
-    )
-    GO
-    ALTER TABLE NhanVien ADD CONSTRAINT FK_NV_PB FOREIGN KEY(mapb) REFERENCES PhongBan(mapb)
-    GO
+CREATE DATABASE QLNhanSu
+GO
+USE QLNhanSu
+GO
+CREATE TABLE NhanVien (
+   manv VARCHAR(10) PRIMARY KEY,
+   tennv NVARCHAR(50),
+   luong DECIMAL,
+   mapb VARCHAR(10)
+)
+GO
+CREATE TABLE PhongBan (
+   mapb VARCHAR(10) PRIMARY KEY,
+   tenpb NVARCHAR(50)
+)
+GO
+ALTER TABLE NhanVien ADD CONSTRAINT FK_NV_PB FOREIGN KEY(mapb) REFERENCES PhongBan(mapb)
+GO
 
-    -- dữ liệu giả lập cho phòng ban
-    INSERT INTO PhongBan VALUES('PB001', 'Phòng ban 1')
-    INSERT INTO PhongBan VALUES('PB002', 'Phòng ban 2')
-    INSERT INTO PhongBan VALUES('PB003', 'Phòng ban 3')
-    INSERT INTO PhongBan VALUES('PB004', 'Phòng ban 4')
+-- dữ liệu giả lập cho phòng ban
+INSERT INTO PhongBan VALUES('PB001', 'Phòng ban 1')
+INSERT INTO PhongBan VALUES('PB002', 'Phòng ban 2')
+INSERT INTO PhongBan VALUES('PB003', 'Phòng ban 3')
+INSERT INTO PhongBan VALUES('PB004', 'Phòng ban 4')
 
-    -- dữ liệu giả lập cho nhân viên
-    INSERT INTO NhanVien VALUES('NV00001', N'Nguyễn Văn A', 15000, 'PB001')
-    INSERT INTO NhanVien VALUES('NV00002', N'Lê Thị B', 14500, 'PB002')
-    INSERT INTO NhanVien VALUES('NV00003', N'Trần Thị C', 15050, 'PB003')
-    INSERT INTO NhanVien VALUES('NV00004', N'Võ Văn D', 12000, 'PB004')
-    INSERT INTO NhanVien VALUES('NV00005', N'Nguyễn Thị E', 5000, 'PB001')
-    INSERT INTO NhanVien VALUES('NV00006', N'Trần Văn F', 3500, 'PB001')
-    INSERT INTO NhanVien VALUES('NV00007', N'Đoàn Thị G', 15100, 'PB003')
-    INSERT INTO NhanVien VALUES('NV00008', N'Nguyễn Văn H', 1790, 'PB004')
-    INSERT INTO NhanVien VALUES('NV00009', N'Nguyễn I', 2000, 'PB002')
-    INSERT INTO NhanVien VALUES('NV00010', N'Trần Văn J', 25000, 'PB001')
-    INSERT INTO NhanVien VALUES('NV00011', N'Nguyễn Ngọc K', 35600, 'PB003')
-    INSERT INTO NhanVien VALUES('NV00012', N'Ngô Thị L', 15000, 'PB001')
-    INSERT INTO NhanVien VALUES('NV00013', N'Nguyễn Toàn M', 17000, 'PB004')
+-- dữ liệu giả lập cho nhân viên
+INSERT INTO NhanVien VALUES('NV00001', N'Nguyễn Văn A', 15000, 'PB001')
+INSERT INTO NhanVien VALUES('NV00002', N'Lê Thị B', 14500, 'PB002')
+INSERT INTO NhanVien VALUES('NV00003', N'Trần Thị C', 15050, 'PB003')
+INSERT INTO NhanVien VALUES('NV00004', N'Võ Văn D', 12000, 'PB004')
+INSERT INTO NhanVien VALUES('NV00005', N'Nguyễn Thị E', 5000, 'PB001')
+INSERT INTO NhanVien VALUES('NV00006', N'Trần Văn F', 3500, 'PB001')
+INSERT INTO NhanVien VALUES('NV00007', N'Đoàn Thị G', 15100, 'PB003')
+INSERT INTO NhanVien VALUES('NV00008', N'Nguyễn Văn H', 1790, 'PB004')
+INSERT INTO NhanVien VALUES('NV00009', N'Nguyễn I', 2000, 'PB002')
+INSERT INTO NhanVien VALUES('NV00010', N'Trần Văn J', 25000, 'PB001')
+INSERT INTO NhanVien VALUES('NV00011', N'Nguyễn Ngọc K', 35600, 'PB003')
+INSERT INTO NhanVien VALUES('NV00012', N'Ngô Thị L', 15000, 'PB001')
+INSERT INTO NhanVien VALUES('NV00013', N'Nguyễn Toàn M', 17000, 'PB004')
 ```
 
 ## Kết nối CSDL
@@ -182,7 +182,7 @@ Lệnh `Scaffold-DbContext` có nhiều tham số dùng để chỉ định các
 
 ### Visual Studio Code
 
-Đối với .NET CLI, ta sử dụng lệnh `dotnet ef dbcontext scaffold` với cú pháp:
+Đối với .NET CLI, ta sử dụng lệnh [**`dotnet ef dbcontext scaffold`**](https://learn.microsoft.com/en-us/ef/core/cli/dotnet#dotnet-ef-dbcontext-scaffold) với cú pháp:
 
 ```console
 dotnet ef dbcontext scaffold <CONNECTION_STRING> <DATABASE_PROVIDER> [OPTIONS]
@@ -215,28 +215,60 @@ Trong đó:
      
 * Chọn **Advanced ...**, chuỗi kết nối được hiển thị phía cuối hộp thoại. Sao chép chuỗi nhận được và hủy các thao tác vừa thực hiện.
 
-Với chuỗi kết nối nhận được, ta đã có thể dùng lệnh `Scaffold-DbContext` để kết nối với CSDL.
+> Visual Studio Code không hỗ trợ lấy chuỗi kết nối.
+
+Chuỗi kết nối thông thường sẽ như sau:
+
+```
+Data Source=<server_name>;Initial Catalog=<database_name>; ...
+```
+
+Hoặc:
+
+```
+Server=<server_name>;Database=<database_name>; ...
+```
+
+Với chuỗi kết nối nhận được, ta đã có thể dùng lệnh `Scaffold-DbContext` hoặc `dotnet ef dbcontext scaffold` để kết nối với CSDL.
 
 **Ví dụ:**
 
 * Không chỉ định đường dẫn cho các lớp thực thể và lớp Context:
 
 ```console
-   Scaffold-DbContext 'Data Source=.\sqlexpress;Initial Catalog=QLNhanSu;Integrated Security=True' Microsoft.EntityFrameworkCore.SqlServer
+Scaffold-DbContext "Data Source=.\sqlexpress;Initial Catalog=QLNhanSu;Integrated Security=True" Microsoft.EntityFrameworkCore.SqlServer
 ```
+
+<details>
+<summary><b>▶️ Lệnh .NET CLI tương ứng</b></summary>
+
+```console
+dotnet ef dbcontext scaffold "Data Source=.\sqlexpress;Initial Catalog=QLNhanSu;Integrated Security=True" Microsoft.EntityFrameworkCore.SqlServer
+```
+
+</details>
 
 * Chỉ định đường dẫn cho các lớp thực thể và lớp Context
 
 ```console
-   Scaffold-DbContext 'Data Source=.\sqlexpress;Initial Catalog=QLNhanSu;Integrated Security=True;' Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -ContextDir Data
+Scaffold-DbContext "Data Source=.\sqlexpress;Initial Catalog=QLNhanSu;Integrated Security=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -ContextDir Data
 ```
+
+<details>
+<summary><b>▶️ Lệnh .NET CLI tương ứng</b></summary>
+
+```console
+dotnet ef dbcontext scaffold "Data Source=.\sqlexpress;Initial Catalog=QLNhanSu;Integrated Security=True" Microsoft.EntityFrameworkCore.SqlServer -o Models --context-dir Data
+```
+
+</details>
 
 > [!WARNING]
 > ***Vấn đề với Entity Framework Core 7.0***
 > 
-> Nếu sử dụng lệnh `Scaffold-DbContext`, từ EF Core 7.0 ta sẽ nhận về thông báo lỗi sau khi gọi lệnh `Scaffold-DbContext`.
+> Nếu sử dụng lệnh `Scaffold-DbContext` với các tham số như trên, từ EF Core 7.0 ta sẽ nhận về thông báo lỗi sau:
 >
-> ***A connection was successfully established with the server, but then an error occurred during the login process. (provider: SSL Provider, error: 0 - The certificate chain was issued by an authority that is not trusted.)***
+> > ***A connection was successfully established with the server, but then an error occurred during the login process. (provider: SSL Provider, error: 0 - The certificate chain was issued by an authority that is not trusted.)***
 >
 > Để giải quyết lỗi trên, ta có thể thực hiện 1 trong 3 cách sau đây:
 > * Cài đặt một chứng chỉ hợp lệ trên máy chủ. Cách làm này rất phức tạp vì cần một nhà cung cấp dịch vụ có thẩm quyền.
