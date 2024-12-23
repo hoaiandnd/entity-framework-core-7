@@ -161,6 +161,8 @@ Với hướng tiếp cận Database First, ta cần có sẵn cơ sở dữ li�
 
 ## Kết nối CSDL
 
+### Visual Studio
+
 Do EF Core được tạo ra nhằm phục vụ cho hướng tiếp cận Code-first, nên hướng tiếp cận Database-first không được hỗ trợ nhiều và đặc biệt là không thể thao tác với giao diện như EF6.
 
 Để tiếp cận theo hướng Database-first, ta sẽ sử dụng lệnh `Scaffold-DbContext` trong **Package Manager Console**.
@@ -169,16 +171,39 @@ Lệnh `Scaffold-DbContext` có nhiều tham số dùng để chỉ định các
 
 | Tham số | Mô tả |
 | --- | --- |
-| `-Connection <string>` | Chuỗi kết nối đến CSDL cần kết nối. **Đây là tham số bắt buộc và là tham số vị trí** |
+| `-Connection <string>` | Chuỗi kết nối (Connection string) đến CSDL cần kết nối. **Đây là tham số bắt buộc và là tham số vị trí** |
 | `-Provider <string>` | Tên gói Database Provider đang dùng. **Đây là tham số bắt buộc và là tham số vị trí** |
 | `-OutputDir <string>` | Thư mục / đường dẫn chứa các lớp thực thể khi tạo ra từ CSDL. Mặc định là đường dẫn gốc của Project |
 | `-ContextDir <string>` | Thư mục / đường dẫn chứa lớp Context. Mặc định dùng chung với `-OutputDir` (nếu có) hoặc đường dẫn gốc của Project |
 
 > Xem thêm các tham số khác tại [**Scaffold-DbContext**](https://learn.microsoft.com/en-us/ef/core/cli/powershell#scaffold-dbcontext).
 
+### Visual Studio Code
 
-### Chuỗi kết nối (Connection string) trong Visual Studio 2022
+Đối với .NET CLI, ta sử dụng lệnh `dotnet ef dbcontext scaffold` với cú pháp:
 
+```console
+dotnet ef dbcontext scaffold <CONNECTION_STRING> <DATABASE_PROVIDER> [OPTIONS]
+```
+
+Trong đó:
+
+- `<CONNECTION_STRING>` là chuỗi kết nối đến CSDL.
+
+- `<DATABASE_PROVIDER>` là database provider tương ứng với CSDL cần kết nối.
+
+- `[OPTIONS]` là các tham số tuỳ chọn có thể liệt kê một số như sau:
+
+| Tham số | Alias | Mô tả |
+| --- | --- | --- |
+| `--data-annotations` | `-d` | Sử dụng [**Data annotation**](https://github.com/hoaiandnd/entity-framework-core-7/blob/main/3_efcore7_code_first_approach_map_attributes.md) để cấu hình các lớp thực thể khi có thể. Nếu bỏ qua sẽ sử dụng [**Fluent API**](https://github.com/hoaiandnd/entity-framework-core-7/blob/main/6_efcore7_code_first_approach_fluent_api.md) để cấu hình. |
+| `--context <NAME>` | `-c` | Tên [**lớp context**](https://github.com/hoaiandnd/entity-framework-core-7/blob/main/4_efcore7_code_first_approach_context_class.md) sẽ được tạo ra. |
+| `--output-dir <PATH>`| `-o` | Thư mục / đường dẫn chứa các lớp thực thể khi tạo ra từ CSDL. Mặc định là đường dẫn gốc của Project. |
+| `--context-dir <PATH>`| | Thư mục / đường dẫn chứa lớp Context. Mặc định dùng chung với `--output-dir` (nếu có) hoặc đường dẫn gốc của Project. |
+
+### Connection string
+
+Để lấy được chuỗi kết nối một cách đơn giản trong Visual Studio, ta có thể thực hiện các bước sau:
 
 * Chọn **Views > Server Explorer** hoặc sử dụng tổ hợp phím `Ctrl` + `Alt` + ``` ` ```.
    
@@ -191,11 +216,15 @@ Lệnh `Scaffold-DbContext` có nhiều tham số dùng để chỉ định các
 Với chuỗi kết nối nhận được, ta đã có thể dùng lệnh `Scaffold-DbContext` để kết nối với CSDL.
 
 **Ví dụ:**
+
 * Không chỉ định đường dẫn cho các lớp thực thể và lớp Context:
+
 ```console
    Scaffold-DbContext 'Data Source=.\sqlexpress;Initial Catalog=QLNhanSu;Integrated Security=True' Microsoft.EntityFrameworkCore.SqlServer
 ```
+
 * Chỉ định đường dẫn cho các lớp thực thể và lớp Context
+
 ```console
    Scaffold-DbContext 'Data Source=.\sqlexpress;Initial Catalog=QLNhanSu;Integrated Security=True;' Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -ContextDir Data
 ```
@@ -203,7 +232,7 @@ Với chuỗi kết nối nhận được, ta đã có thể dùng lệnh `Scaff
 > [!WARNING]
 > ***Vấn đề với Entity Framework Core 7.0***
 > 
-> Nếu sử dụng lệnh `Scaffold-DbContext` ở [**phần trên**](#chuỗi-kết-nối-connection-string-trong-visual-studio-2022), từ EF Core 7.0 ta sẽ nhận về thông báo lỗi sau khi gọi lệnh `Scaffold-DbContext`.
+> Nếu sử dụng lệnh `Scaffold-DbContext`, từ EF Core 7.0 ta sẽ nhận về thông báo lỗi sau khi gọi lệnh `Scaffold-DbContext`.
 >
 > ***A connection was successfully established with the server, but then an error occurred during the login process. (provider: SSL Provider, error: 0 - The certificate chain was issued by an authority that is not trusted.)***
 >
