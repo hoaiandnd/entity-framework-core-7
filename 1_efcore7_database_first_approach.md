@@ -2,11 +2,32 @@
 
 
 * Tài liệu gốc: **https://learn.microsoft.com/en-us/ef/core/**
-* Tải và cài đặt Visual Studio 2022 tại: **https://visualstudio.microsoft.com/vs/**
+
+* Tải và cài đặt một trong hai công cụ sau:
+   
+   * [**Visual Studio**](https://visualstudio.microsoft.com/vs/)
+   
+   * [**Visual Studio Code**](https://code.visualstudio.com/) và các extension được đề cập tại [**đây**](https://github.com/hoaiandnd/aps.net-core-web-api-vscode).
+
 * Kiến thức yêu cầu:
-    * LINQ To Objects
+    
+    * [**LINQ To Objects**](https://github.com/hoaiandnd/language-intergrated-query)
+    
     * LINQ To Entities (LINQ To SQL) - *Không bắt buộc*
 
+---
+
+Mục nội dung:
+
+- [**Sơ lược về Entity Framework Core**](#s%C6%A1-l%C6%B0%E1%BB%A3c-v%E1%BB%81-entity-framework-core)
+
+- [**Cài đặt các gói cần thiết**](#c%C3%A0i-%C4%91%E1%BA%B7t-c%C3%A1c-g%C3%B3i-c%E1%BA%A7n-thi%E1%BA%BFt)
+
+- [**Chuẩn bị cơ sở dữ liệu**](#chu%E1%BA%A9n-b%E1%BB%8B-c%C6%A1-s%E1%BB%9F-d%E1%BB%AF-li%E1%BB%87u)
+
+- [**Kết nối CSDL**](#k%E1%BA%BFt-n%E1%BB%91i-csdl)
+
+---
 
 ## Sơ lược về Entity Framework Core
 
@@ -17,6 +38,7 @@ EF Core Là sự nâng cấp so với ***Entity Framework 6 (EF6)*** – phiên 
 Gần như những gì cơ bản nhất của EF6 được giữ lại ở EF Core: 
 
 * Là một ORM[^1] Framework (Object/Relational Mapping).
+
 * Hỗ trợ truy vấn LINQ.
 
 [^1]: ORM (Object/Relational Mapping) là một nền tảng ánh xạ cơ sở dữ liệu với các lớp đối tượng, cho phép lập trình viên chỉ cần thao tác với đối tượng mà không cần yêu cầu nhiều kỹ năng về SQL.
@@ -27,13 +49,15 @@ Phiên bản EF Core được giới thiệu mới nhất là EF Core 7.0 vào t
 
 EF Core hoạt động trên nhiều loại cơ sở dữ liệu như SQL Server, MySQL, PostgreSQL, ... dựa vào các [**Database Providers**](https://learn.microsoft.com/vi-vn/ef/core/providers/?tabs=dotnet-core-cli) (nhà cung cấp cơ sở dữ liệu).
 
-EF Core hỗ trợ 2 hướng tiếp cận: *Code-first* và *Database-First*. Trong nội dung này, ta sẽ tìm hiểu cả 2 hướng tiếp cận này.
+EF Core hỗ trợ 2 hướng tiếp cận: *Code-first* và *Database-First*. Trong nội dung này, ta sẽ tìm hiểu về cách tiếp cận Database-First.
 
 ## Cài đặt các gói cần thiết
 
 Để tạo ứng dụng .NET với Entity Framework Core, ta cần cài đặt 2 gói NuGet sau:
+
 * Gói EF Core Database Provider tương ứng. Với SQL Server là `Microsoft.EntityFrameworkCore.SqlServer`.
-* EF Core Tools: `Microsoft.EntityFrameworkCore.Tools`.
+
+* Gói NuGet `Microsoft.EntityFrameworkCore.Tools` hoặc `Microsoft.EntityFrameworkCore.Design`.
 
 Tùy vào cơ sở dữ liệu muốn sử dụng mà gói Database Provider cần cài đặt sẽ khác nhau, vì vậy hãy tìm kiếm các [**gói Database Provider**](https://learn.microsoft.com/vi-vn/ef/core/providers/?tabs=dotnet-core-cli) tương ứng.
 
@@ -42,14 +66,14 @@ Tùy vào cơ sở dữ liệu muốn sử dụng mà gói Database Provider c�
 * Chọn **Tools > NuGet Package Manager > Package Manager Console** để mở PMC.
 * Sử dụng lệnh `Install-Package` để cài đặt các gói NuGet mới nhất tìm thấy ở [**NuGet Gallery**](https://www.nuget.org/):
 ```console
-    Install-Package Microsoft.EntityFrameworkCore.SqlServer
-    Install-Package Microsoft.EntityFrameworkCore.Tools
+Install-Package Microsoft.EntityFrameworkCore.SqlServer
+Install-Package Microsoft.EntityFrameworkCore.Tools
 ```
 * Nếu muốn tải các gói ở phiên bản cụ thể, hãy sử dụng tham số `-Version <version>`.
 
 **Ví dụ:**
 ```console
-    Install-Package Microsoft.EntityFrameworkCore.SqlServer -Version 6.0.10
+Install-Package Microsoft.EntityFrameworkCore.SqlServer -Version 6.0.10
 ```
 
 ### Cài đặt bằng Manage NuGet Packages
@@ -63,6 +87,21 @@ Chọn tab **Browse** và tìm kiếm và tải 2 gói được nêu ở trên.
 
 > [!Note]
 >  Nếu đã tải các gói từ NuGet về máy, hãy đưa chúng vào thư mục `NuGet Packages` theo đường dẫn `C:\Program Files (x86)\Microsoft SDKs\NuGetPackages`.
+
+### Cài đặt trong Visual Studio Code
+
+Visual Studio Code có đồng thời có 2 cách tương ứng với Visual Studio:
+
+- Sử dụng .NET CLI: Dùng lệnh `dotnet add package`
+
+```console
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+dotnet add package Microsoft.EntityFrameworkCore.Tools
+```
+
+- Sử dụng giao diện từ extension [**NuGet Gallery**](https://marketplace.visualstudio.com/items?itemName=patcx.vscode-nuget-gallery): Mở `Intergrated Terminal` trong Visual Studio Code và chuyển sang tab `NUGET`
+
+![image](https://github.com/user-attachments/assets/0d598b91-10aa-448f-bbc4-c1b48fd4be1b)
 
 ## Chuẩn bị cơ sở dữ liệu
 
