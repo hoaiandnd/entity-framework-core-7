@@ -86,7 +86,7 @@ Có 3 cách để mở Manage NuGet Packages:
 Chọn tab **Browse** và tìm kiếm và tải 2 gói được nêu ở trên.
 
 > [!Note]
->  Nếu đã tải các gói từ NuGet về máy (file `*.nupkg`), hãy đưa chúng vào thư mục `NuGet Packages` theo đường dẫn `C:\Program Files (x86)\Microsoft SDKs\NuGetPackages`.
+>  Nếu đã tải các gói từ NuGet về máy (file `*.nupkg`), hãy đưa chúng vào thư mục `NuGet Packages` theo đường dẫn `C:\Program Files (x86)\Microsoft SDKs\NuGetPackages`. Trong hộp thoại `Manage NuGet Packages`, thay đổi mục `Package source` thành `Microsoft Visual Studio Offline Packages`.
 
 ### Cài đặt trong Visual Studio Code
 
