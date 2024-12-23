@@ -175,7 +175,9 @@ Lệnh `Scaffold-DbContext` có nhiều tham số dùng để chỉ định các
 | `-Provider <string>` | Tên gói Database Provider đang dùng. **Đây là tham số bắt buộc và là tham số vị trí** |
 | `-OutputDir <string>` | Thư mục / đường dẫn chứa các lớp thực thể khi tạo ra từ CSDL. Mặc định là đường dẫn gốc của Project |
 | `-ContextDir <string>` | Thư mục / đường dẫn chứa lớp Context. Mặc định dùng chung với `-OutputDir` (nếu có) hoặc đường dẫn gốc của Project |
-
+| `-DataAnnotations` | Sử dụng [**Data annotation**](https://github.com/hoaiandnd/entity-framework-core-7/blob/main/3_efcore7_code_first_approach_map_attributes.md) để cấu hình các lớp thực thể khi có thể. Nếu bỏ qua sẽ sử dụng [**Fluent API**](https://github.com/hoaiandnd/entity-framework-core-7/blob/main/6_efcore7_code_first_approach_fluent_api.md) để cấu hình. |
+| `-Context <string>` | Tên [**lớp context**](https://github.com/hoaiandnd/entity-framework-core-7/blob/main/4_efcore7_code_first_approach_context_class.md) sẽ được tạo ra. |
+| `-Force` | Ghi đè các file đã tồn tại. |
 > Xem thêm các tham số khác tại [**Scaffold-DbContext**](https://learn.microsoft.com/en-us/ef/core/cli/powershell#scaffold-dbcontext).
 
 ### Visual Studio Code
