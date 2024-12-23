@@ -165,7 +165,7 @@ public class Department
     public string Name { get; set; }
     
     // contain 'Employee' entities
-    public ICollection<Employee> Employees { get; set; } = []; // collection navigation
+    public List<Employee> Employees { get; set; } = []; // collection navigation
 }
 ```
 
@@ -181,6 +181,9 @@ public class Employee
 }
 ```
 
+> [!Tip]
+> Collection navigation nên khai báo bằng kiểu `List<T>` để tận dụng các phương thức như `AddRange()`, `RemoveRange()`, ... cho các thao tác sau này.
+
 > Mối quan hệ 1 - N cũng có các khái niệm về **Required Reference Navigation** và **Optional Reference Navigation** tương tự [mối quan hệ 1 - 1](#mối-quan-hệ-1---1).
 
 > Xem thêm các trường hợp khác trong thiết kế quan hệ 1 – N tại: [**One-to-Many**](https://learn.microsoft.com/en-us/ef/core/modeling/relationships/one-to-many).
@@ -194,24 +197,24 @@ Ta cũng có thể khai báo một lớp trung gian (Join Entity Type) để hi�
 
 **Ví dụ:**
 ```cs
-    public class Orders
-    {
-        // other properties ...
-        public ICollection<OrderDetail> Details { get; set; }
-    }
-    public class Product
-    {
-        // other properties ...
-        public ICollection<OrderDetail> Details { get; set; }
-    }
+public class Orders
+{
+    // other properties ...
+    public List<OrderDetail> Details { get; set; } = [];
+}
+public class Product
+{
+    // other properties ...
+    public List<OrderDetail> Details { get; set; } = [];
+}
 
-    // join entity type
-    public class OrderDetail 
-    { 
-        // other properties ...
-        public Order? Order { get; set; }
-        public Product? Product { get; set; }
-    }
+// join entity type
+public class OrderDetail 
+{ 
+    // other properties ...
+    public Order Order { get; set; }
+    public Product Product { get; set; }
+}
 ```
 
 Khi sử dụng kiểu trung gian, mối quan hệ N – N sẽ trở thành 2 quan hệ 1 – N giữa kiểu trung gian và 2 kiểu chính.
@@ -220,16 +223,16 @@ Tuy nhiên, EF Core có thể giấu đi kiểu trung gian và có thể kiểm 
 
 **Ví dụ:**
 ```cs
-    public class Orders
-    {
-        // other properties ...
-        public ICollection<Product> Products { get; set; }
-    }
-    public class Product
-    {
-        // other properties ...
-        public ICollection<Orders> Orders { get; set; }
-    }
+public class Orders
+{
+    // other properties ...
+    public List<Product> Products { get; set; } = [];
+}
+public class Product
+{
+    // other properties ...
+    public List<Orders> Orders { get; set; } = [];
+}
 ```
 
 Việc thiết kế lớp thực thể và quan hệ như trên là một trong các thiết kế cơ bản nhất trong mối quan hệ N – N.
