@@ -90,10 +90,14 @@ Mặc định, các thực thể được trả về thông qua câu truy vấn 
 ```ts
 var db = new MyDbContext();
 
-var blog = await db.Blog.FindAsync(2);
-var blogState = db.Entry(blog).State.ToString();
+var blog = await db.Blog.FindAsync(2); // theo dõi thực thể
+var blogState = db.Entry(blog).State;
 
-Console.WriteLine(blogState); // Unchanged
+var newDb = new MyDbContext(); // tạo một đối tượng DbContext khác
+var newBlogState = newDb.Entry(blog).State; // thực thể `blog` không được theo dõi bởi đối tượng context `newDb`
+
+Console.WriteLine(blogState.ToString()); // "Unchanged"
+Console.WriteLine(newBlogState.ToString()); // "Detached"
 ```
 
 
