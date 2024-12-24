@@ -1,5 +1,15 @@
 # Entity Framework Core 7.0 - Relationship
 
+Mục tài liệu:
+
+- [**Mối quan hệ 1 - 1**](#m%E1%BB%91i-quan-h%E1%BB%87-1---1)
+
+- [**Mối quan hệ 1 - N**](#m%E1%BB%91i-quan-h%E1%BB%87-1---n)
+
+- [**Mối quan hệ N - N**](#m%E1%BB%91i-quan-h%E1%BB%87-n---n)
+
+<hr />
+
 Với hướng tiếp cận Code-First trong EF Core, thao tác đầu tiên sẽ là khai báo các lớp thực thể (Entity Classes) 
 dùng để tạo cơ sở dữ liệu tương ứng.
 
