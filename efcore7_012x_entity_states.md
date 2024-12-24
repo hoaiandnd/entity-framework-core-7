@@ -100,9 +100,66 @@ Console.WriteLine(blogState.ToString()); // "Unchanged"
 Console.WriteLine(newBlogState.ToString()); // "Detached"
 ```
 
+Ngay cả khi thực thể được trả về và sử dụng ở một tầm vưc khác, miễn đối tượng `DbContext` vẫn được chia sẻ đến, trạng thái của thực thể vẫn có thể xác định được thông qua đối tượng context đó.
 
+```ts
+public class BlogService
+{
+  private readonly MyDbContext _db = new();
+  public Blog? GetBlogById(int id)
+  {
+    return _db.Blog.Find(id);
+  }
+  public string GetState(Blog blog)
+  {
+    return _db.Entry(blog).State.ToString();
+  }
+}
 
+public class Program
+{
+  static void Main()
+  {
+    var blogService = new BlogService();
+    var blog = blogService.GetBlog(1); // thực thể được trả về
+    var state = blogService.GetState(blog); // sử dụng cùng một `DbContext` instance
+    Console.WriteLine(state); // "Unchanged"
+  }
+}
+```
 
+Do chia sẻ cùng một instance, một số design pattern thường tách thành các phương thức nhỏ phục vụ cho các thao tác khác nhau trong vòng đời của `DbContext`, ví dụ:
+
+```ts
+public class BlogService
+{
+  private readonly MyDbContext _db = new();
+  public void Add(Blog blog)
+  {
+    _db.Blog.Add(blog);
+  }
+  public void Commit()
+  {
+    _db.SaveChanges();
+  }
+}
+
+public class Program
+{
+  static void Main()
+  {
+    var blogService = new BlogService();
+    var newBlog = new Blog()
+    {
+      Name = "New blog"  
+    };
+    blogService.Add(newBlog);
+    blogService.Commit();
+  }
+}
+```
+
+> Đoạn mã trên chỉ nhằm mục đích ví dụ, trong các tình huống cụ thể sẽ có cách triển khai riêng.
 
 
 
