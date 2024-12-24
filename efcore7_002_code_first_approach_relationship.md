@@ -1,6 +1,6 @@
 # Entity Framework Core 7.0 - Relationship
 
-Mục tài liệu:
+Mục nội dung:
 
 - [**Mối quan hệ 1 - 1**](#m%E1%BB%91i-quan-h%E1%BB%87-1---1)
 
