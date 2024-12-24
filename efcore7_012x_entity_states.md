@@ -58,7 +58,7 @@ Tuy có thể chia sẻ đối tượng `DbContext` trong nhiều ngữ cảnh, 
 
 ## Các trạng thái của thực thể - Entity States
 
-Các trạng thái mà thực thể có thể có được đại diện bởi enum [**EntityState **](https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.entitystate?view=efcore-9.0) gồm các giá trị sau:
+Các trạng thái mà thực thể có thể có được đại diện bởi enum [**EntityState**](https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.entitystate?view=efcore-9.0) gồm các giá trị sau:
 
 - `Detached`: thực thể không được theo dõi (track) bởi đối tượng `DbContext`.
 
@@ -71,6 +71,31 @@ Các trạng thái mà thực thể có thể có được đại diện bởi e
 - `Added`: là thực thể mới chưa được insert vào cơ sở dữ liệu và sẽ được thêm sau khi gọi `SaveChanges()` hoặc `SaveChangesAsync()`.
 
 EF Core theo dõi các thay đổi ở mức độ thuộc tính. Ví dụ, nếu chỉ có 1 thuộc tính của thực thể bị thay đổi, EF Core chỉ thực hiện cập nhật giá trị đó cho trường tương ứng.
+
+### Theo dõi thực thể - Entity Tracking
+
+Mặc định, các thực thể được trả về thông qua câu truy vấn đều được EF Core theo dõi. 
+
+> [!Note]
+> Trường hợp EF Core không theo dõi đã đề cập trong chương [**Querying data - Tracking vs. No-tracking queries**](https://github.com/hoaiandnd/entity-framework-core-7/blob/main/8_efcore7_querying_data.md#tracking-vs-no-tracking-queries):
+>
+> - Sử dụng phương thức `AsNoTracking()` hoặc cấu hình toàn cục `UseQueryTrackingBehavior()`.
+>
+> - Dữ liệu trả về không chứa thực thể hoàn chỉnh.
+
+Để xem được trạng thái hiện tại của một thực thể đối với đối tượng `DbContext` hiện tại, ta sử dụng phương thức `Entry<TEntity>()` để truy cập đến `EntityState` thông qua thuộc tính `State`.
+
+**Ví dụ:**
+
+```ts
+var db = new MyDbContext();
+
+var blog = await db.Blog.FindAsync(2);
+var blogState = db.Entry(blog).State.ToString();
+
+Console.WriteLine(blogState); // Unchanged
+```
+
 
 
 
