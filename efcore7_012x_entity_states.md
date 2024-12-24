@@ -202,7 +202,26 @@ dbContext.AddRange(postList);
 > }
 > ```
 
+Các phương thức trên không chỉ theo dõi và đặt trạng thái `Added` trên thực thể được chỉ định mà còn thực hiện điều đó trên các thực thể liên quan (related entities).
 
+**Ví dụ:**
+
+```ts
+var newBlog = new Blog()
+{
+  Name = "Blog 1",
+  Posts = [
+    new Post() { Name = "Post 1" },
+    new Post() { Name = "Post 2" },
+    new Post() { Name = "Post 3" },
+    new Post() { Name = "Post 4" }
+  ]
+};
+dbContext.Add(newBlog); // đặt trạng thái `Added` trên `newBlog` và cả các thực thể con
+```
+
+> [!Note]
+> Sau khi gọi `SaveChanges()` hoặc `SaveChangesAsync()`, trạng thái của thực thể sẽ chuyển thành `Unchanged`, vì chúng đã có trong cơ sở dữ liệu.
 
 
 
