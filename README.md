@@ -12,7 +12,7 @@
 
 * [2. Entity Framework Core 7.0 - Code First Approach - Relationship](/efcore7_002_code_first_approach_relationship.md)
 
-* [3. Entity Framework Core 7.0 - Code First Approach - Map Attributes](/3_efcore7_code_first_approach_map_attributes.md)
+* [3. Entity Framework Core 7.0 - Code First Approach - Map Attributes](/efcore7_003_code_first_approach_map_attributes.md)
 
 * [4. Entity Framework Core 7.0 - Code First Approach - Context class](/4_efcore7_code_first_approach_context_class.md)
 
