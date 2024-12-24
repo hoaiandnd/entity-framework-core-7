@@ -1,5 +1,28 @@
 # Entity Framework Core 7.0 - Code First Approach - Map Attributes
 
+Mục nội dung:
+
+- [**Cấu hình trên lớp**](#c%E1%BA%A5u-h%C3%ACnh-tr%C3%AAn-l%E1%BB%9Bp)
+
+    - [**Table**](#table)
+ 
+    - [**NotMapped**](#notmapped)
+
+- [**Cấu hình trên thuộc tính**](/cấu-hình-trên-thuộc-tính)
+
+    - [**NotMapped**](#notmapped-1)
+
+    - [**Column**](#column)
+ 
+    - [**Các ràng buộc trên thuộc tính**](#các-ràng-buộc-trên-thuộc-tính)
+ 
+    - [**Khoá chính**](#kh%C3%B3a-ch%C3%ADnh)
+ 
+    - [**Khoá ngoại**](#kh%C3%B3a-ngo%E1%BA%A1i)
+ 
+    - [**Giá trị tự động tạo**](#giá-trị-tự-động-tạo)
+---
+
 Lớp thực thể trong C# không thể mô tả được hết hoặc chính xác những gì mà bảng dữ liệu trong CSDL có 
 thể mô tả được. Hay nói cách khác, lớp thực thể trong ngôn ngữ hướng đối tượng như C# không thể mô 
 tả các đặc điểm và ràng buộc ta muốn với bảng dữ liệu cần tạo.
@@ -21,16 +44,16 @@ Các attribute sử dụng trong tài liệu này đến từ 3 namespace sau:
 Cấu hình trên lớp dùng để cấu hình lại các thông tin về bảng dữ liệu sẽ tạo ra. Để cấu hình trên lớp, ta 
 thường dùng attribute `[Table]`.
 
-Với attribute `[Table]`, ta có thể chỉ định thuộc tính Name để quy định lại tên bảng (mặc định tên bảng sẽ
-trùng với tên thuộc tính `DbSet<T>`) và thuộc tính Schema để xác định schema chứa bảng (mặc định là `dbo` với SQL Server).
+Với attribute `[Table]`, ta có thể chỉ định thuộc tính `Name` để quy định lại tên bảng (mặc định tên bảng sẽ
+trùng với tên thuộc tính `DbSet<T>`) và thuộc tính `Schema` để xác định schema chứa bảng (mặc định là `dbo` với SQL Server).
 
 Ví dụ:
 ```cs
-    [Table(Name = "Orders")]
-    public class Order
-    {
-        // properties ...
-    }
+[Table(Name = "Orders")]
+public class Order
+{
+    // properties ...
+}
 ```
 
 ### NotMapped
@@ -39,11 +62,11 @@ Attribute `[NotMapped]` dùng để tuyên bố rằng lớp đang chỉ định
 
 **Ví dụ:**
 ```cs
-    [NotMapped]
-    class Person
-    {
-        // properties ...
-    }
+[NotMapped]
+class Person
+{
+    // properties ...
+}
 ```
 
 ## Cấu hình trên thuộc tính
@@ -59,43 +82,41 @@ sẽ không ánh xạ thành cột (trường) trong CSDL.
 **Ví dụ:**
 
 ```cs
-    public class Person
-    {
-        // other properties ...
+public class Person
+{
+    // other properties ...
 
-        [NoMapped]
-        public int Age { get; set; }
-    }
+    [NotMapped]
+    public int Age { get; set; }
+}
 ```
 
 ### Column
 
-Ta sử dụng attribute `[Column]` để chỉ định một số thông tin cho thuộc tính tương ứng với cột (trường) sẽ
-có trong bảng.
+Ta sử dụng attribute `[Column]` để chỉ định một số thông tin cho thuộc tính tương ứng với cột (trường) sẽ có trong bảng.
 
 Một số thuộc tính có thể chỉ định kèm:
+
 * `Name`: tên cột (mặc định tên cột cũng là tên của thuộc tính).
 
-* `TypeName`: tên kiểu dữ liệu của cột (trong trường hợp kiểu dữ liệu của C# không biểu diễn đúng hoặc đầy đủ
-kiểu dữ liệu trong CSDL).
+* `TypeName`: tên kiểu dữ liệu của cột (trong trường hợp kiểu dữ liệu của C# không biểu diễn đúng hoặc đầy đủ kiểu dữ liệu trong CSDL).
 
 **Ví dụ:**
 
 ```cs
-    public class Person
-    {
-        // other properties ...
+public class Person
+{
+    // other properties ...
 
-        [Column(Name = "personName", TypeName = "nvarchar(100)")]
-        public string Name { get; set; }
-    }
+    [Column(Name = "personName", TypeName = "nvarchar(100)")]
+    public string Name { get; set; }
+}
 ```
 
-Bên cạnh đó, phương thức khởi tạo của `[Column]` cũng cho phép ta chỉ định tên cột – không cần thuộc tính 
-`Name`.
+Bên cạnh đó, phương thức khởi tạo của `[Column]` cũng cho phép ta chỉ định tên cột – không cần thuộc tính `Name`.
 
 ```cs
-    [Column(string name)]
+[Column(string name)]
 ```
 
 
@@ -152,74 +173,75 @@ Một thuộc tính có thể chỉ định nhiều attribute.
 * Tách thành nhiều attribute:
 
 ```cs
-    [Required]
-    [Unicode(true)]
-    public string Name { get; set; }
+[Required]
+[Unicode(true)]
+public string Name { get; set; }
 ```
 
 * Hoặc phân cách bằng dấu phẩy:
 
 ```cs
-    [Required, Unicode(true)]
-    public string Name { get; set; }
+[Required, Unicode(true)]
+public string Name { get; set; }
 ```
 
 **Ví dụ:**
 
 ```cs
-    public class Product
-    {
-        [Required]
-        [MaxLength(100)]
-        public string Name { get; set; }
+public class Product
+{
+    [Required]
+    [MaxLength(100)]
+    public string Name { get; set; }
 
-        [Precision(10, 5)]
-        public decimal Price { get; set; }
+    [Precision(10, 5)]
+    public decimal Price { get; set; }
 
-        [Range(0, 100)]
-        public byte Discount { get; set; }
+    [Range(0, 100)]
+    public byte Discount { get; set; }
 
-        [Required]
-        [Unicode(false)]
-        public string Tag { get; set; }
-    }
+    [Required]
+    [Unicode(false)]
+    public string Tag { get; set; }
+}
 ```
 
 ### Khóa chính
 
-Mặc định, các thuộc tính `public` có tên là `Id` hoặc `<type name>Id` sẽ được xem là khóa chính (Primary Key).
+Mặc định, các thuộc tính `public` có tên là `Id` hoặc `<type name>Id` sẽ được EF xem là khóa chính (Primary Key).
 
 **Ví dụ:**
 
 ```cs
-    public class Student
-    {
-        public int Id { get; set; } // property with name 'Id'
-        // or
-        public int StudentId { get; set; } // property with name '<type name>Id'
-    }
+public class Student
+{
+    public int Id { get; set; } // property with name 'Id'
+    // or
+    public int StudentId { get; set; } // property with name '<type name>Id'
+}
 ```
 Tuy nhiên, nếu tên thuộc tính không biểu diễn như một trong 2 trường hợp trên, ta có thể sử dụng attribute `[Key]` để xác định thuộc tính làm khóa chính.
 
 **Ví dụ:**
 
 ```cs
-    public class Student
-    {
-        [Key]
-        [Column("Id")]
-        public int sId { get; set; } // primary key
-    }
+public class Student
+{
+    [Key]
+    [Column("Id")]
+    public int sId { get; set; } // primary key
+}
 ```
 
 Ở EF Core 7.0, ngoài attribute `[Key]` thì ta có thể dùng `[PrimaryKey]` với cú pháp sau:
 
 ```cs
-    [PrimaryKey(string propertyName, params string[] additionalPropertyNames)]
+[PrimaryKey(string propertyName, params string[] additionalPropertyNames)]
 ```
 
 Trong đó:
-* Attribute `[PrimaryKey]` chỉ dùng ở cấp lớp thực thể.
+
+* Attribute `[PrimaryKey]` chỉ dùng ở cấp lớp thực thể (Class attribute).
 
 * *`propertyName`*: tên thuộc tính trong lớp thực thể sẽ làm khóa chính.
 
@@ -229,15 +251,16 @@ Trong đó:
 **Ví dụ:**
 
 ```cs
-    [PrimaryKey("oId")]
-    // hoặc sử dụng toán tử 'nameof'
-    [Primary(nameof(OrderId))]
-    public class Orders
-    {
-        public int OrderId { get; set; }
-        // other properties ...
-    }
+[PrimaryKey("oId")]
+// hoặc sử dụng toán tử 'nameof'
+// [Primary(nameof(OrderId))]
+public class Orders
+{
+    public int OrderId { get; set; }
+    // other properties ...
+}
 ```
+
 > [!Note]
 > Nếu sử dụng cả `[Key]` và `[PrimaryKey]` được chỉ định cùng nhau, attribute `[PrimaryKey]` sẽ được ưu tiên.
 
@@ -246,7 +269,7 @@ Trong đó:
 Thuộc tính được xem là khóa ngoại nếu như chỉ định attribute `[ForeignKey]` với cú pháp:
 
 ```cs
-    [ForeignKey(string name)]
+[ForeignKey(string name)]
 ```
 
 Với tham số *`name`* là:
@@ -260,38 +283,38 @@ Với tham số *`name`* là:
 * Attribute `[ForeignKey]` đặt ở Foreign Key Property:
 
 ```cs
-    public class Employee
-    {
-        public int Id { get; set; }
-        // other properties ...
+public class Employee
+{
+    public int Id { get; set; }
+    // other properties ...
 
-        [ForeignKey(nameof(Department))] // dùng tên của reference navigation
-        public int DepartmentId { get; set; } // foreign key property
+    [ForeignKey(nameof(Department))] // dùng tên của reference navigation
+    public int DepartmentId { get; set; } // foreign key property
 
-        public Department Department { get; set; } // reference navigation
-    }
+    public Department Department { get; set; } // reference navigation
+}
 
-    public class Department
-    {
-        public int Id { get; set; }
-        // other properties ...
+public class Department
+{
+    public int Id { get; set; }
+    // other properties ...
 
-        public ICollection<Employee> Employees { get; set; }
-    }
+    public ICollection<Employee> Employees { get; set; }
+}
 ```
 
 * Attribute `[ForeignKey]` đặt ở Reference Navigation:
 
 ```cs
-    public class Employee
-    {
-        public int Id { get; set; }
-        // other properties ...
+public class Employee
+{
+    public int Id { get; set; }
+    // other properties ...
 
-        public int DepartmentId { get; set; } // foreign key property
+    public int DepartmentId { get; set; } // foreign key property
 
-        [ForeignKey(nameof(DepartmentId))] // dùng tên của foreign key property
-        public Department Department { get; set; } // navigation property
+    [ForeignKey(nameof(DepartmentId))] // dùng tên của foreign key property
+    public Department Department { get; set; } // navigation property
 }
 ```
 
@@ -302,7 +325,7 @@ Với tham số *`name`* là:
 Sử dụng attribute `[DatabaseGenerated]` để tạo ra thuộc tính có giá trị tự động tạo với cú pháp:
 
 ```cs
-    [DatabaseGenerated(DatabaseGeneratedOption databaseGeneratedOption)]
+[DatabaseGenerated(DatabaseGeneratedOption databaseGeneratedOption)]
 ```
 
 `DatabaseGeneratedOption` là một kiểu `enum` với các giá trị: `Computed` (tạo giá trị khi thêm hoặc cập nhật), 
