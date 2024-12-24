@@ -161,10 +161,46 @@ public class Program
 
 > Đoạn mã trên chỉ nhằm mục đích ví dụ, trong các tình huống cụ thể sẽ có cách triển khai riêng.
 
+### Trạng thái `Added`
 
+Một thực thể cần được theo dõi với trạng thái `Added` trước khi được thêm vào bởi `SaveChanges()` hoặc `SaveChangesAsync()`.
 
+Để đối tượng `DbContext` bắt đầu theo dõi một thực thể mới tạo ra với trạng thái `Added`, cách phổ biến nhất là sử dụng các phương thức từ `DbSet<TEntity>` như `Add()`, `AddRange()`, `AddAsync()` hoặc `AddRangeAsync()`.
 
+```ts
+dbContext.Blogs.Add(newBlog);
+dbContext.Posts.AddRange(postList);
+```
 
+Các phương thức kể trên sẽ bắt đầu đặt theo dõi trên (các) thực thể chỉ định và đặt trạng thái của chúng thành `Added`. Sau đó là chờ được commit.
+
+Bên cạnh đó, các phương thức `Add...()` kể trên cũng được định nghĩa trong đối tượng `DbContext` với cú pháp và cách dùng tương tự.
+
+```ts
+dbContext.Add(newBlog);
+dbContext.AddRange(postList);
+```
+
+> [!Tip]
+> Trong các ngữ cảnh trừu tượng, tổng quát (generic), ta hoàn toàn có thể truy cập đến `DbSet<TEntity>` cụ thể bằng phương thức `DbContext.Set<TEntity>()`.
+>
+> **Ví dụ:**
+>
+> ```ts
+> public class GenericRepository<TEntity>
+> {
+>   private readonly MyDbContext _db;
+>   public GenericRepository(MyDbContext db) // constructor dependency injection
+>   {
+>     _db = db
+>   }
+> 
+>   public void Add(TEntity entity)
+>   {
+>      db.Set<TEntity>.Add(entity);
+>   }
+> }
+> ```
 
 
 
