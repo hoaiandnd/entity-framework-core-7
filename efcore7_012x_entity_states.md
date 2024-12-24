@@ -51,8 +51,38 @@ Phương thức `AddDbContext()` mặc định đăng ký dưới dạng scope s
 >
 > ```ts
 > var blog = await dbContext.Blogs.FindAsync(1);
-> var post = await dbContext.Posts.FirstOrDefaultAsync(p => p.BlogId = 1);
+> var post = await dbContext.Posts.FindAsync(1);
 > ```
 
 Tuy có thể chia sẻ đối tượng `DbContext` trong nhiều ngữ cảnh, ta cần quan tâm đến các trạng thái theo dõi của thực thể liên quan đến đối tượng.
+
+## Các trạng thái của thực thể - Entity States
+
+Các trạng thái mà thực thể có thể có được đại diện bởi enum [**EntityState **](https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.entitystate?view=efcore-9.0) gồm các giá trị sau:
+
+- `Detached`: thực thể không được theo dõi (track) bởi đối tượng `DbContext`.
+
+- `Unchanged`: thực thể chưa thực hiện thay đổi nào (các giá trị từ thuộc tính không thay đổi so với các trường trong cơ sở dữ liệu).
+
+- `Deleted`: thực thể có tồn tại trong cơ sở dữ liệu, nhưng bị đánh dấu đã xoá khi gọi `SaveChanges()` hoặc `SaveChangesAsync()`.
+
+- `Modified`: thực thể đã có thay đổi và sẽ được cập nhật sau khi gọi `SaveChanges()` hoặc `SaveChangesAsync()`.
+
+- `Added`: là thực thể mới chưa được insert vào cơ sở dữ liệu và sẽ được thêm sau khi gọi `SaveChanges()` hoặc `SaveChangesAsync()`.
+
+EF Core theo dõi các thay đổi ở mức độ thuộc tính. Ví dụ, nếu chỉ có 1 thuộc tính của thực thể bị thay đổi, EF Core chỉ thực hiện cập nhật giá trị đó cho trường tương ứng.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
