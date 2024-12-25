@@ -62,11 +62,11 @@ Các trạng thái mà thực thể có thể có được đại diện bởi e
 
 - `Detached`: thực thể không được theo dõi (track) bởi đối tượng `DbContext`.
 
-- `Unchanged`: thực thể chưa thực hiện thay đổi nào (các giá trị từ thuộc tính không thay đổi so với các trường trong cơ sở dữ liệu).
+- `Unchanged`: thực thể chưa thực hiện thay đổi nào (các giá trị từ thuộc tính không thay đổi so với các trường trong cơ sở dữ liệu) **_kể từ lúc chúng được truy vấn từ cơ sở dữ liệu_**. Các thực thể được truy vấn từ cơ sở dữ liệu đều bắt đầu với trạng thái này.
 
 - `Deleted`: thực thể có tồn tại trong cơ sở dữ liệu, nhưng bị đánh dấu đã xoá khi gọi `SaveChanges()` hoặc `SaveChangesAsync()`.
 
-- `Modified`: thực thể đã có thay đổi và sẽ được cập nhật sau khi gọi `SaveChanges()` hoặc `SaveChangesAsync()`.
+- `Modified`: thực thể đã có thay đổi **_kể từ lúc chúng được truy vấn từ cơ sở dữ liệu_** và sẽ được cập nhật sau khi gọi `SaveChanges()` hoặc `SaveChangesAsync()`.
 
 - `Added`: là thực thể mới chưa được insert vào cơ sở dữ liệu và sẽ được thêm sau khi gọi `SaveChanges()` hoặc `SaveChangesAsync()`.
 
@@ -222,6 +222,110 @@ dbContext.Add(newBlog); // đặt trạng thái `Added` trên `newBlog` và cả
 
 > [!Note]
 > Sau khi gọi `SaveChanges()` hoặc `SaveChangesAsync()`, trạng thái của thực thể sẽ chuyển thành `Unchanged`, vì chúng đã có trong cơ sở dữ liệu.
+
+### Trạng thái `Modified`
+
+Trạng thái `Modified` được ghi nhận cho các thực thể đã được truy vấn từ cơ sở dữ liệu và bắt đầu từ trạng thái `Unchanged`. Khi thực thể có trạng thái `Modified`, EF Core sẽ thực hiện cập nhật sau khi gọi `SaveChanges()` và `SaveChangesAsync()`.
+
+#### Thay đổi trực tiếp thuộc tính
+
+Trong đa phần các trường hợp, trạng thái này được đánh dấu vào các thực thể được theo dõi khi có thay đổi trên ít nhất 1 thuộc tính.
+
+```ts
+var blog = dbContext.Blogs.Find(5); // trạng thái `Unchanged`
+blog.Name = "Updated name"; // trạng thái `Modified`
+dbContext.SaveChanges(); // lưu thay đổi
+```
+
+Các thay đổi cũng được tính trên các thuộc tính điều hướng (navigation property).
+
+> Thuộc tính điều hướng là tên gọi chung cho 2 loại thuộc tính: **Reference navigation** và **Collection navigation**.
+
+```ts
+var post = dbContext.Posts.Include(p => p.Blog).FirstOrDefault(p => p.Id == 2);
+
+// thay đổi trên reference navigation
+post.Blog.Name = "Updated blog name";
+
+// thay đổi trên collection navigation
+post.Comments.Add(new Comment() { /* ... */ });
+
+db.SaveChanges();
+```
+
+Các thực thể con được thêm vào khi thay đổi thực thể hiện tại sẽ có trạng thái `Added`.
+
+#### Sử dụng các phương thức cập nhật
+
+Cả đối tượng `DbContext` và `DbSet<TEntity>` đều có 2 phương thức dùng để bắt đầu theo dõi và đánh dấu trạng thái của thực thể là `Modified`, chính là `Update()` và `UpdateRange()`.
+
+> [!Tip]
+> Phương thức `Update()` và `UpdateRange()` sẽ bắt đầu theo dõi thực thể, tức là chúng chấp nhận các thực thể chưa được theo dõi bởi đối tượng context - trạng thái `Detached` (có thể là thực thể vừa được tạo với `new` hoặc dữ liệu từ một nguồn khác với database).
+
+> [!Note]
+> Một số lưu ý khi sử dụng các phương thức `Update()` và `UpdateRange()`:
+>
+> - Nếu khoá chính của thực thể là **khoá tự động tạo** (generated key) - thường dùng nhất là khoá tự động tăng (khoá `IDENTITY` trong SQL Server) thì:
+>
+>   - Nếu thực thể có chỉ định khoá chính thì khi gọi `Update()` hoặc `UpdateRange()`, trạng thái sẽ là `Modified`.
+>  
+>   ```ts
+>     var blog = new Blog() { Id = 1, Name = "Updated blog name" }; // có chỉ định khoá chính `Id`
+>     dbContext.Update(blog); // trạng thái `Modified`
+>     db.SaveChanges(); // UPDATE
+>   ```
+>
+>   - Ngược lại, thực thể sẽ được theo dõi trong trạng thái `Added`. Khi gọi `SaveChanges()` hoặc `SaveChangesAsync()` sẽ tạo câu `INSERT` thay vì `UPDATE`.
+>
+>   ```ts
+>     var blog = new Blog() { Name = "New blog name" }; // không có đặt khoá chính
+>     dbContext.Update(blog); // trạng thái `Added`
+>     db.SaveChanges(); // INSERT
+>   ```
+>   
+> - Nếu khoá chính không phải khoá tự động tạo, trạng thái của thực thể luôn là `Modified`.
+
+#### Gán trạng thái thủ công
+
+Phương thức `Update()` và `UpdateRange()` sẽ thực hiện 2 thao tác:
+
+- Theo dõi thực thể.
+
+- Đánh dấu trạng thái cho thực thể.
+
+Bên cạnh đó, ta có thể thực hiện 2 thao tác trên một cách thủ công:
+
+- Để theo dõi một thực thể mới (trạng thái `Detached`), ta sử dụng phương thức `DbContext.Attach()`.
+
+- Thay đổi `dbContext.Entry(entity).State`.
+
+**Ví dụ:**
+
+```ts
+var blog = new Blog() { Id = 1 };
+dbContext.Attach(blog); // theo dõi thực thể - trạng thái `Unchanged`
+dbContext.Entry(blog).State = EntityState.Modified; // thay đổi trạng thái
+dbContext.SaveChanges();
+```
+
+> [!Warning]
+> Thực thể cần chỉ định khoá chính khi thay đổi trạng thái thành `Modified`.
+
+Ngoài ra, ta có thể chỉ định thuộc tính `IsModified` thành `true` để đánh dấu 1 thuộc tính cũng như toàn bộ thực thể là `Modified`.
+
+```ts
+var blog = new Blog() { Id = 1 };
+dbContext.Attach(blog); // theo dõi thực thể - trạng thái `Unchanged`
+dbContext.Entry(blog).Property(b => b.Name).IsModified = true; // thay đổi trạng thái
+dbContext.SaveChanges();
+```
+
+
+
+
+
+
+
 
 
 
