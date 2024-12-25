@@ -32,4 +32,6 @@
 
 * [11. Entity Framework Core 7.0 - Extension - Split queries](/efcore7_011x_split_queries.md)
 
-* [12. Entity Framework Core 7.0 - Extension - Entity states](/efcore7_011x_split_queries.md)
+* [12. Entity Framework Core 7.0 - Extension - Entity states](/efcore7_012x_entity_states.md)
+
+* [13. Entity Framework Core 7.0 - Extension - Relationship fixup](/efcore7_013x_relationship_fixup.md)
