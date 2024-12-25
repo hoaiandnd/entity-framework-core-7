@@ -28,6 +28,8 @@
 
 * [10. Entity Framework Core 7.0 - Cascade Delete](/10_efcore7_cascade_delete.md)
 
+---
+
 * [11. Entity Framework Core 7.0 - Extension - Split queries](/efcore7_011x_split_queries.md)
 
 * [12. Entity Framework Core 7.0 - Extension - Entity states](/efcore7_011x_split_queries.md)
