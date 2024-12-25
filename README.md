@@ -35,3 +35,5 @@
 * [12. Entity Framework Core 7.0 - Extension - Entity states](/efcore7_012x_entity_states.md)
 
 * [13. Entity Framework Core 7.0 - Extension - Relationship fixup](/efcore7_013x_relationship_fixup.md)
+
+* [14. Entity Framework Core 7.0 - Extension - Efficient Querying and Updating](/efcore7_014x_efficient_querying_and_updating.md)
