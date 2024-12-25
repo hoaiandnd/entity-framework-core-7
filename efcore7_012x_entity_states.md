@@ -268,7 +268,7 @@ Cả đối tượng `DbContext` và `DbSet<TEntity>` đều có 2 phương th�
 > - Nếu khoá chính của thực thể là **khoá tự động tạo** (generated key) - thường dùng nhất là khoá tự động tăng (khoá `IDENTITY` trong SQL Server) thì:
 >
 >   - Nếu thực thể có chỉ định khoá chính thì khi gọi `Update()` hoặc `UpdateRange()`, trạng thái sẽ là `Modified`.
->  
+>
 >   ```ts
 >     var blog = new Blog() { Id = 1, Name = "Updated blog name" }; // có chỉ định khoá chính `Id`
 >     dbContext.Update(blog); // trạng thái `Modified`
@@ -276,7 +276,7 @@ Cả đối tượng `DbContext` và `DbSet<TEntity>` đều có 2 phương th�
 >   ```
 >
 >   - Ngược lại, thực thể sẽ được theo dõi trong trạng thái `Added`. Khi gọi `SaveChanges()` hoặc `SaveChangesAsync()` sẽ tạo câu `INSERT` thay vì `UPDATE`.
->
+> 
 >   ```ts
 >     var blog = new Blog() { Name = "New blog name" }; // không có đặt khoá chính
 >     dbContext.Update(blog); // trạng thái `Added`
