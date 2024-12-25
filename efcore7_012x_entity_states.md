@@ -253,8 +253,6 @@ post.Comments.Add(new Comment() { /* ... */ });
 db.SaveChanges();
 ```
 
-Các thực thể con được thêm vào khi thay đổi thực thể hiện tại sẽ có trạng thái `Added`.
-
 #### Sử dụng các phương thức cập nhật
 
 Cả đối tượng `DbContext` và `DbSet<TEntity>` đều có 2 phương thức dùng để bắt đầu theo dõi và đánh dấu trạng thái của thực thể là `Modified`, chính là `Update()` và `UpdateRange()`.
@@ -302,9 +300,12 @@ Bên cạnh đó, ta có thể thực hiện 2 thao tác trên một cách thủ
 **Ví dụ:**
 
 ```ts
-var blog = new Blog() { Id = 1 };
+var blog = new Blog() { Id = 1 }; // trạng thái `Detached`
+
 dbContext.Attach(blog); // theo dõi thực thể - trạng thái `Unchanged`
+
 dbContext.Entry(blog).State = EntityState.Modified; // thay đổi trạng thái
+
 dbContext.SaveChanges();
 ```
 
@@ -315,13 +316,29 @@ Ngoài ra, ta có thể chỉ định thuộc tính `IsModified` thành `true` �
 
 ```ts
 var blog = new Blog() { Id = 1 };
-dbContext.Attach(blog); // theo dõi thực thể - trạng thái `Unchanged`
+dbContext.Attach(blog);
+
 dbContext.Entry(blog).Property(b => b.Name).IsModified = true; // thay đổi trạng thái
+
 dbContext.SaveChanges();
 ```
 
+### Trạng thái `Deleted`
 
+Các thực thể được đối tượng context theo dõi với trạng thái `Deleted` sẽ bị xoá khỏi cơ sở dữ liệu sau khi gọi `SaveChanges()` hoặc `SaveChangesAsync()`.
 
+Ở các tình huống thông thường, thực thể được đặt trạng thái `Deleted` khi sử dụng phương thức `Remove()` hoặc `RemoveRange()` (từ đối tượng `DbContext` hoặc `DbSet<TEntity>`).
+
+> [!Note]
+> Phương thức `Remove()` hoặc `RemoveRange()` sẽ bắt đầu theo dõi thực thể với trạng thái `Deleted`, vì vậy thực thể không cần phải được theo dõi bởi đối tượng context trước đó.
+>
+> **Ví dụ:**
+>
+> ```ts
+> var blog = new Blog() { Id = 1 };
+> dbContext.Remove(blog);
+> dbContext.SaveChanges();
+> ```
 
 
 
