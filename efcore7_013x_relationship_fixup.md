@@ -16,5 +16,7 @@ var blogs = context.Blogs
     .ToList();
 ```
 
-Mỗi thực thể `Posts` đều chứa 1 khoá ngoại đến thực thể `Blogs` phụ thuộc. Khi được tải, chúng dựa vào khoá ngoại `BlogId` để tạo một reference navigation đến `blogs`, và sau đó các thực thể `Posts` sẽ được thêm vào collection navigation của `blogs`.
+Với mỗi blog, EF Core sẽ tạo một `Blog` instance trước tiên. Sau đó đã tạo các `Blog` instance tương ứng với các bản ghi trong cơ sở dữ liệu, với mỗi post được tải lên, reference navigation của nó - `Post.Blog` - sẽ được trỏ đến blog tương ứng, đồng thời `Post` instance đó sẽ được thêm vào collection navigation của blog - `Blog.Posts`.
+
+
 
