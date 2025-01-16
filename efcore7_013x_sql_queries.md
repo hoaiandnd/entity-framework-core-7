@@ -88,7 +88,28 @@ var blogs = context.Blogs
 > [!Warning]
 > Khi sử dụng phương thức `FromSqlRaw()` ta cần phải đảm bảo rằng chuỗi SQL an toàn. Phương thức này sẽ thực thi trực tiếp chuỗi SQL được chỉ định, nếu giá trị tham số truyền vào không đảm bảo, ứng dụng có thể bị tấn công SQL Injection.
 
+## Sử dụng kết hợp với LINQ
 
+Phương thức `FromSql()` (cùng với `FromSqlInterpolated()` và `FromSqlRaw()`) đều trả về `IQueryable<T>` và có thể sử dụng tiếp tục với các cú pháp LINQ (extension method hoặc query expression).
+
+Khi sử dụng cùng với LINQ, câu truy vấn sẽ được xem là một truy vấn con (sub-query). Tức là LINQ sẽ được dịch thành câu lệnh SQL và chứa câu truy vấn con là câu truy vấn được chỉ định.
+
+```cs
+var blogs = context.Blogs
+    .FromSql($"SELECT * FROM Blogs WHERE is_deleted = false")
+    .Where(b => b.Rating > 3)
+    .ToListAsync();
+```
+
+Câu truy vấn SQL được sinh ra sẽ như sau:
+
+```sql
+SELECT [b].[BlogId], [b].[OwnerId], [b].[Rating], [b].[Url]
+FROM (
+    SELECT * FROM Blogs WHERE is_deleted = false
+) AS [b]
+WHERE [b].[Rating] > 3
+```
 
 
 
