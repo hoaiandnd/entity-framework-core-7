@@ -151,6 +151,8 @@ Nhưng nếu dữ liệu trả về có nhiều cột, ta cần định nghĩa m
 
 - Là kiểu dữ liệu tham chiếu (thường sử dụng `class` hoặc `record`).
 
+- Chứa các thuộc tính có thể ánh xạ bằng tên (case-insensitive).
+
 > [!Note]
 > Không thể sử dụng `System.Tuple` (reference type của tuple) vì nó không khai báo được tên thuộc tính (chỉ truy cập bằng `Item1`, `Item2`, ...) và không ánh xạ được với các trường được trả về.
 
@@ -178,6 +180,8 @@ var ids = context.Database
 
 > [!Tip]
 > Ngược lại nếu trả về nhiều hơn 1 cột thì không cần phải đổi tên cột trả về.
+
+Phương thức `SqlQuery<TResult>()` (và phương thức `SqlQueryRaw<TResult>()`) có thể truyền dữ liệu đầu vào tương tự như phương thức `FromSql()` và `FromSqlRaw()`.
 
 
 
