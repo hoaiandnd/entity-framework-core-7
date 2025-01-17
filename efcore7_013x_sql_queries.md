@@ -191,7 +191,14 @@ Có một số hạn chế cần lưu ý khi trả về thực thể từ câu t
 
 - Tên cột phải trùng khớp với tên thuộc tính để thực hiện ánh xạ (case-insensitive).
 
-- Câu truy vấn không thể chứa các dữ liệu từ thực thể liên quan. Trong đa phần các trường hợp có thể sử dụng kết hợp với phương thức `Include()` trong LINQ.
+- Câu truy vấn không thể chứa các dữ liệu của thực thể liên quan. Trong đa phần các trường hợp có thể sử dụng kết hợp với phương thức `Include()` trong LINQ.
+
+```cs
+var blogs = context.Blogs
+    .FromSql($"SELECT * FROM Blogs") // không tải các thực thể liên quan
+    .Include(b => b.Posts) // Tải các thực thể liên quan
+    .ToList();
+```
 
 
 
