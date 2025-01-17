@@ -145,7 +145,7 @@ var ids = context.Database
 
 Nếu câu truy vấn chỉ trả về một cột dữ liệu thì ta có thể chỉ định kiểu dữ liệu nguyên thuỷ (primitive types) như ví dụ trên.
 
-Nhưng nếu dữ liệu trả về có nhiều cột, ta cần định nghĩ một kiểu dữ liệu cho đối tượng sẽ nhận về. Theo đó, kiểu dữ liệu đại diện cho các trường được trả về:
+Nhưng nếu dữ liệu trả về có nhiều cột, ta cần định nghĩa một kiểu dữ liệu cho đối tượng sẽ nhận về. Theo đó, kiểu dữ liệu đại diện cho các trường được trả về:
 
 - Không là interface.
 
@@ -153,6 +153,33 @@ Nhưng nếu dữ liệu trả về có nhiều cột, ta cần định nghĩ m�
 
 > [!Note]
 > Không thể sử dụng `System.Tuple` (reference type của tuple) vì nó không khai báo được tên thuộc tính (chỉ truy cập bằng `Item1`, `Item2`, ...) và không ánh xạ được với các trường được trả về.
+
+**Ví dụ:**
+
+```cs
+// định nghĩa kiểu trả về
+record BlogSqlQueryResult(int Id, string Name);
+
+var results = context.Database
+    .SqlQuery<BlogSqlQueryResult>($"SELECT id, name FROM Blogs")
+    .ToList();
+```
+
+Phương thức `SqlQuery<TResult>()` cũng có thể kết hợp với LINQ. Tuy nhiên, nếu câu truy vấn chỉ trả về một cột thì ta cần phải đổi tên của cột đó thành `Value` để tiếp tục sử dụng kết hợp với LINQ.
+
+**Ví dụ:**
+
+```cs
+var ids = context.Database
+    .SqlQuery<int>($"SELECT id AS Value FROM Blogs") // đổi tên cột thành `Value`
+    .Where(id => id > 3)
+    .ToList();
+```
+
+> [!Tip]
+> Ngược lại nếu trả về nhiều hơn 1 cột thì không cần phải đổi tên cột trả về.
+
+
 
 
 
