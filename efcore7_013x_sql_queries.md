@@ -111,5 +111,49 @@ FROM (
 WHERE [b].[Rating] > 3
 ```
 
+> [!Note]
+> Việc kết hợp với LINQ yêu cầu câu lệnh SQL phải có khả năng kết hợp được. Câu truy vấn SQL kết hợp được thường bắt đầu với từ khoá `SELECT` và không chứa các thành phần không hợp lệ trong câu truy vấn con.
+
+> [!Warning]
+> Vì Store Procedure không trả về kết quả, do đó ta không thể sử dụng kết hợp lời gọi store procedure với LINQ.
+
+## Tracking Entity
+
+Các thực thể được truy vấn bởi `FromSql()`, `FromSqlRaw()` và `FromSqlInterpolated()` đều mặc định áp dụng các quy tắc theo dõi (tracking) như khi sử dụng LINQ trong EF Core.
+
+## Truy vấn vô hướng - Querying scalar
+
+> [!Important]
+>
+> Tính năng này được giới thiệu ở Entity Framework Core 7.
+
+Trong các trường hợp ta chỉ truy vấn trên một số cột mà không phải trọn vẹn một bản ghi (`SELECT id, name` thay vì `SELECT *`), dữ liệu trả về không phải là một thực thể hoàn thiện. Lúc này, ta sẽ sử dụng phương thức `SqlQuery<TResult>()` thay cho `FromSql()`.
+
+Khi sử dụng phương thức `SqlQuery<TResult>()` cần lưu ý:
+
+- Đối số kiểu `TResult` phải được chỉ định tường minh, vì nó không thể tự suy ra kiểu dữ liệu từ câu lệnh SQL.
+
+- Gọi ra từ thuộc tính `Database` từ đối tượng `DbContext`.
+
+- Trả về kiểu `IQueryable<TResult>`.
+
+```ts
+var ids = context.Database
+    .SqlQuery<int>($"SELECT id FROM Blogs")
+    .ToList();
+```
+
+Nếu câu truy vấn chỉ trả về một cột dữ liệu thì ta có thể chỉ định kiểu dữ liệu nguyên thuỷ (primitive types) như ví dụ trên.
+
+Nhưng nếu dữ liệu trả về có nhiều cột, ta cần định nghĩ một kiểu dữ liệu cho đối tượng sẽ nhận về. Theo đó, kiểu dữ liệu đại diện cho các trường được trả về:
+
+- Không là interface.
+
+- Là kiểu dữ liệu tham chiếu (thường sử dụng `class` hoặc `record`).
+
+> [!Note]
+> Không thể sử dụng `System.Tuple` (reference type của tuple) vì nó không khai báo được tên thuộc tính (chỉ truy cập bằng `Item1`, `Item2`, ...) và không ánh xạ được với các trường được trả về.
+
+
 
 
