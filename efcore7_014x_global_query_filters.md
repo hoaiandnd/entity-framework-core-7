@@ -84,4 +84,31 @@ modelBuilder.Entity<Post>().HasQueryFilter(p => p.IsDeleted == false && p.Blog.I
 modelBuilder.Entity<Blog>().HasQueryFilter(b => b.Posts.Count > 0); // gọi collection navigation
 ```
 
-Khi sử dụng thuộc tính điều hướng trong filter, các truy vấn trên thực thể sẽ là truy vấn đệ quy (truy vấn gọi đến thực thể liên quan). 
+Khi sử dụng thuộc tính điều hướng trong filter, các truy vấn trên thực thể sẽ là truy vấn đệ quy (truy vấn gọi đến thực thể liên quan). Khi này, query filter được định nghĩa ở thực thể navigation cũng sẽ được áp dụng.
+
+**Ví dụ:**
+
+Giả sử query filter đang được cấu hình như sau:
+
+```cs
+modelBuilder.Entity<Blog>().HasQueryFilter(b => b.IsDeleted == false);
+modelBuilder.Entity<Post>().HasQueryFilter(p => p.IsDeleted == false);
+```
+
+Các trường hợp sau sẽ áp dụng query filter từ navigation:
+
+```cs
+// chỉ tải các post chưa bị xoá
+var blog = context.Blogs
+  .Where(b => b.Id == 1)
+  .Include(b => b.Posts) // áp dụng query filter của thực thể `Post`
+  .FirstOrDefault();
+
+// tương tự khi truy vấn theo chiều ngược lại
+var post = context.Posts
+  .Where(p => p.Id == 1)
+  .Include(p => p.Blog) // áp dụng query filter của thực thể `Blog`
+  .FirstOrDefault();
+```
+
+
