@@ -80,7 +80,8 @@ Trong query filter, ta có thể gọi đến navigation property (reference nav
 
 ```ts
 // chỉ tải post khi blog chưa bị xoá
-modelBuilder.Entity<Post>().HasQueryFilter(p => p.IsDeleted == false && p.Blog.IsDeleted == false);
+modelBuilder.Entity<Post>().HasQueryFilter(p => p.IsDeleted == false && p.Blog.IsDeleted == false); // gọi reference navigation
+modelBuilder.Entity<Blog>().HasQueryFilter(b => b.Posts.Count > 0); // gọi collection navigation
 ```
 
-
+Khi sử dụng thuộc tính điều hướng trong filter, các truy vấn trên thực thể sẽ là truy vấn đệ quy (truy vấn gọi đến thực thể liên quan). 
