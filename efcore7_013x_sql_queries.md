@@ -183,6 +183,15 @@ var ids = context.Database
 
 Phương thức `SqlQuery<TResult>()` (và phương thức `SqlQueryRaw<TResult>()`) có thể truyền dữ liệu đầu vào tương tự như phương thức `FromSql()` và `FromSqlRaw()`.
 
+## Limitations - Các hạn chế
+
+Có một số hạn chế cần lưu ý khi trả về thực thể từ câu truy vấn SQL (SQL Query):
+
+- Phải trả về thực thể toàn vẹn (tức là phải trả về đầy đủ các thuộc tính của thực thể). Ngược lại, hãy sử dụng [truy vấn vô hướng](#truy-v%E1%BA%A5n-v%C3%B4-h%C6%B0%E1%BB%9Bng---querying-scalar).
+
+- Tên cột phải trùng khớp với tên thuộc tính để thực hiện ánh xạ (case-insensitive).
+
+- Câu truy vấn không thể chứa các dữ liệu từ thực thể liên quan. Trong đa phần các trường hợp có thể sử dụng kết hợp với phương thức `Include()` trong LINQ.
 
 
 
