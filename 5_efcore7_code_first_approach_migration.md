@@ -23,14 +23,14 @@ Add-Migration [Migration name]
 dotnet ef migrations add [Migration name]
 ```
 
-Trong đó, `[Migration name]` là một định danh tùy chọn, tuy nhiên định danh này sẽ được dùng làm tên `class`, vì vậy nếu được hãy đặt theo định dạng **PascalCase**.
+Trong đó, `[Migration name]` là một định danh tùy chọn tuân thủ theo các quy tắc đặt tên trong C#. Tuy nhiên định danh này sẽ được dùng làm tên `class`, vì vậy khuyển khích đặt theo định dạng **PascalCase**.
 
-EF Core sẽ tự động tạo ra thư mục tên `Migrations` trong dự án hiện tại cùng với một số file `*.cs`.
+EF Core sẽ tự động tạo ra thư mục tên `Migrations` (nếu chưa có) trong dự án hiện tại cùng với một số file `*.cs`.
 
 **Ví dụ:**
 
 ```console
-    Add-Migration dbcreation
+Add-Migration DbCreation
 ```
 
 Trong đó, các file sẽ được tạo trong thư mục `Migration`:
@@ -47,11 +47,19 @@ Trong đó, các file sẽ được tạo trong thư mục `Migration`:
 
 Lúc này, CSDL và các bảng (tương ứng với các lớp thực thể) vẫn chưa được tạo ra. Để tạo Database, ta sẽ tiếp tục sử dụng lệnh sau:
 
+- **Package Manager Console**:
+
 ```console
-    Update-Database
+Update-Database
 ```
 
-Lệnh `Update-Database` sẽ gọi phương thức `Up()` của lớp Migration gần nhất.
+- **.NET CLI**:
+
+```console
+dotnet ef database update
+```
+
+Lệnh `Update-Database` hoặc `dotnet ef database update` sẽ gọi phương thức `Up()` của lớp Migration được tạo ra gần nhất.
 Như vậy, CSDL đã sẵn sàng sử dụng cho ứng dụng hiện tại, mặc dù chưa có dữ liệu trên các bảng.
 
 ## Cập nhật lớp thực thể
@@ -61,9 +69,18 @@ Trong trường hợp đó, lớp thực thể và bảng dữ liệu đã khôn
 
 Để thực hiện tái đồng bộ, ta sẽ tạo ra một Migration mới và cập nhật lại CSDL:
 
+- **Package Manager Console**:
+
 ```console
-    Add-Migration [New migration name]
-    Update-Database
+Add-Migration [New migration name]
+Update-Database
+```
+
+- **.NET CLI**:
+
+```console
+dotnet ef migrations add [New migration name]
+dotnet ef database update
 ```
 
 ## Xóa Migration gần nhất
@@ -71,25 +88,41 @@ Trong trường hợp đó, lớp thực thể và bảng dữ liệu đã khôn
 Để xóa Migration gần nhất (được tạo lần cuối) trong trường hợp muốn hiệu chỉnh lại các lớp thực thể trước 
 khi xác nhận, ta có thể sử dụng lệnh sau:
 
+- **Package Manager Console**:
+
 ```console
-    Remove-Migration
+Remove-Migration
+```
+
+- **.NET CLI**:
+
+```console
+dotnet ef migrations remove
 ```
 
 > [!WARNING]
 > Ta chỉ có thể xóa Migration gần nhất nếu như Migration đó chưa được xác nhận, chưa được ghi 
-nhận trong CSDL (chưa gọi lệnh `Update-Database`). Nếu không, ta sẽ nhận được thông báo lỗi tương tự như
+nhận trong CSDL (chưa gọi lệnh `Update-Database` hoặc `dotnet ef database update`). Nếu không, ta sẽ nhận được thông báo lỗi tương tự như
 sau:
 > 
 > *The migration '...' has already been applied to the database. Revert it and try again. If the migration has been applied to other databases, consider reverting its changes using a new migration instead.*
 
 ## Cập nhật CSDL theo Migration chỉ định - Revert migration
 
-Lệnh `Update-Database` được dùng để cập nhật vào CSDL theo Migration gần nhất.
+Lệnh `Update-Database` hoặc `dotnet ef database update` được dùng để cập nhật vào CSDL theo Migration gần nhất.
 
 Để cập nhật CSDL theo Migration được chỉ định, ta có thể chỉ định thêm tên Migration.
 
+- **Package Manager Console**:
+
 ```console
-    Update-Database [Migration name]
+Update-Database [Migration name]
+```
+
+- **.NET CLI**:
+
+```console
+dotnet ef database update [Migration name]
 ```
 
 Trong đó, `[Migration name]` là phần tên của Migration (không bao gồm phần timestamp phía trước).
