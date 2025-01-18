@@ -5,7 +5,9 @@
 * Kiến thức yêu cầu:
     * [**LINQ To Objects**](https://github.com/toabaobutchi/language-intergrated-query)
     * **LINQ To Entities (LINQ To SQL)** - *Không bắt buộc*
- 
+
+> ✔️ Một số nội dung được thêm vào để [**sử dụng với Visual Studio Code**](https://github.com/hoaiandnd/aps.net-core-web-api-vscode).
+
 # Nội dung
 
 * [1. Entity Framework Core 7.0 - Database First Approach](/efcore7_001_database_first_approach.md)
