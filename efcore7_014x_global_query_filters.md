@@ -84,6 +84,11 @@ modelBuilder.Entity<Post>().HasQueryFilter(p => p.IsDeleted == false && p.Blog.I
 modelBuilder.Entity<Blog>().HasQueryFilter(b => b.Posts.Count > 0); // gọi collection navigation
 ```
 
+> [!Caution]
+> Đoạn mã ở ví dụ trên sẽ tạo ra vòng lặp (nếu áp dụng cả 2) do cứ mỗi truy vấn trên thực thể `Blog` đều yêu cầu lọc trên thực thể `Post` và ngược lại.
+>
+> Thật không may, EF Core hiện không phát hiện được vòng lặp (cycles) trong cấu hình từ global query filter. Vì thế hãy cẩn thận khi định nghĩa chúng. 
+
 Khi sử dụng thuộc tính điều hướng trong filter, các truy vấn trên thực thể sẽ là truy vấn đệ quy (truy vấn gọi đến thực thể liên quan). 
 
 EF Core sẽ gọi đến các thuộc tính điều hướng, query filter được định nghĩa ở thực thể liên quan cũng sẽ được áp dụng. Lúc này, điều kiện được áp dụng cho câu truy vấn sẽ là tổng hợp các điều kiện truy vấn của các thực thể liên quan được chỉ định cùng trong query filter.
