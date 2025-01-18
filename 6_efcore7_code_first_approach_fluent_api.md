@@ -1,22 +1,22 @@
 # Entity Framework Core - Code First Approach - Fluent API
 
-Ở phần [**Map Attributes**](/3_efcore7_code_first_approach_map_attributes.md), ta đã tìm hiểu về cách cấu hình các lớp thực thể bằng các attribute.
+Ở phần [**Map Attributes**](/efcore7_003_code_first_approach_map_attributes.md), ta đã tìm hiểu về cách cấu hình các lớp thực thể bằng các attribute.
 
 Trong EF Core, ngoài sử dụng Map Attributes, ta có thể sử dụng Fluent API để cấu hình các lớp thực thể. Và nội dung của phần này sẽ trình bày cách cấu hình bằng Fluent API. Các cấu hình bằng Fluent API sẽ ghi đè các cấu hình từ nguồn khác (ưu tiên cao nhất).
 
-Fluent API là tính năng đã có từ EF và đến EF Core đã có một số thay đổi nhỏ.
+> Fluent API là tính năng đã có từ Entity Framework và đến Entity Framework Core đã có một số thay đổi nhỏ.
 
-## Phương thức OnModelCreating()
+## Phương thức `OnModelCreating()`
 
 Để thực hiện cấu hình bằng Fluent API, ta sẽ ghi đè lại phương thức `OnModelCreating()` trong lớp Context. 
 Phương thức này nhận tham số kiểu `ModelBuilder`, là lớp sẽ cung cấp các phương thức để cấu hình các lớp 
 thực thể.
 
 ```cs
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        // fluent api configurations ...
-    }
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    // cấu hình tại đây
+}
 ```
 
 ## Chuẩn bị các lớp thực thể
@@ -24,45 +24,47 @@ thực thể.
 Trong phần này, ta sẽ khai báo 2 lớp `Employee` và `Department` để thực hành như sau:
 
 ```cs
-    public class Employee
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public double Salary { get; set; }
+public class Employee
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public double Salary { get; set; }
 
-        public int DepartmentId { get; set; }
-        public Department Department { get; set; }
-    }
+    public int DepartmentId { get; set; }
+    public Department Department { get; set; }
+}
 
-    public class Department
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public ICollection<Employee> Employees { get; set; }
-    }
+public class Department
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public ICollection<Employee> Employees { get; set; }
+}
 ```
 
-## Cấu hình thuộc tính
+## Cấu hình trên thuộc tính
 
 Để cấu hình cho một thuộc tính, ta cần xác định lớp thực thể chứa thuộc tính cần cấu hình.
 
 Để chỉ định lớp thực thể, ta sử dụng phương thức `Entity<TEntity>()`, với `TEntity` là lớp thực thể đang muốn gọi với 2 cú pháp thường dùng:
 
 ```cs
-    Entity<TEntity>()
-
-    Entity<TEntity>(Action<EntityTypeBuilder<TEntity>> buildAction)
+Entity<TEntity>()
+Entity<TEntity>(Action<EntityTypeBuilder<TEntity>> buildAction)
 ```
+
+> [!Tip]
+> Phương thức `Entity<TEntity>(Action<EntityTypeBuilder<TEntity>> buildAction)` cho phép gom nhóm các cấu hình trên nhiều thuộc tính.
 
 **Ví dụ:**
 
 ```cs
-    modelBuilder.Entity<Employee>()...
+modelBuilder.Entity<Employee>()./* ... */
 
-    modelBuilder.Entity<Department>(department =>
-    {
-        // configurations ...
-    });
+modelBuilder.Entity<Department>(department =>
+{
+    // cấu hình các thuộc tính
+});
 ```
 Trong đó, *`modelBuilder`* là đối tượng kiểu `ModelBuilder`.
 
@@ -72,38 +74,39 @@ cần thiết cho quá trình cấu hình ở mức thực thể (sẽ được 
 Để gọi đến thuộc tính, ta sử dụng phương thức `Property()` với cú pháp:
 
 ```cs
-    Property(string propertyName)
-
-    Property(Type propertyType, string propertyName)
-
-    Property<TProperty>(string propertyName)
-
-    Property<TProperty>(Expression<Func<TEntity,TProperty>> propertyExpression)
+Property(string propertyName)
+Property(Type propertyType, string propertyName)
+Property<TProperty>(string propertyName)
+Property<TProperty>(Expression<Func<TEntity,TProperty>> propertyExpression)
 ```
 
 Trong đó:
+
 * *`propertyName`*: tên của thuộc tính cần gọi, nếu không tồn tại thì thuộc tính mới với tên chỉ định sẽ được thêm vào. Có thể sử dụng toán tử `nameof()` khi chỉ định cho tham số này.
 
 * *`type`*: kiểu dữ liệu của thuộc tính. Có thể dùng toán tử `typeof()` khi chỉ định cho tham số này.
 
-* *`TProperty`*: kiểu dữ liệu của thuộc tính, dùng thay thế cho tham số *`type`*.
+* *`TProperty`*: kiểu dữ liệu của thuộc tính, dùng thay thế cho các phiên bản dùng tham số *`type`*.
 
 * *`propertyExpression`*: một biểu thức Lambda dùng để chỉ ra thuộc tính muốn gọi.
 
 **Ví dụ:**
 
 ```cs
-    modelBuilder.Entity<Employee>().Property("Name")... // dùng chuỗi chỉ định tên
-    modelBuilder.Entity<Employee>().Property(nameof(Employee.Name))... // dùng nameof()
+modelBuilder.Entity<Employee>().Property("Name")... // dùng chuỗi chỉ định tên
+modelBuilder.Entity<Employee>().Property(nameof(Employee.Name))... // dùng nameof()
 
-    modelBuilder.Entity<Employee>().Property(typeof(string), "Name")...
+modelBuilder.Entity<Employee>().Property(typeof(string), "Name")...
 
-    modelBuilder.Entity<Employee>().Property<string>("Name")...
+modelBuilder.Entity<Employee>().Property<string>("Name")...
 
-    // có thể bỏ qua khai báo kiểu TProperty khi dùng với biểu thức Lambda
-    modelBuilder.Entity<Employee>().Property<string>(emp => emp.Name)...
-    modelBuilder.Entity<Employee>().Property(emp => emp.Name)... // bỏ qua <string>
+// có thể bỏ qua khai báo kiểu TProperty khi dùng với biểu thức Lambda
+modelBuilder.Entity<Employee>().Property<string>(emp => emp.Name)...
+modelBuilder.Entity<Employee>().Property(emp => emp.Name)... // bỏ qua <string>
 ```
+
+> [!Tip]
+> Thông thường, ta sẽ sử dụng dạng biểu diễn `modelBuilder.Entity<Employee>().Property(emp => emp.Name)...`
 
 Phương thức `Property()` trả về kiểu `PropertyBuilder` cung cấp các phương thức dùng để cấu hình ở mức thuộc tính.
 
@@ -124,37 +127,36 @@ Các phương thức thường dùng của lớp `PropertyBuilder`:
 
 > Xem thêm các phương thức cấu hình khác tại [**PropertyBuilder**](https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.metadata.builders.propertybuilder?view=efcore-7.0).
 
-Các phương thức của lớp `PropertyBuilder` đều trả về chính kiểu `PropertyBuilder`, do đó ta có thể gọi liên tiếp, nối chuỗi các phương thức cấu hình.
+Các phương thức của lớp `PropertyBuilder` đều trả về chính kiểu `PropertyBuilder`, do đó ta có thể gọi liên tiếp, nối chuỗi (chaining) các phương thức cấu hình.
 
 **Ví dụ:**
 
 ```cs
-    modelBuilder.Entity<Employee>().Property(e => e.Name)
-        .IsRequired()
-        .HasColumnName("EmpName")
-        .HasColumnType("nvarchar(50)");
+modelBuilder.Entity<Employee>().Property(e => e.Name)
+    .IsRequired()
+    .HasColumnName("EmpName")
+    .HasColumnType("nvarchar(50)");
 
-    modelBuilder.Entity<Employee>().Property(e => e.Salary)
-        .HasColumnType("decimal(10, 0)")
-        .HasDefaultValue(1);
+modelBuilder.Entity<Employee>().Property(e => e.Salary)
+    .HasColumnType("decimal(10, 0)")
+    .HasDefaultValue(1);
 ```
 Trong trường hợp có nhiều đoạn mã cấu hình cho một thực thể, ta có thể gom nhóm bằng cách dùng tham số `Action<EntityTypeBuilder<TEntity>>` của phương thức `Entity<TEntity>()`.
 
 **Ví dụ:**
 
 ```cs
-    modelBuilder.Entity<Employee>(employee =>
-    {
-        employee.Property(e => e.Name)
-            .IsRequired()
-            .HasColumnName("EmpName")
-            .HasColumnType("nvarchar(50)");
+modelBuilder.Entity<Employee>(employee =>
+{
+    employee.Property(e => e.Name)
+        .IsRequired()
+        .HasColumnName("EmpName")
+        .HasColumnType("nvarchar(50)");
 
-        employee.Property(e => e.Salary)
-            .HasColumnType("decimal(10, 0)")
-            .HasDefaultValue(1);
-
-    });
+    employee.Property(e => e.Salary)
+        .HasColumnType("decimal(10, 0)")
+        .HasDefaultValue(1);
+});
 ```
 
 ## Cấu hình mức thực thể
