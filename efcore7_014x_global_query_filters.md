@@ -129,4 +129,28 @@ var post = context.Posts
   .FirstOrDefault();
 ```
 
+Đối với reference navigation, ta cần lưu ý:
+
+- Nếu là _optional reference navigation_, khi thực thể liên quan bị lọc khỏi kết quả trả về, reference navigation sẽ nhận giá trị `null`.
+
+- Nếu là _required reference navigation_, khi thực thể liên quan bị lọc khỏi kết quả trả về, chính thực thể con đang tải cũng sẽ bị loại khỏi kết quả trả về và nhận giá trị `null` (hệ quả của phép `INNER JOIN` - một phía thực thể không có dữ liệu phù hợp sẽ loại bản ghi phía còn lại ra khỏi kết quả trả về).
+
+Ở trường hợp 2 trong ví dụ trên, `post` sẽ là `null` vì `Post.Blog` là một required reference navigation.
+
+## Disabling filters
+
+Global query filter sẽ áp dụng filter cho toàn bộ các truy vấn trên thực thể được cấu hình. Trong một số trường hợp muốn bỏ qua filter trên một số truy vấn LINQ, hãy sử dụng phương thức `IgnoreQueryFilters()`.
+
+```cs
+var blogs = await db.Blogs
+    .Include(b => b.Posts)
+    .IgnoreQueryFilters()
+    .ToListAsync();
+```
+
+
+
+
+
+
 
