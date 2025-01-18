@@ -35,3 +35,5 @@
 * [12. Entity Framework Core 7.0 - Extension - Entity States](/efcore7_012x_entity_states.md)
 
 * [13. Entity Framework Core 7.0 - Extension - SQL Queries](/efcore7_013x_sql_queries.md)
+
+* [14. Entity Framework Core 7.0 - Extension - Global Query Filters](/efcore7_014x_global_query_filters.md)
