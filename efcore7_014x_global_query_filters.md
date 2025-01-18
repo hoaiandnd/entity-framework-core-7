@@ -84,7 +84,25 @@ modelBuilder.Entity<Post>().HasQueryFilter(p => p.IsDeleted == false && p.Blog.I
 modelBuilder.Entity<Blog>().HasQueryFilter(b => b.Posts.Count > 0); // gọi collection navigation
 ```
 
-Khi sử dụng thuộc tính điều hướng trong filter, các truy vấn trên thực thể sẽ là truy vấn đệ quy (truy vấn gọi đến thực thể liên quan). Khi này, query filter được định nghĩa ở thực thể navigation cũng sẽ được áp dụng.
+Khi sử dụng thuộc tính điều hướng trong filter, các truy vấn trên thực thể sẽ là truy vấn đệ quy (truy vấn gọi đến thực thể liên quan). 
+
+EF Core sẽ gọi đến các thuộc tính điều hướng, query filter được định nghĩa ở thực thể liên quan cũng sẽ được áp dụng. Lúc này, điều kiện được áp dụng cho câu truy vấn sẽ là tổng hợp các điều kiện truy vấn của các thực thể liên quan được chỉ định cùng trong query filter.
+
+**Ví dụ:**
+
+```cs
+modelBuilder.Entity<Blog>().HasQueryFilter(b => b.IsDeleted == false && b.Posts.Count > 0);
+modelBuilder.Entity<Post>().HasQueryFilter(p => p.IsDeleted == false);
+
+// truy vấn
+var blog = context.Blog.ToList();
+```
+
+Ở ví dụ trên, khi truy vấn thực thể `Blog`, query filter của nó sẽ được áp dụng gồm `b.IsDeleted == false` và `b.Posts.Count > 0`.
+
+Đối với điều kiện thứ 2, nó sẽ truy vấn đến thực thể `Post` và query filter của thực thể này cũng sẽ được áp dụng - `p.IsDeleted == false`. Do đó, điều kiện `b.Posts.Count > 0` sẽ tự động đếm các post chưa bị xoá.
+
+Các query filter của thực thể liên quan cũng sẽ được áp dụng khi eager loading với phương thức `Include()`.
 
 **Ví dụ:**
 
