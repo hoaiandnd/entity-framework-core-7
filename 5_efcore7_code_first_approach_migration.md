@@ -9,14 +9,21 @@ dung bên dưới sẽ lần lượt những lệnh có thể dùng trong EF Cor
 
 ## Tạo Migration đầu tiên và Database
 
-Sau khi thực hiện xong các cấu hình trên lớp thực thể và đối tượng Context, ta sử dụng lệnh sau trong 
-**Package Manager Console**:
+Sau khi thực hiện xong các cấu hình trên lớp thực thể và đối tượng Context, ta sử dụng lệnh: 
+
+- **Package Manager Console**:
 
 ```console
-    Add-Migration [Migration name]
+Add-Migration [Migration name]
 ```
 
-Trong đó, `[Migration name]` là một định danh tùy chọn.
+- **.NET CLI**:
+
+```console
+dotnet ef migrations add [Migration name]
+```
+
+Trong đó, `[Migration name]` là một định danh tùy chọn, tuy nhiên định danh này sẽ được dùng làm tên `class`, vì vậy nếu được hãy đặt theo định dạng **PascalCase**.
 
 EF Core sẽ tự động tạo ra thư mục tên `Migrations` trong dự án hiện tại cùng với một số file `*.cs`.
 
