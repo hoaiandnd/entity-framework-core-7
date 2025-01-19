@@ -223,29 +223,27 @@ var blogs = db.Blogs.FromSql($"EXECUTE dbo.searchBlog {param}").ToList();
 Có nhiều phiên bản overload constructor của [**`SqlParameter`**](https://learn.microsoft.com/en-us/dotnet/api/microsoft.data.sqlclient.sqlparameter?view=sqlclient-dotnet-standard-5.2), bên dưới là một số cú pháp phổ biến:
 
 ```cs
-
+SqlParameter(string parameterName, SqlDbType dbType, int size);
+SqlParameter(string parameterName, object value);
+SqlParameter(string parameterName, SqlDbType dbType);
 ```
 
+Trong đó:
 
+- `parameterName`: tên của tham số (case insensitive), có thể hoặc không chứa ký tự `@`.
 
+- `dbType`: kiểu dữ liệu của tham số tương ứng được định nghĩa bằng enum [**`SqlDbType`**](https://learn.microsoft.com/en-us/dotnet/api/system.data.sqldbtype?view=net-9.0) như `SqlDbType.Int`, `SqlDbType.NVarChar`, ...
 
+- `size`: kích thước của kiểu dữ liệu, ví dụ: `NVARCHAR(255)` thì `size` sẽ là `255`. Thường chỉ định cùng với `dbType`.
 
+- `value`: giá trị của tham số.
 
+> Kiểu `SqlParameter` còn nhiều thuộc tính khác để cấu hình cho tham số như `Scale`, `Precision` (thường dùng cho kiểu `DECIMAL` trong SQL), `Direction`, ...
 
+**Ví dụ:**
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```cs
+var param = new SqlParameter("name", SqlDbType.NVarChar, 255);
+param.Value = "Blog";
+var blogs = db.Blogs.FromSql($"EXECUTE dbo.searchBlog {param}").ToList();
+```
