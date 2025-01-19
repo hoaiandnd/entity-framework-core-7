@@ -113,6 +113,139 @@ PRINT @count -- hiển thị giá trị được trả về
 
 ### Sử dụng Store procedure trong Entity Framework Core
 
+Đối với góc nhìn của EF Core, ta chia Store procedure thành 2 loại:
+
+- Có trả về dữ liệu (thực hiện truy vấn bằng `SELECT`)
+
+- Không trả về dữ liệu (thường chứa các câu lệnh không có dữ liệu trả về như `INSERT`, `UPDATE`, `DELETE`, ...).
+
+#### Store procedure có trả về đữ liệu
+
+Đối với EF Core, một procedure có trả về kết quả là procedure có thực hiện truy vấn bằng lệnh `SELECT`.
+
+🔖 Một số lưu ý:
+
+- EF Core chỉ nhận kết quả từ truy vấn `SELECT` **đầu tiên**, trong trường hợp procedure có nhiều truy vấn (multiple result set).
+
+```sql
+CREATE PROCEDURE dbo.getDeletedBlogsMultiple
+AS
+BEGIN
+   SELECT * FROM Blog WHERE is_deleted = 1; -- lấy dữ liệu từ truy vấn đầu tiên
+   SELECT * FROM Post WHERE is_deleted = 1; -- bỏ qua
+END
+```
+
+- Miễn là procedure có dùng `SELECT` để truy vấn thì EF Core sẽ sử dụng kết quả của truy vấn đó, bất kể phía sau có còn lệnh T-SQL nào khác hay không.
+
+```sql
+CREATE PROCEDURE dbo.getDeletedBlogsAndDoSomething
+AS
+BEGIN
+   SELECT * FROM Blog WHERE is_deleted = 1; -- lấy dữ liệu từ truy vấn đầu tiên
+   PRINT('Something')
+END
+```
+
+Để lấy dữ liệu trả về từ Store procedure, ta sử dụng phương thức `FromSql()` hoặc một số phương thức tương tự như `FromSqlRaw()`, `SqlQuery<TResult>()`, ... như đã đề cập trong chương [**SQL Queries**](/efcore7_013x_sql_queries.md).
+
+**Ví dụ:**
+
+```cs
+var deletedBlogs = context.Blogs.FromSql($"EXECUTE dbo.getDeletedBlogs").ToList();
+```
+
+Phương thức `FromSql()` hoặc `FromSqlRaw()` thường được sử dụng đối với những store procedure trả về toàn vẹn thực thể (tức là trả về toàn bộ thuộc tính/trường của 1 thực thể/bản ghi). 
+
+Ngược lại nếu chỉ truy vấn trên 1 vài cột thì nên sử dụng `SqlQuery<TResult>()` hoặc `SqlQueryRaw<TResult>()`.
+
+**Ví dụ:**
+
+<details>
+  <summary>Store procedure<br /></summary>
+   
+```sql
+CREATE PROCEDURE dbo.getDeletedBlogsSqlQuery
+AS
+BEGIN
+   SELECT id, name FROM Blog WHERE is_deleted = 1; -- chỉ trả về một số cột dữ liệu --> thực thể không toàn vẹn
+END
+```
+
+</details>
+
+```cs
+// khai báo kiểu thực thể trả về
+record GetDeletedBlogsResult(int Id, string Name);
+
+// sử dụng kiểu thực thể đã định nghĩa để nhận kết quả từ store procedure
+var deletedBlogs = context.Database.SqlQuery<GetDeletedBlogsResult>($"EXECUTE dbo.getDeletedBlogsSqlQuery").ToList();
+```
+
+Đối với store procedure yêu cầu tham số đầu vào, cách đơn giản nhất là truyền giá trị vào câu lệnh thực thi tương tự cú pháp chuỗi nội suy của C#:
+
+<details>
+  <summary>Store procedure<br /></summary>
+   
+```sql
+CREATE PROCEDURE dbo.searchBlogs
+   @name NVARCHAR(255)
+AS
+BEGIN
+   SELECT * FROM Blog WHERE [name] LIKE '%' + @name + '%'
+END
+```
+
+</details>
+
+```cs
+var searchName = "fact";
+var blogs = context.Blogs.FromSql($"EXECUTE dbo.searchBlogs @name = {searchName}").ToList();
+```
+
+> [!Tip]
+> Nếu Store procedure chỉ có 1 tham số đầu vào, ta có thể truyền trực tiếp ngay sau tên procedure (cú pháp của SQL - không phải do EF Core xử lý).
+>
+> ```cs
+> var searchName = "fact";
+> var blogs = context.Blogs.FromSql($"EXECUTE dbo.searchBlogs {searchName}").ToList();
+> ```
+
+Một cách khác là sử dụng đối tượng `SqlParameter`.
+
+**Ví dụ:**
+
+```cs
+var param = new SqlParameter("name", "Blog");
+var blogs = db.Blogs.FromSql($"EXECUTE dbo.searchBlog {param}").ToList();
+```
+
+Có nhiều phiên bản overload constructor của [**`SqlParameter`**](https://learn.microsoft.com/en-us/dotnet/api/microsoft.data.sqlclient.sqlparameter?view=sqlclient-dotnet-standard-5.2), bên dưới là một số cú pháp phổ biến:
+
+```cs
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
