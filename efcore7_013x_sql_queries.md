@@ -115,7 +115,7 @@ WHERE [b].[Rating] > 3
 > Việc kết hợp với LINQ yêu cầu câu lệnh SQL phải có khả năng kết hợp được. Câu truy vấn SQL kết hợp được thường bắt đầu với từ khoá `SELECT` và không chứa các thành phần không hợp lệ trong câu truy vấn con.
 
 > [!Warning]
-> Vì Store Procedure không trả về kết quả, do đó ta không thể sử dụng kết hợp lời gọi store procedure với LINQ.
+> SQL Server không cho phép sử dụng kết hợp lời gọi store procedure với LINQ, vì vậy các nỗ lực trong việc đặt các toán tử truy vấn khác vào sẽ là không hợp lệ. Có thể đặt phương thức `AsEnumerable()` hoặc `AsAsyncEnumerable()` ngay sau `FromSql()` hoặc `FromSqlRaw()` để đảm bảo EF Core không cố gắng kết hợp với lời gọi store procedure.
 
 ## Tracking Entity
 
