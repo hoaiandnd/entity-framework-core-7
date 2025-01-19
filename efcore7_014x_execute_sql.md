@@ -78,6 +78,9 @@ END
 
 > `SELECT` trong ví dụ trên đóng vai trò gán giá trị cho biến từ câu truy vấn hiện tại.
 
+> [!Tip]
+> Có thể sử dụng lệnh `SET NOCOUNT ON` để tăng tốc thực thi cho procedure.
+
 #### Gọi và thực thi
 
 Để gọi và thực thi một procedure, ta sử dụng cú pháp sau:
@@ -107,6 +110,8 @@ DECLARE @count INT -- khai báo một biến nhận giá trị đầu ra
 EXECUTE dbo.getDeletedBlogCount @deletedBlogCount = @count OUT
 PRINT @count -- hiển thị giá trị được trả về
 ```
+
+### Sử dụng Store procedure trong Entity Framework Core
 
 
 
