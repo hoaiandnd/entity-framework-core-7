@@ -247,3 +247,28 @@ var param = new SqlParameter("name", SqlDbType.NVarChar, 255);
 param.Value = "Blog";
 var blogs = db.Blogs.FromSql($"EXECUTE dbo.searchBlog {param}").ToList();
 ```
+
+#### Store procedure không trả về đữ liệu
+
+Đối với các store procedure không trả về dữ liệu, thường chứa các lệnh DML như `INSERT`, `UPDATE`, `DELETE`, ... thì hãy sử dụng phương thức `ExecuteSql()` hoặc `ExecuteSqlRaw()`. Các phương thức này trả về số dòng ảnh hưởng (rows affected).
+
+Phương thức `ExecuteSql()` hoặc `ExecuteSqlRaw()` được gọi từ thuộc tính `Database` của đối tượng `DbContext`.
+
+> Ngoài ra ta có thể sử dụng phương thức `ExecuteSqlInterpolated()`.
+
+**ví dụ:**
+
+```cs
+var newName = "New blog name";
+var result = context.Database.ExecuteSql($"EXECUTE dbo.insertNewBlog {newName}");
+```
+
+> [!Warning]
+> Nếu Store procedure sử dụng lệnh `SET NOCOUNT ON` thì số dòng ảnh hưởng sẽ không được trả về, phương thức `ExecuteSql()` sẽ về `-1`.
+
+
+
+
+
+
+
