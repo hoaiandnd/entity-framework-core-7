@@ -35,6 +35,8 @@ Trong đó:
 
 - `<ParameterName>`, ...: các tham số của procedure. Nếu không khai báo `OUT` hoặc `OUTPUT` sẽ được hiểu là tham số đầu vào (input parameters). Một procedure có thể nhận nhiều tham số (đầu vào và đầu ra), phân cách bằng dấu phẩy
 
+- `<data tyoe>`: kiểu dữ liệu trong T-SQL.
+
 > [!Tip]
 > Từ khoá `PROCEDURE` có thể viết tắt là `PROC`.
 
