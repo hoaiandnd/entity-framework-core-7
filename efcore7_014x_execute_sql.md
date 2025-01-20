@@ -162,7 +162,7 @@ Ngược lại nếu chỉ truy vấn trên 1 vài cột thì nên sử dụng `
 **Ví dụ:**
 
 <details>
-  <summary>Store procedure<br /></summary>
+  <summary>Store procedure<code>dbo.getDeletedBlogsSqlQuery</code><br /></summary>
    
 ```sql
 CREATE PROCEDURE dbo.getDeletedBlogsSqlQuery
@@ -185,7 +185,7 @@ var deletedBlogs = context.Database.SqlQuery<GetDeletedBlogsResult>($"EXECUTE db
 Đối với store procedure yêu cầu tham số đầu vào, cách đơn giản nhất là truyền giá trị vào câu lệnh thực thi tương tự cú pháp chuỗi nội suy của C#:
 
 <details>
-  <summary>Store procedure<br /></summary>
+  <summary>Store procedure <code>dbo.searchBlogs</code><br /></summary>
    
 ```sql
 CREATE PROCEDURE dbo.searchBlogs
@@ -256,7 +256,21 @@ Phương thức `ExecuteSql()` hoặc `ExecuteSqlRaw()` được gọi từ thu�
 
 > Ngoài ra ta có thể sử dụng phương thức `ExecuteSqlInterpolated()`.
 
-**ví dụ:**
+**Ví dụ:**
+
+<details>
+  <summary>Store procedure <code>dbo.insertNewBlog</code><br /></summary>
+   
+```sql
+CREATE PROCEDURE dbo.insertNewBlog
+   @blogName NVARCHAR(255)
+AS
+BEGIN
+   INSERT INTO Blog([name], is_deleted) VALUES (@blogName, 0)
+END
+```
+
+</details>
 
 ```cs
 var newName = "New blog name";
@@ -265,6 +279,16 @@ var result = context.Database.ExecuteSql($"EXECUTE dbo.insertNewBlog {newName}")
 
 > [!Warning]
 > Nếu Store procedure sử dụng lệnh `SET NOCOUNT ON` thì số dòng ảnh hưởng sẽ không được trả về, phương thức `ExecuteSql()` sẽ về `-1`.
+>
+> ```sql
+> CREATE PROCEDURE dbo.insertNewBlog
+>    @blogName NVARCHAR(255)
+> AS
+> BEGIN
+>    SET NOCOUNT ON -- dòng này sẽ ngăn việc trả về số dòng ảnh hưởng
+>    INSERT INTO Blog([name], is_deleted) VALUES (@blogName, 0)
+> END
+```
 
 
 
