@@ -29,4 +29,8 @@ END;
 
 Trong đó:
 
-- `<FunctionName>`
+- `<FunctionName>`: tên hàm, thường kèm theo tên lược đồ (schema) - `schema.function-name`, mặc định là `dbo`.
+
+- `@Param1 datatype`: khai báo tham số cho hàm gồm tên tham số và kiểu dữ liệu của tham số.
+
+- 
