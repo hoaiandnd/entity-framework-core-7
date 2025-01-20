@@ -8,8 +8,25 @@ Tương tự như khái niệm hàm trong các ngôn ngữ lập trình, User-de
 
 UDF trong SQL Server chia thành 2 loại:
 
-- Scalar function: hàm trả về một giá trị kiểu bất ký trừ `text`, `ntext`, `image`, `cursor`, và `timestamp`.
+- **Scalar function**: hàm trả về một giá trị đơn (single value) với kiểu bất kỳ như `INT`, `VARCHAR`, `BIT`, ... nhưng trừ `TEXT`, `NTEXT`, `IMAGE`, `CURSOR`, và `TIMESTAMP`.
 
-- Table-Valued Function (TVF): trả về dữ liệu là một bảng.
+- **Table-valued function (TVF)**: trả về dữ liệu là một tập dữ liệu, hay một bảng dữ liệu (thông qua truy vấn).
 
+### Scalar function
 
+Cú pháp:
+
+```sql
+CREATE FUNCTION <FunctionName> ( [@Param1 datatype, @Param2 datatype, ...] )
+RETURNS <return type>
+AS
+BEGIN
+    -- Các câu lệnh T-SQL để thực hiện tính toán
+    -- ...
+    RETURN <value>;
+END;
+```
+
+Trong đó:
+
+- `<FunctionName>`
