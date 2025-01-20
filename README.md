@@ -38,4 +38,10 @@
 
 * [13. Entity Framework Core 7.0 - Extension - SQL Queries](/efcore7_013x_sql_queries.md)
 
-* [14. Entity Framework Core 7.0 - Extension - Global Query Filters](/efcore7_014x_global_query_filters.md)
+* [14. Entity Framework Core 7.0 - Extension - Execute non-query SQL - Store procedure](/efcore7_014x_execute_sql_store_procedure.md)
+
+* 15. Entity Framework Core 7.0 - Extension - Execute non-query SQL - User-defined function
+
+* 16. Entity Framework Core 7.0 - Extension - Execute non-query SQL - View
+
+* [17. Entity Framework Core 7.0 - Extension - Global Query Filters](/efcore7_017x_global_query_filters.md)
