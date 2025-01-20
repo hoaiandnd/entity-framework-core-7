@@ -1,10 +1,6 @@
-# Execute non-query SQL
+# Execute non-query SQL - Store procedure
 
-> Ở chương [**SQL Queries**](/efcore7_013x_sql_queries.md), ta đã tìm hiều về cách thực thi các câu truy vấn SQL và trả về dữ liệu. Ở nội dung này, ta sẽ tìm hiểu những nội dung còn lại khi thao tác với câu lệnh SQL như Store Procedure, User Function, View, ... trong SQL Server.
-
-## Store Procedure
-
-### Sơ lược về Store procedure trong SQL Server
+## Store procedure trong SQL Server
 
 > Bỏ qua nội dung này nếu đã có kiến thức về Store procedure
 
@@ -16,7 +12,7 @@ Store procedure trong SQL Server là một nhóm các lệnh T-SQL (Transact-SQL
 
 - Trả về giá trị trạng thái (thành công hoặc thất bại).
 
-#### Tạo Procedure
+### Tạo Procedure
 
 Cú pháp:
 
@@ -81,7 +77,7 @@ END
 > [!Tip]
 > Có thể sử dụng lệnh `SET NOCOUNT ON` để tăng tốc thực thi cho procedure.
 
-#### Gọi và thực thi
+### Gọi và thực thi
 
 Để gọi và thực thi một procedure, ta sử dụng cú pháp sau:
 
@@ -111,7 +107,7 @@ EXECUTE dbo.getDeletedBlogCount @deletedBlogCount = @count OUT
 PRINT @count -- hiển thị giá trị được trả về
 ```
 
-### Sử dụng Store procedure trong Entity Framework Core
+## Store procedure trong Entity Framework Core
 
 Đối với góc nhìn của EF Core, ta chia Store procedure thành 2 loại:
 
@@ -119,7 +115,7 @@ PRINT @count -- hiển thị giá trị được trả về
 
 - Không trả về dữ liệu (thường chứa các câu lệnh không có dữ liệu trả về như `INSERT`, `UPDATE`, `DELETE`, ...).
 
-#### Store procedure có trả về đữ liệu
+### Store procedure có trả về đữ liệu
 
 Đối với EF Core, một procedure có trả về kết quả là procedure có thực hiện truy vấn bằng lệnh `SELECT`.
 
@@ -162,7 +158,7 @@ Ngược lại nếu chỉ truy vấn trên 1 vài cột thì nên sử dụng `
 **Ví dụ:**
 
 <details>
-  <summary>Store procedure<code>dbo.getDeletedBlogsSqlQuery</code><br /></summary>
+  <summary>Store procedure <code>dbo.getDeletedBlogsSqlQuery</code><br /></summary>
    
 ```sql
 CREATE PROCEDURE dbo.getDeletedBlogsSqlQuery
@@ -248,7 +244,7 @@ param.Value = "Blog";
 var blogs = db.Blogs.FromSql($"EXECUTE dbo.searchBlog {param}").ToList();
 ```
 
-#### Store procedure không trả về đữ liệu
+### Store procedure không trả về đữ liệu
 
 Đối với các store procedure không trả về dữ liệu, thường chứa các lệnh DML như `INSERT`, `UPDATE`, `DELETE`, ... thì hãy sử dụng phương thức `ExecuteSql()` hoặc `ExecuteSqlRaw()`. Các phương thức này trả về số dòng ảnh hưởng (rows affected).
 
@@ -288,11 +284,5 @@ var result = context.Database.ExecuteSql($"EXECUTE dbo.insertNewBlog {newName}")
 >    SET NOCOUNT ON -- dòng này sẽ ngăn việc trả về số dòng ảnh hưởng
 >    INSERT INTO Blog([name], is_deleted) VALUES (@blogName, 0)
 > END
-```
-
-
-
-
-
-
+> ```
 
