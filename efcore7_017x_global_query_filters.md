@@ -153,9 +153,40 @@ var blogs = await db.Blogs
     .ToListAsync();
 ```
 
+## Hạn chế của Global query filter - Limitations
 
+Global query filter chỉ có thể định nghĩa ở kiểu gốc trong hệ thống phân cấp. Một cách đơn giản mà nói, nếu có nhiều thực thể kế thừa từ một lớp cơ sở chung thì query filter chỉ có thể định nghĩa trên kiểu cơ sở đó.
 
+Khi query filter được định nghĩa trên lớp cơ sở, các truy vấn trên những lớp thực thể dẫn xuất (thực thể kế thừa và các cấp kế thừa sâu hơn) cũng sẽ được áp dụng query filter đó.
 
+Tuy nhiên, đối với soft-delete, điều này là một thuận lợi. Nếu khai báo một lớp cơ sở, ví dụ `SoftDeleteEntity`, ta có thể cấu hình query filter một lần và sử dụng được cho các thực thể dẫn xuất.
+
+**Ví dụ:**
+
+- Khai báo một lớp cơ sở chung cho các thực thể cần chức năng soft-delete:
+
+```cs
+class SoftDeleteEntity
+{
+  public bool IsDeleted { get; set; }
+}
+
+public Blog : SoftDeleteEntity
+{
+  // các thuộc tính của blog
+}
+
+public Post : SoftDeleteEntity
+{
+  // các thuộc tính của post
+}
+```
+
+- Ta chỉ cần cấu hình query filter trên lớp `SoftDeleteEntity`:
+
+```cs
+modelBuilder.Entity<SoftDeleteEntity>().HasQueryFilter(entity => entity.IsDeleted == false);
+```
 
 
 
