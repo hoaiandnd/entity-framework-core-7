@@ -88,17 +88,25 @@ RETURN SELECT * FROM Post WHERE blog_id = @blogId;
 Cú pháp:
 
 ```sql
-CREATE FUNCTION [tên_lược_đồ].[tên_hàm] ( [@tham_số_1 kiểu_dữ_liệu, @tham_số_2 kiểu_dữ_liệu, ...] )
-RETURNS @tên_biến_bảng TABLE (cột_1 kiểu_dữ_liệu, cột_2 kiểu_dữ_liệu, ...)
+CREATE FUNCTION <FunctionName> ( [@Param1 datatype, @Param2 datatype, ...] )
+RETURNS @<TableVariable> TABLE (<Column Definitions>)
 AS
 BEGIN
-    -- Các câu lệnh T-SQL để thao tác với biến bảng @tên_biến_bảng
+    -- Các câu lệnh T-SQL để thao tác với biến bảng @TableVariable
     -- ...
     RETURN;
 END;
 ```
 
+Trong đó:
 
+- `@<TableVariable>`: biến bảng, gọi biến này để thao tác với bảng sẽ chứa dữ liệu trả về.
+
+- `<Column Definitions>`: định nghĩa các cột (trường) của bảng, chỉ ra cấu trúc của bảng sẽ được trả về.
+
+Ta có thể sử dụng lệnh `INSERT`, `UPDATE`, `DELETE` trên biến bảng để thêm và chỉnh sửa dữ liệu cho bảng.
+
+Biến bảng được tạo ra mặc định là bảng rỗng chỉ chứa cấu trúc, để thêm dữ liệu cho bảng này và trả về, hãy sử dụng cú pháp `INSERT INTO ... SELECT ...`.
 
 
 
