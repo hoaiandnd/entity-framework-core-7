@@ -106,7 +106,7 @@ Trong đó:
 
 Ta có thể sử dụng lệnh `INSERT`, `UPDATE`, `DELETE` trên biến bảng để thêm và chỉnh sửa dữ liệu cho bảng.
 
-Biến bảng được tạo ra mặc định là bảng rỗng chỉ chứa cấu trúc, để thêm dữ liệu cho bảng này và trả về, hãy sử dụng cú pháp [**`INSERT INTO SELECT`**](https://www.w3schools.com/sql/sql_insert_into_select.asp).
+Biến bảng được tạo ra mặc định là bảng rỗng chỉ chứa cấu trúc, để thêm dữ liệu cho bảng này và trả về, hãy sử dụng cú pháp [**`INSERT INTO SELECT`**](https://www.w3schools.com/sql/sql_insert_into_select.asp). Cú pháp `INSERT INTO SELECT` dùng để sao chép dữ liệu trả về từ câu truy vấn `SELECT` và ghi vào bảng đã tồn tại.
 
 **Ví dụ:**
 
