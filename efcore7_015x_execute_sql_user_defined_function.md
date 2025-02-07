@@ -127,7 +127,7 @@ END;
 
 ### Gọi hàm
 
-
+Vì có trả về giá trị, nên UDF thường có thể sử dụng ở nhiều nơi trong câu truy vấn `SELECT`, `WHERE`, `HAVING`, ... để tính toán xử lý.
 
 ## User-defined function trong Entity Framework Core
 
