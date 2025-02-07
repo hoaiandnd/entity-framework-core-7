@@ -110,7 +110,7 @@ Biến bảng được tạo ra mặc định là bảng rỗng chỉ chứa c�
 
 **Ví dụ:**
 
-```cs
+```sql
 CREATE FUNCTION dbo.getDeletedBlogs()
 RETURNS @result TABLE (
     id VARCHAR(255),
