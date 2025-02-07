@@ -125,3 +125,10 @@ BEGIN
 END;
 ```
 
+## User-defined function trong Entity Framework Core
+
+
+
+
+
+
