@@ -125,9 +125,17 @@ BEGIN
 END;
 ```
 
+### Gọi hàm
+
+
+
 ## User-defined function trong Entity Framework Core
 
+### Scalar function
 
+Đối với Scalar function (hàm chỉ trả về giá trị đơn), ta có thể phương thức `SqlQuery<TResult>()`.
+
+**Ví dụ:**
 
 
 
