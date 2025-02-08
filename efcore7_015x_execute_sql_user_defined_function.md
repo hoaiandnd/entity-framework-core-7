@@ -77,7 +77,7 @@ Inline TVF sẽ khai báo kiểu trả về là `TABLE` và trả về ngay mộ
 **Ví dụ:**
 
 ```sql
-CREATE FUNCTION dbo.getPostByBlog (@blogId VARCHAR(50))
+CREATE FUNCTION dbo.getPostsByBlog (@blogId INT)
 RETURNS TABLE
 AS
 RETURN SELECT * FROM Post WHERE blog_id = @blogId;
@@ -132,17 +132,26 @@ Vì có trả về giá trị, nên UDF thường có thể sử dụng ở nhi�
 **Ví dụ:**
 
 ```sql
+-- Sử dụng scalar function
+SELECT dbo.getPostCount(1) -- hiển thị giá trị trả về
+SELECT * FROM Blogs WHERE dbo.getPostCount(id) > 0 -- sử dụng trong câu truy vấn
 
+-- Sử dụng table-valued function
+SELECT * FROM dbo.getPostsByBlog(1)
+SELECT * FROM dbo.getDeletedBlogs()
 ```
+
 
 ## User-defined function trong Entity Framework Core
 
 ### Scalar function
 
-Đối với Scalar function (hàm chỉ trả về giá trị đơn), ta có thể phương thức `SqlQuery<TResult>()`.
+Đối với Scalar function (hàm chỉ trả về giá trị đơn), ta có thể dùng phương thức `SqlQuery<TResult>()`.
 
 **Ví dụ:**
 
+```cs
 
+```
 
 
