@@ -146,12 +146,58 @@ SELECT * FROM dbo.getDeletedBlogs()
 
 ### Scalar function
 
-Đối với Scalar function (hàm chỉ trả về giá trị đơn), ta có thể dùng phương thức `SqlQuery<TResult>()`.
+Các phương thức như `FromSql()`, `SqlQuery()` hay `ExecuteSql()` không thực sự hiệu quả khi gọi scalar function vì kiểu trả về của các phương thức này không phù hợp (`FromSql()` và `SqlQuery()` trả về kiểu `IQueryable<T>`, còn `ExecuteSql()` trả về kiểu `int` đại diện cho số dòng bị ảnh hưởng - row affected).
+
+Scalar function chỉ trả về một giá trị đơn, và EF Core cung cấp một phương pháp hiệu quả để gọi scalar function, đó là ánh xạ nó với một phương thức trong C#.
+
+Đầu tiên, hãy khai báo một phương thức. Phương thức này phải thuộc 1 trong 2 trường hợp sau:
+
+- Là phương thức thành viên của lớp context (kế thừa `DbContext`).
+
+- Là một phương thức `static` (có thể từ một lớp khác hoặc của lớp context).
 
 **Ví dụ:**
 
 ```cs
-
+class BlogDbContext : DbContext
+{
+    // các cấu hình database ...
+    public int GetPostCount(int blogId) => throw new NotImplementedException();
+}
 ```
+
+> [!Tip]
+> EF Core khi ánh xạ sẽ không quan tâm đến phần định nghĩa của phương thức. Phần định nghĩa chỉ được gọi khi EF Core không thể ánh xạ được với UDF tương ứng trong SQL Server.
+
+Sau khi khai báo một phương thức, có 2 cách để ánh xạ nó với UDF trong SQL Server:
+
+- Sử dụng attribute `[DbFunction]` cho phương thức vừa khai báo.
+
+**Ví dụ:**
+
+```cs
+[DbFunction]
+public int GetPostCount(int blogId) => throw new NotImplementedException();
+```
+
+- Cấu hình trong `OnModelCreating()` với phương thức `HasDbFunction()`:
+
+**Ví dụ:**
+
+```cs
+class BlogDbContext : DbContext
+{
+    // các cấu hình database ...
+    public int GetPostCount(int blogId) => throw new NotImplementedException();
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder
+            .HasDbFunction(typeof(DbFunction).GetMethod(nameof(GetPostCount), [typeof(int)])!)     
+    }
+}
+```
+
+Theo mặc định nếu không chỉ định gì thêm, EF Core sẽ cố gắng ánh xạ với UDF trùng tên với phương thức trong C# (không phân biệt text-case, case-insensitive) và shema mặc định (với SQL Server là `dbo`).
 
 
