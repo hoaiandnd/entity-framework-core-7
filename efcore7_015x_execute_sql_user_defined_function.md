@@ -180,7 +180,7 @@ Sau khi khai báo một phương thức, có 2 cách để ánh xạ nó với U
 public int GetPostCount(int blogId) => throw new NotImplementedException();
 ```
 
-- Cấu hình trong `OnModelCreating()` với phương thức `HasDbFunction()`:
+- Cấu hình trong `OnModelCreating()` với phương thức [**`HasDbFunction()`**](https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.relationalmodelbuilderextensions.hasdbfunction?view=efcore-9.0):
 
 **Ví dụ:**
 
@@ -193,7 +193,7 @@ class BlogDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
-            .HasDbFunction(typeof(DbFunction).GetMethod(nameof(GetPostCount), [typeof(int)])!)     
+            .HasDbFunction(typeof(DbFunction).GetMethod(nameof(GetPostCount), [typeof(int)])!)
     }
 }
 ```
