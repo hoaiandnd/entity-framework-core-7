@@ -249,7 +249,7 @@ class BlogDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
-            .HasDbFunction(typeof(DbFunction).GetMethod(nameof(GetPostCount), [typeof(int)])!)
+            .HasDbFunction(typeof(BlogDbContext).GetMethod(nameof(GetPostCount), [typeof(int)])!)
     }
 }
 ```
