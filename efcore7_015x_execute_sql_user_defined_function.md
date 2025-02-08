@@ -146,7 +146,11 @@ SELECT * FROM dbo.getDeletedBlogs()
 
 ### Scalar function
 
-Các phương thức như `FromSql()`, `SqlQuery()` hay `ExecuteSql()` không thực sự hiệu quả khi gọi scalar function vì kiểu trả về của các phương thức này không phù hợp (`FromSql()` và `SqlQuery()` trả về kiểu `IQueryable<T>`, còn `ExecuteSql()` trả về kiểu `int` đại diện cho số dòng bị ảnh hưởng - row affected).
+Các phương thức như `FromSql()`, `SqlQuery()` hay `ExecuteSql()` không thực sự hiệu quả khi gọi scalar function vì kiểu trả về của các phương thức này không phù hợp.
+
+> Phương thức `FromSql()` và `SqlQuery()` trả về kiểu `IQueryable<T>`, còn `ExecuteSql()` trả về kiểu `int` đại diện cho số dòng bị ảnh hưởng - row affected.
+
+#### Khai báo phương thức ánh xạ
 
 Scalar function chỉ trả về một giá trị đơn, và EF Core cung cấp một phương pháp hiệu quả để gọi scalar function, đó là ánh xạ nó với một phương thức trong C#.
 
@@ -154,7 +158,7 @@ Scalar function chỉ trả về một giá trị đơn, và EF Core cung cấp 
 
 - Là phương thức thành viên của lớp context (kế thừa `DbContext`).
 
-- Là một phương thức `static` (có thể từ một lớp khác hoặc của lớp context).
+- Là một phương thức `static` (có thể đến từ một lớp khác hoặc của lớp context).
 
 **Ví dụ:**
 
@@ -171,7 +175,11 @@ class BlogDbContext : DbContext
 
 Sau khi khai báo một phương thức, có 2 cách để ánh xạ nó với UDF trong SQL Server:
 
-- Sử dụng attribute `[DbFunction]` cho phương thức vừa khai báo.
+- Sử dụng attribute [**`[DbFunction]`**](https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.dbfunctionattribute?view=efcore-9.0) cho phương thức vừa khai báo.
+
+- Cấu hình trong `OnModelCreating()` với phương thức [**`HasDbFunction()`**](https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.relationalmodelbuilderextensions.hasdbfunction?view=efcore-9.0).
+
+#### Sử dụng attribute `[DbFunction]`
 
 **Ví dụ:**
 
@@ -180,7 +188,40 @@ Sau khi khai báo một phương thức, có 2 cách để ánh xạ nó với U
 public int GetPostCount(int blogId) => throw new NotImplementedException();
 ```
 
-- Cấu hình trong `OnModelCreating()` với phương thức [**`HasDbFunction()`**](https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.relationalmodelbuilderextensions.hasdbfunction?view=efcore-9.0):
+Theo mặc định nếu không chỉ định gì thêm, EF Core sẽ cố gắng ánh xạ với UDF trùng tên với phương thức trong C# (không phân biệt text-case, case-insensitive) và shema mặc định (với SQL Server là `dbo`).
+
+Nếu như muốn thay đổi cho phù hợp, ta có thể chỉ định lại thông qua constructor của attribute:
+
+```cs
+DbFunctionAttribute(string name, string? schema = default)
+```
+
+**Ví dụ:**
+
+```cs
+[DbFunction("getPostCountFunc", "dbo2")]
+public int GetPostCount(int blogId) => throw new NotImplementedException();
+```
+
+Các thuộc tính của attribute `[DbFunction]` có thể chỉ định kèm:
+
+Thuộc tính | Mô tả
+---|---
+`IsBuiltIn` | Chỉ ra rằng hàm cần ánh xạ có phải là built-in function không.
+`IsNullable` | Chỉ ra rằng hàm có trả về giá trị `NULL` hay không.
+`IsNullableHasValue` | Xác định thuộc tính `IsNullable` có giá trị được chỉ định tường minh không.
+`Name` | Tên của function trong database.
+`Schema` | Tên schema của function.
+
+#### Sử dụng phương thức cấu hình `HasDbFunction()`
+
+Các cú pháp của phương thức `HasDbFunction()`:
+
+```cs
+HasDbFunction(MethodInfo methodInfo, bool fromDataAnnotation = false)
+HasDbFunction(MethodInfo methodInfo, Action<DbFunctionBuilder> builderAction)
+HasDbFunction(string name, Type returnType, bool fromDataAnnotation = false)
+```
 
 **Ví dụ:**
 
@@ -198,6 +239,6 @@ class BlogDbContext : DbContext
 }
 ```
 
-Theo mặc định nếu không chỉ định gì thêm, EF Core sẽ cố gắng ánh xạ với UDF trùng tên với phương thức trong C# (không phân biệt text-case, case-insensitive) và shema mặc định (với SQL Server là `dbo`).
+
 
 
