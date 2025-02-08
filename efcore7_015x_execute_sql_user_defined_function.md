@@ -236,7 +236,7 @@ Trong đó:
 - `returnType` (`Type`): kiểu trả về của hàm trong cơ sở dữ liệu.
 
 > [!Tip]
-> Kiểu `MethodInfo` thường được tạo ra bằng cách kết hợp cú pháp `typeof(ClassName).GetMethod("MethodName", Type[] types)`.
+> Kiểu `MethodInfo` thường được tạo ra bằng cách kết hợp cú pháp `typeof(ClassName).GetMethod("MethodName", Type[] types)`, với `types` là danh sách các kiểu tham số nhận vào của phương thức.
 
 **Ví dụ:**
 
@@ -254,6 +254,14 @@ class BlogDbContext : DbContext
 }
 ```
 
+### Table-valued Functions
 
+TVFs sẽ trả về một dữ liệu dạng bảng gồm nhiều bản ghi nên ta có thể sử dụng các phương thức thực thi lệnh SQL trực tiếp như `FromSql()`, `SqlQuery<TResult>()`, ...
+
+**Ví dụ:**
+
+```cs
+var deletedBlogs = context.Blogs.FromSql($"SELECT * FROM dbo.getDeletedBlogs()");
+```
 
 
