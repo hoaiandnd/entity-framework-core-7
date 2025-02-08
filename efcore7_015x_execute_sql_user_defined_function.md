@@ -223,6 +223,21 @@ HasDbFunction(MethodInfo methodInfo, Action<DbFunctionBuilder> builderAction)
 HasDbFunction(string name, Type returnType, bool fromDataAnnotation = false)
 ```
 
+Trong đó:
+
+- `methodInfo` (`System.Reflection.MethodInfo`): thông tin về phương thức C# sẽ ánh xạ đến hàm trong cơ sở dữ liệu.
+
+- `fromDataAnnotation` (`bool`): chỉ ra rằng data annotation có được sử dụng để cấu hình không. Cụ thể ở đây là attribute `[DbFunction]`.
+
+- `builderAction` (`Action<Microsoft.EntityFrameworkCore.Metadata.Builders.DbFunctionBuilder>`): một biểu thức lambda dùng để cấu hình cho hàm trong cơ sở dữ liệu.
+
+- `name` (`string`): tên của hàm trong cơ sở dữ liệu.
+
+- `returnType` (`Type`): kiểu trả về của hàm trong cơ sở dữ liệu.
+
+> [!Tip]
+> Kiểu `MethodInfo` thường được tạo ra bằng cách kết hợp cú pháp `typeof(ClassName).GetMethod("MethodName", Type[] types)`.
+
 **Ví dụ:**
 
 ```cs
