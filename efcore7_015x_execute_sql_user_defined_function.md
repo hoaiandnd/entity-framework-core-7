@@ -254,6 +254,21 @@ class BlogDbContext : DbContext
 }
 ```
 
+#### Cách sử dụng
+
+Sau khi khai báo và cấu hình, ta có thể gọi phương thức ánh xạ sử dụng như các phương thức thông thường khác.
+
+> [!Important]
+> Phương thức được ánh xạ phải được sử dụng trong LINQ, không được gọi bên ngoài ngữ cảnh.
+>
+> ```cs
+> // không thực thi hàm trong database - chỉ thực thi phần định nghĩa của phương thức
+> var postCount = context.GetPostCount(1);
+>
+> // phải gọi trong LINQ
+> var postCount = context.Posts.Select(p => context.GetPostCount(p.BlogId)).First();
+> ```
+
 ### Table-valued Functions
 
 TVFs sẽ trả về một dữ liệu dạng bảng gồm nhiều bản ghi nên ta có thể sử dụng các phương thức thực thi lệnh SQL trực tiếp như `FromSql()`, `SqlQuery<TResult>()`, ...
