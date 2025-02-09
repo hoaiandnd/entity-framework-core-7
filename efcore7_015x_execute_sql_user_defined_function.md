@@ -276,7 +276,13 @@ TVFs sẽ trả về một dữ liệu dạng bảng gồm nhiều bản ghi nê
 **Ví dụ:**
 
 ```cs
+// sử dụng `FromSql()`
 var deletedBlogs = context.Blogs.FromSql($"SELECT * FROM dbo.getDeletedBlogs()");
+
+// sử dụng `SqlQuery<TResult>`
+record PostType(int Id, string Name);
+var blogId = 1;
+var posts = context.Database.SqlQuery<PostType>($"SELECT * FROM dbo.getPostsByBlog({blogId})");
 ```
 
 
