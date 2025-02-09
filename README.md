@@ -45,3 +45,5 @@
 * 16. Entity Framework Core 7.0 - Extension - Execute non-query SQL - View
 
 * [17. Entity Framework Core 7.0 - Extension - Global Query Filters](/efcore7_017x_global_query_filters.md)
+
+* [18. Entity Framework Core 7.0 - Extension - Inheritance](/efcore7_018x_inheritance.md)
