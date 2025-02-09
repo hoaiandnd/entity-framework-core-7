@@ -40,7 +40,7 @@
 
 * [14. Entity Framework Core 7.0 - Extension - Execute non-query SQL - Store procedure](/efcore7_014x_execute_sql_store_procedure.md)
 
-* 15. Entity Framework Core 7.0 - Extension - Execute non-query SQL - User-defined function
+* [15. Entity Framework Core 7.0 - Extension - Execute non-query SQL - User-defined function](/efcore7_015x_execute_sql_user_defined_function.md)
 
 * 16. Entity Framework Core 7.0 - Extension - Execute non-query SQL - View
 
