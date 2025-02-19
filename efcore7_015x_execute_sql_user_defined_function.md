@@ -289,6 +289,8 @@ Sau khi khai báo và cấu hình, ta có thể gọi phương thức ánh xạ 
 
 ### Table-valued Functions
 
+#### Sử dụng `FromSql()`, `SqlQuery<TResult>()`, ...
+
 TVFs sẽ trả về một dữ liệu dạng bảng gồm nhiều bản ghi nên ta có thể sử dụng các phương thức thực thi lệnh SQL trực tiếp như `FromSql()`, `SqlQuery<TResult>()`, ...
 
 **Ví dụ:**
@@ -303,5 +305,35 @@ record PostType(int Id, string Name);
 var blogId = 1;
 var posts = context.Database.SqlQuery<PostType>($"SELECT * FROM dbo.getPostsByBlog({blogId})");
 ```
+
+#### Ánh xạ thành phương thức trong C#
+
+Tương tự cách [**ánh xạ scalar-function**](#scalar-function-1), ta có thể ánh xạ TVFs thành phương thức trong C# bằng attribute `[DbFunction]` hoặc phương thức `HasDbFunction()`.
+
+**Ví dụ:**
+
+```cs
+[DbFunction]
+public IQueryable<Post> GetPostsByBlog(int blogId)
+{
+    return FromExpression(() => GetPostsByBlog(blogId));
+}
+```
+
+> Tương tự với phương thức `HasDbFunction()`.
+
+Trong đó, phương thức `FromExpression()` là cần thiết để đánh dấu rằng phương thức sẽ ánh xạ với TVF.
+
+
+
+
+
+
+
+
+
+
+
+
 
 
