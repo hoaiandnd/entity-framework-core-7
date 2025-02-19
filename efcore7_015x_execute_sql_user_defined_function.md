@@ -247,10 +247,30 @@ class BlogDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
-            .HasDbFunction(typeof(BlogDbContext).GetMethod(nameof(GetPostCount), [typeof(int)])!)
+            .HasDbFunction(typeof(BlogDbContext).GetMethod(nameof(GetPostCount), [typeof(int)])!);
     }
 }
 ```
+
+Trong trường hợp hàm trong cơ sở dữ liệu có thể trả về `NULL` do một trong các giá trị đối số truyền vào hàm là `NULL`, ta có thể cấu hình bằng cách thêm phương thức `PropagatesNullability()` cho tham số.
+
+**Ví dụ:**
+
+```cs
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder
+            .HasDbFunction(typeof(BlogDbContext).GetMethod(nameof(GetPostCount), [typeof(int)])!,
+            func =>
+            {
+                func.HasName("getPostCount");
+                func.HasParameter("blogId").PropagatesNullability();
+            }
+        );
+    }
+```
+
+Khi cấu hình bằng `PropagatesNullability()`, câu truy vấn gọi hàm sẽ được tối ưu khi kiểm tra các tham số khác `NULL` thay vì chờ hàm trả về mới kiểm tra.
 
 #### Cách sử dụng
 
