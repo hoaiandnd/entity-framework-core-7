@@ -310,6 +310,9 @@ var posts = context.Database.SqlQuery<PostType>($"SELECT * FROM dbo.getPostsByBl
 
 Tương tự cách [**ánh xạ scalar-function**](#scalar-function-1), ta có thể ánh xạ TVFs thành phương thức trong C# bằng attribute `[DbFunction]` hoặc phương thức `HasDbFunction()`.
 
+> [!Note]
+> Phương thức ánh xạ đến TVFs sẽ phải trả về kiểu `IQueryable<TResult>`, trong đó `TResult` là kiểu đại diện cho bảng được trả về từ TVFs.
+
 **Ví dụ:**
 
 ```cs
