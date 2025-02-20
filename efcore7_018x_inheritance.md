@@ -36,6 +36,12 @@ Trong EF Core, có 3 loại cấu hình cho các thực thể có tính kế th�
 
 - Table-per-concrete-type (TPC).
 
+## Table-per-hierarchy configuration
+
+Mặc định, EF sẽ ánh xạ sự kế thừa bằng cách sử dụng _table-per-hierarchy (TPH) pattern_. Về cơ bản, EF sẽ tạo ra một bảng duy nhất để lưu trữ hết các thuộc tính của các kiểu dẫn xuất (và kiểu cơ sở).
+
+Để phân biệt cột nào của bảng nào, EF còn tạo thêm một cột dùng để phân biệt, ngầm định có tên là `Discriminator`.
+
 
 
 
