@@ -23,8 +23,8 @@ public class Staff : User
 
 public class MyDbContext : DbContext
 {
-  public virtual User Users { get; set; } // không tự động bao gồm kiểu `Staff`
-  public virtual Staff Staffs { get; set; } // chỉ định tường minh
+  public virtual DbSet<User> Users { get; set; } // không tự động bao gồm kiểu `Staff`
+  public virtual DbSet<Staff> Staffs { get; set; } // chỉ định tường minh
 }
 ```
 
