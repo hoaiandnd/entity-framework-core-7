@@ -38,6 +38,8 @@ Trong EF Core, có 3 loại cấu hình cho các thực thể có tính kế th�
 
 ## Table-per-hierarchy configuration
 
+### Cấu hình
+
 Mặc định, EF sẽ ánh xạ sự kế thừa bằng cách sử dụng _table-per-hierarchy (TPH) pattern_. Về cơ bản, EF sẽ tạo ra một bảng duy nhất để lưu trữ hết các thuộc tính của các kiểu dẫn xuất (và kiểu cơ sở).
 
 Để phân biệt cột nào của bảng nào, EF còn tạo thêm một cột dùng để phân biệt, ngầm định có tên là `Discriminator`.
@@ -50,6 +52,7 @@ Mặc định, EF sẽ ánh xạ sự kế thừa bằng cách sử dụng _tabl
 `Discriminator` là tên thuộc tính được EF Core tự ngầm định tạo ra ở kiểu cơ sở (base type). Tuy nhiên ta có thể cấu hình lại nó bằng cách sử dụng phương thức `HasDiscriminator()`:
 
 ```ts
+HasDiscriminator()
 HasDiscriminator(string name, Type discriminatorType)
 HasDiscriminator<TDiscriminator>(string name)
 HasDiscriminator<TEntity,TDiscriminator>(Expression<Func<TEntity,TDiscriminator>> propertyExpression)
@@ -70,7 +73,7 @@ Trong đó:
 
 - `TEntity`: kiểu thực thể.
 
-Các ví dụ bên dưới sẽ chỉ ra cách sử dụng cơ bản của các cú pháp trên:
+**Ví dụ:**
 
 ```ts
 modelBuilder.Entity<User>().HasDiscriminator("user_type", typeof(string));
@@ -83,11 +86,56 @@ modelBuilder.Entity<User>().HasDiscriminator<User, string>(user => user.UserType
 modelBuilder.Entity<User>().HasDiscriminator(user => user.UserType);
 ```
 
-Mặc định, giá trị của cột phân biệt (trong tài liệu này vẫn gọi là cột `Discriminator`) là tên các bảng trong hệ thống phân cấp sử dụng cấu hình TPH. Và ta hoàn toàn có thể chỉ định lại chúng bằng phương thức `HasValue()`:
+Mặc định, giá trị của cột phân biệt là tên các bảng trong hệ thống phân cấp sử dụng cấu hình TPH. Và ta hoàn toàn có thể chỉ định lại chúng bằng phương thức `HasValue()`:
 
+```ts
+HasValue(object? value)
+HasValue(string entityTypeName, object? value)
+HasValue(Type entityType, object? value)
+HasValue<TEntity>(object? value)
+```
 
+Trong đó:
 
+- `value`: giá trị cho cột phân biệt.
 
+- `entityTypeName`: tên kiểu thực thể trong hệ thống phân cấp (dạng chuỗi - có thể sử dụng với `nameof`).
+
+- `entityType`: kiểu thực thể trong hệ thống phân cấp (kiểu `Type` - sử dụng cùng với `typeof`).
+
+- `TEntity`: kiểu thực thể trong hệ thống phân cấp (dạng đối số kiểu).
+
+> [!Tip]
+> Phương thức `HasValue()` được sử dụng sau khi cấu hình cột phân biệt. Nếu không muốn cấu hình gì thêm cho cột phân biệt, ta có thể sử dụng cú pháp `HasDiscriminator()` - không tham số.
+
+**Ví dụ:**
+
+```ts
+modelBuilder.Entity<User>()
+  .HasDiscriminator() // không cấu hình gì thêm cột phân biệt
+  .HasValue(typeof(User), "user_tbl")
+  .HasValue(nameof(Staff), "staff_tbl");
+
+// hoặc
+modelBuilder.Entity<User>()
+  .HasDiscriminator(user => user.UserType)
+  .HasValue<User>("user_tbl")
+  .HasValue<Staff>("staff_tbl");
+```
+
+### Sử dụng trong truy vấn
+
+Khi truy vấn các thực thể dẫn xuất sử dụng cấu hình TPH, EF Core sẽ thêm một điều kiện trên cột phân biệt để lọc và không truy vấn thừa các dữ liệu từ kiểu cơ sở và các kiểu dẫn xuất khác.
+
+Tuy nhiên, nếu truy vấn trên thực thể cơ sở, điều kiện lọc cho cột phân biệt sẽ bị bỏ qua và lấy toàn bộ bản ghi của tất cả thực thể trong hệ thống phân cấp.
+
+Nếu cột phân biệt chứa một giá trị không được ánh xạ cho kiểu thực thể nào, lỗi sẽ xảy ra vì EF Core sẽ không biết xử lý kết quả như thế nào. Trong trường hợp này, ta có thể đánh dấu rằng việc ánh xạ là "chưa hoàn chỉnh", chấp nhận các giá trị khác biệt bằng phương thức `IsComplete(bool)`.
+
+```ts
+modelBuilder.Entity<Blog>()
+  .HasDiscriminator()
+  .IsComplete(false);
+```
 
 
 
