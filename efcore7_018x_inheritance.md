@@ -42,8 +42,10 @@ Mặc định, EF sẽ ánh xạ sự kế thừa bằng cách sử dụng _tabl
 
 Để phân biệt cột nào của bảng nào, EF còn tạo thêm một cột dùng để phân biệt, ngầm định có tên là `Discriminator`.
 
+![image](https://github.com/user-attachments/assets/ad858d7a-c5f9-4727-bb47-2117ac77ebb9)
 
-
+> [!Important]
+> Các cột dữ liệu có thể tự động đánh dấu nullable (nếu cần thiết) khi sử dụng cách cấu hình TPH. Ở ví dụ trên, cột `Role` được đánh dấu nullable vì `Role` không phải là thuộc tính của bảng `Users` thông thường.
 
 
 
