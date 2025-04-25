@@ -47,7 +47,23 @@ Mặc định, EF sẽ ánh xạ sự kế thừa bằng cách sử dụng _tabl
 > [!Important]
 > Các cột dữ liệu có thể tự động đánh dấu nullable (nếu cần thiết) khi sử dụng cách cấu hình TPH. Ở ví dụ trên, cột `Role` được đánh dấu nullable vì `Role` không phải là thuộc tính của bảng `Users` thông thường.
 
+`Discriminator` là tên thuộc tính được EF Core tự ngầm định tạo ra ở kiểu cơ sở (base type). Tuy nhiên ta có thể cấu hình lại nó bằng cách sử dụng phương thức `HasDiscriminator()`:
 
+```ts
+HasDiscriminator(string name, Type discriminatorType)
+HasDiscriminator<TDiscriminator>(string name)
+HasDiscriminator<TEntity,TDiscriminator>(Expression<Func<TEntity,TDiscriminator>> propertyExpression)
+```
+
+Trong đó:
+
+- `discriminatorType` (`Type`): Kiểu giá trị được lưu trong cột phân biệt.
+
+- `TDiscriminator`: Kiểu giá trị được liiw trong cột phân biệt.
+
+- `name`: tên cột phân biệt.
+
+- `propertyExpression` (`Expression<Func<TEntity,TDiscriminator>>`): biểu thức chỉ ra thuộc tính được đặt làm cột phân biệt.
 
 
 
