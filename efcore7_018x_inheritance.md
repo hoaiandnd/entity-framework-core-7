@@ -55,16 +55,35 @@ HasDiscriminator<TDiscriminator>(string name)
 HasDiscriminator<TEntity,TDiscriminator>(Expression<Func<TEntity,TDiscriminator>> propertyExpression)
 ```
 
+> [!Note]
+> Cú pháp `HasDiscriminator<TDiscriminator>(string name)` phải chỉ định kiểu `TDiscriminator`.
+
 Trong đó:
 
 - `discriminatorType` (`Type`): Kiểu giá trị được lưu trong cột phân biệt.
 
-- `TDiscriminator`: Kiểu giá trị được liiw trong cột phân biệt.
+- `TDiscriminator`: Kiểu giá trị được lưu trong cột phân biệt.
 
 - `name`: tên cột phân biệt.
 
 - `propertyExpression` (`Expression<Func<TEntity,TDiscriminator>>`): biểu thức chỉ ra thuộc tính được đặt làm cột phân biệt.
 
+- `TEntity`: kiểu thực thể.
+
+Các ví dụ bên dưới sẽ chỉ ra cách sử dụng cơ bản của các cú pháp trên:
+
+```ts
+modelBuilder.Entity<User>().HasDiscriminator("user_type", typeof(string));
+
+modelBuilder.Entity<User>().HasDiscriminator<string>("userType");
+
+// giả sử bảng `User` có thể thuộc tính `UserType`
+modelBuilder.Entity<User>().HasDiscriminator<User, string>(user => user.UserType);
+// hoặc bỏ qua đối số kiểu
+modelBuilder.Entity<User>().HasDiscriminator(user => user.UserType);
+```
+
+Mặc định, giá trị của cột phân biệt (trong tài liệu này vẫn gọi là cột `Discriminator`) là tên các bảng trong hệ thống phân cấp sử dụng cấu hình TPH. Và ta hoàn toàn có thể chỉ định lại chúng bằng phương thức `HasValue()`:
 
 
 
