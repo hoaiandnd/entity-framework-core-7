@@ -129,7 +129,7 @@ Khi truy vấn các thực thể dẫn xuất sử dụng cấu hình TPH, EF Co
 
 Tuy nhiên, nếu truy vấn trên thực thể cơ sở, điều kiện lọc cho cột phân biệt sẽ bị bỏ qua và lấy toàn bộ bản ghi của tất cả thực thể trong hệ thống phân cấp.
 
-Nếu cột phân biệt chứa một giá trị không được ánh xạ cho kiểu thực thể nào, lỗi sẽ xảy ra vì EF Core sẽ không biết xử lý kết quả như thế nào. Trong trường hợp này, ta có thể đánh dấu rằng việc ánh xạ là "chưa hoàn chỉnh", chấp nhận các giá trị khác biệt bằng phương thức `IsComplete(bool)`.
+Nếu cột phân biệt chứa một giá trị không được ánh xạ cho kiểu thực thể nào, lỗi sẽ xảy ra vì EF Core sẽ không biết xử lý kết quả như thế nào. Trong trường hợp này, ta có thể đánh dấu rằng việc ánh xạ là "chưa hoàn chỉnh", chấp nhận các giá trị khác biệt bằng phương thức `IsComplete(false)`.
 
 ```ts
 modelBuilder.Entity<Blog>()
